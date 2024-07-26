@@ -3,13 +3,16 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/26/24.
+//  Copyright © 2024 SheftApps. All rights reserved.
 //
 
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    
     @Environment(\.modelContext) private var modelContext
+
     @Query private var items: [Item]
 
     var body: some View {
