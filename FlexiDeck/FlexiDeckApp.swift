@@ -11,6 +11,9 @@ import SwiftData
 
 @main
 struct FlexiDeckApp: App {
+
+    @AppStorage("cardTextSize") var cardTextSize: Double = 14
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Card.self,
@@ -35,5 +38,17 @@ struct FlexiDeckApp: App {
             }
         }
         .modelContainer(sharedModelContainer)
+        .commands {
+            CommandMenu("Format") {
+                Button("Decrease Text Size", systemImage: "textformat.size.smaller") {
+                    cardTextSize -= 1
+                }
+                .keyboardShortcut("-", modifiers: .command)
+                Button("Increase Text Size", systemImage: "textformat.size.larger") {
+                    cardTextSize += 1
+                }
+                .keyboardShortcut("+", modifiers: .command)
+            }
+        }
     }
 }
