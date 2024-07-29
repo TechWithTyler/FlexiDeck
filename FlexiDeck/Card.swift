@@ -12,12 +12,13 @@ import SwiftData
 @Model
 final class Card {
 
-    var front: String
+    var title: String
 
-    var back: String
+    var front: String = String()
 
-    init(front: String, back: String) {
-        self.front = front
-        self.back = back
+    var back: String = String()
+
+    init(title: String) {
+        self.title = title
     }
 }

@@ -3,16 +3,28 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 60;
 	objects = {
+
+/* Begin PBXBuildFile section */
+		8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3282C582DB400FD0502 /* Card.swift */; };
+		8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3292C582DB400FD0502 /* ContentView.swift */; };
+		8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */; };
+		8D5DE3302C582DB400FD0502 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3272C582DB400FD0502 /* Assets.xcassets */; };
+		8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */; };
+		8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3342C582F1200FD0502 /* CardView.swift */; };
+/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8D5DE3282C582DB400FD0502 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		8D5DE3292C582DB400FD0502 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlexiDeck.entitlements; sourceTree = "<group>"; };
+		8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckApp.swift; sourceTree = "<group>"; };
+		8D5DE3342C582F1200FD0502 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		8D07685C2C543AED007F6501 /* FlexiDeck */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FlexiDeck; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		8D0768572C543AED007F6501 /* Frameworks */ = {
@@ -28,7 +40,7 @@
 		8D0768512C543AEC007F6501 = {
 			isa = PBXGroup;
 			children = (
-				8D07685C2C543AED007F6501 /* FlexiDeck */,
+				8D5DE32C2C582DB400FD0502 /* FlexiDeck */,
 				8D07685B2C543AED007F6501 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -39,6 +51,28 @@
 				8D07685A2C543AED007F6501 /* FlexiDeck.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8D5DE3262C582DB400FD0502 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8D5DE32C2C582DB400FD0502 /* FlexiDeck */ = {
+			isa = PBXGroup;
+			children = (
+				8D5DE3262C582DB400FD0502 /* Preview Content */,
+				8D5DE3272C582DB400FD0502 /* Assets.xcassets */,
+				8D5DE3282C582DB400FD0502 /* Card.swift */,
+				8D5DE3292C582DB400FD0502 /* ContentView.swift */,
+				8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */,
+				8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */,
+				8D5DE3342C582F1200FD0502 /* CardView.swift */,
+			);
+			path = FlexiDeck;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,9 +89,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				8D07685C2C543AED007F6501 /* FlexiDeck */,
 			);
 			name = FlexiDeck;
 			packageProductDependencies = (
@@ -104,6 +135,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D5DE3302C582DB400FD0502 /* Assets.xcassets in Resources */,
+				8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +147,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */,
+				8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */,
+				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
+				8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
