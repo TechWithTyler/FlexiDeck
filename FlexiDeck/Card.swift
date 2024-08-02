@@ -12,6 +12,8 @@ import SwiftData
 @Model
 final class Card {
 
+    var deck: Deck?
+
     var title: String
 
     var front: String = String()

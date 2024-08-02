@@ -8,25 +8,39 @@
 
 import SwiftUI
 import SwiftData
+import SheftAppsStylishUI
 
 struct ContentView: View {
     
     @Environment(\.modelContext) private var modelContext
 
-    @Environment(\.openWindow) var openWindow
+    @Query private var decks: [Deck]
 
-    @Query private var cards: [Card]
+    @State private var selectedDeck: Deck? = nil
 
     var body: some View {
         NavigationSplitView {
-            List {
-                ForEach(cards) { card in
-                    Button(card.title) {
-                        openWindow(id: "CardView", value: card.id)
+            ZStack {
+                if decks.count > 0 {
+                    List(selection: $selectedDeck) {
+                        ForEach(decks) { deck in
+                            NavigationLink(deck.name, value: deck)
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        deleteDeck(deck)
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
+
+                        }
+                        .onDelete(perform: deleteItems)
                     }
-                    .buttonStyle(.borderless)
+                } else {
+                    Text("No decks")
+                        .font(.largeTitle)
+                        .foregroundStyle(.secondary)
                 }
-                .onDelete(perform: deleteItems)
             }
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
@@ -38,19 +52,32 @@ struct ContentView: View {
                 }
 #endif
                 ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Card", systemImage: "plus")
+                    OptionsMenu(title: .menu) {
+                        Button(action: addItem) {
+                            Label("Add Deck", systemImage: "plus")
+                        }
+                        Divider()
+                        Button("Delete All Decks", systemImage: "trash.fill") {
+                            selectedDeck = nil
+                            for deck in decks {
+                                modelContext.delete(deck)
+                            }
+                        }
                     }
                 }
             }
         } detail: {
-            Text("Select a card to open it in a new window.")
+            if let deck = selectedDeck {
+                CardListView(deck: deck)
+            } else {
+                Text("Select a deck")
+            }
         }
     }
 
     private func addItem() {
         withAnimation {
-            let newItem = Card(title: "New Card")
+            let newItem = Deck(name: "New Deck")
             modelContext.insert(newItem)
         }
     }
@@ -58,10 +85,16 @@ struct ContentView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(cards[index])
+                deleteDeck(decks[index])
             }
         }
     }
+
+    func deleteDeck(_ deck: Deck) {
+        selectedDeck = nil
+        modelContext.delete(deck)
+    }
+
 }
 
 #Preview {
