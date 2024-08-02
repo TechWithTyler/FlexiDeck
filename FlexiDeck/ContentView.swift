@@ -18,6 +18,8 @@ struct ContentView: View {
 
     @State private var selectedDeck: Deck? = nil
 
+    @State var deckToRename: Deck? = nil
+
     var body: some View {
         NavigationSplitView {
             ZStack {
@@ -26,6 +28,9 @@ struct ContentView: View {
                         ForEach(decks) { deck in
                             NavigationLink(deck.name, value: deck)
                                 .contextMenu {
+                                    Button("Rename…", systemImage: "pencil") {
+                                        deckToRename = deck
+                                    }
                                     Button(role: .destructive) {
                                         deleteDeck(deck)
                                     } label: {
@@ -72,6 +77,9 @@ struct ContentView: View {
             } else {
                 Text("Select a deck")
             }
+        }
+        .sheet(item: $deckToRename) { deck in
+            DeckRenameView(deck: deck)
         }
     }
 

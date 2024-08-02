@@ -32,7 +32,7 @@ struct CardView: View {
         TextEditor(text: isFlipped ? $card.back : $card.front)
             .font(.system(size: CGFloat(cardTextSize)))
             .padding()
-            .navigationTitle("\(card.title) - \(isFlipped ? "Back" : "Front")")
+            .navigationTitle(card.is2Sided ? "\(card.title) - \(isFlipped ? "Back" : "Front")" : card.title)
             .toolbar {
                 ToolbarItemGroup {
                         Button("Decrease Text Size", systemImage: "textformat.size.smaller") {
@@ -42,9 +42,11 @@ struct CardView: View {
                             cardTextSize += 1
                         }
                 }
-                ToolbarItem {
-                    Button("Flip", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
-                        isFlipped.toggle()
+                if card.is2Sided {
+                    ToolbarItem {
+                        Button("Flip", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
+                            isFlipped.toggle()
+                        }
                     }
                 }
             }
@@ -53,5 +55,5 @@ struct CardView: View {
 }
 
 #Preview {
-    CardView(card: Card(title: "Preview Card"))
+    CardView(card: Card(title: "Preview Card", is2Sided: true))
 }

@@ -16,6 +16,7 @@ struct FlexiDeckApp: App {
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
+            Deck.self,
             Card.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

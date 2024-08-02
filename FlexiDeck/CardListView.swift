@@ -18,6 +18,8 @@ struct CardListView: View {
 
     @Environment(\.modelContext) var modelContext
 
+    @State var cardToRename: Card? = nil
+
     var body: some View {
         Form {
             if deck.cards.count > 0 {
@@ -29,6 +31,9 @@ struct CardListView: View {
                         .buttonStyle(.borderless)
                         .frame(width: .infinity)
                         .contextMenu {
+                            Button("Settings…", systemImage: "gear") {
+                                cardToRename = card
+                            }
                             Button(role: .destructive) {
                                 deleteCard(at: deck.cards.firstIndex(of: card)!)
                             } label: {
@@ -44,6 +49,9 @@ struct CardListView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .sheet(item: $cardToRename) { card in
+            CardSettingsView(card: card)
+        }
         .toolbar {
 #if os(iOS)
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -52,8 +60,15 @@ struct CardListView: View {
 #endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
-                    Button(action: addItem) {
-                        Label("Add Card", systemImage: "plus")
+                    Button {
+                        newCard(is2Sided: true)
+                    } label: {
+                        Label("Add 2-Sided Card", systemImage: "plus")
+                    }
+                    Button {
+                        newCard(is2Sided: false)
+                    } label: {
+                        Label("Add 1-Sided Card", systemImage: "plus")
                     }
                     Divider()
                     Button("Delete All Cards", systemImage: "trash.fill") {
@@ -64,9 +79,9 @@ struct CardListView: View {
         }
     }
 
-    private func addItem() {
+    private func newCard(is2Sided: Bool) {
         withAnimation {
-            let newItem = Card(title: "New Card")
+            let newItem = Card(title: "New Card", is2Sided: is2Sided)
             deck.cards.append(newItem)
         }
     }

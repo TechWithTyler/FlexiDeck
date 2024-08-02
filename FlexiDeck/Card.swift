@@ -20,7 +20,10 @@ final class Card {
 
     var back: String = String()
 
-    init(title: String) {
+    var is2Sided: Bool
+
+    init(title: String, is2Sided: Bool) {
         self.title = title
+        self.is2Sided = is2Sided
     }
 }

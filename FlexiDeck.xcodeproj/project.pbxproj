@@ -15,6 +15,8 @@
 		8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3342C582F1200FD0502 /* CardView.swift */; };
 		8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB062192C5D72640057E7DC /* Deck.swift */; };
 		8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621B2C5D734D0057E7DC /* CardListView.swift */; };
+		8DB0621E2C5D7AAB0057E7DC /* DeckRenameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621D2C5D7AAB0057E7DC /* DeckRenameView.swift */; };
+		8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */; };
 		8DE6B5252C5834BF00A6A759 /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; };
 		8DE6B5262C5834BF00A6A759 /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -44,6 +46,8 @@
 		8D5DE3342C582F1200FD0502 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		8DB062192C5D72640057E7DC /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		8DB0621B2C5D734D0057E7DC /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
+		8DB0621D2C5D7AAB0057E7DC /* DeckRenameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckRenameView.swift; sourceTree = "<group>"; };
+		8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSettingsView.swift; sourceTree = "<group>"; };
 		8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SheftAppsStylishUI.framework; path = "../../Library/Developer/Xcode/DerivedData/SheftApps-ghrzlrvaebvdhbfgpozgawcftnlj/Build/Products/Debug/SheftAppsStylishUI.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +96,8 @@
 				8D5DE3282C582DB400FD0502 /* Card.swift */,
 				8DB062192C5D72640057E7DC /* Deck.swift */,
 				8D5DE3292C582DB400FD0502 /* ContentView.swift */,
+				8DB0621D2C5D7AAB0057E7DC /* DeckRenameView.swift */,
+				8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */,
 				8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */,
 				8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */,
 				8D5DE3342C582F1200FD0502 /* CardView.swift */,
@@ -186,7 +192,9 @@
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
 				8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */,
+				8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */,
 				8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */,
+				8DB0621E2C5D7AAB0057E7DC /* DeckRenameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
