@@ -18,6 +18,8 @@ struct ContentView: View {
 
     @State private var selectedDeck: Deck? = nil
 
+    @State private var selectedCard: Card? = nil
+
     @State var deckToRename: Deck? = nil
 
     var body: some View {
@@ -44,6 +46,7 @@ struct ContentView: View {
                 } else {
                     Text("No decks")
                         .font(.largeTitle)
+                        .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
                 }
             }
@@ -59,7 +62,7 @@ struct ContentView: View {
                 ToolbarItem {
                     OptionsMenu(title: .menu) {
                         Button(action: addItem) {
-                            Label("Add Deck", systemImage: "plus")
+                            Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
                         }
                         Divider()
                         Button("Delete All Decks", systemImage: "trash.fill") {
@@ -71,11 +74,25 @@ struct ContentView: View {
                     }
                 }
             }
-        } detail: {
+        } content: {
             if let deck = selectedDeck {
-                CardListView(deck: deck)
+                CardListView(deck: deck, selectedCard: $selectedCard)
             } else {
                 Text("Select a deck")
+                    .font(.largeTitle)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+            }
+        } detail: {
+            if selectedDeck != nil {
+                if let card = selectedCard {
+                    CardView(card: card)
+                } else {
+                    Text("Select a card")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .sheet(item: $deckToRename) { deck in
@@ -99,8 +116,12 @@ struct ContentView: View {
     }
 
     func deleteDeck(_ deck: Deck) {
+        selectedCard = nil
         selectedDeck = nil
-        modelContext.delete(deck)
+        deck.cards.removeAll()
+        DispatchQueue.main.async {
+            modelContext.delete(deck)
+        }
     }
 
 }

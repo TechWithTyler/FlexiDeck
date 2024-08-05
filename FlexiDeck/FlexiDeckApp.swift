@@ -17,7 +17,7 @@ struct FlexiDeckApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Deck.self,
-            Card.self,
+            Card.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -31,12 +31,6 @@ struct FlexiDeckApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }
-        .modelContainer(sharedModelContainer)
-        WindowGroup(id: "CardView", for: Card.ID.self) { $cardID in
-            if let cardID = cardID, let card = sharedModelContainer.mainContext.model(for: cardID) as? Card {
-                CardView(card: card)
-            }
         }
         .modelContainer(sharedModelContainer)
         .commands {

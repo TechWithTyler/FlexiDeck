@@ -20,16 +20,14 @@ struct CardListView: View {
 
     @State var cardToRename: Card? = nil
 
+    @Binding var selectedCard: Card?
+
     var body: some View {
         Form {
             if deck.cards.count > 0 {
-                List {
+                List(selection: $selectedCard) {
                     ForEach(deck.cards) { card in
-                        Button(card.title) {
-                            openWindow(id: "CardView", value: card.id)
-                        }
-                        .buttonStyle(.borderless)
-                        .frame(width: .infinity)
+                        NavigationLink(card.title, value: card)
                         .contextMenu {
                             Button("Settings…", systemImage: "gear") {
                                 cardToRename = card
@@ -44,11 +42,25 @@ struct CardListView: View {
                     .onDelete(perform: deleteItems)
                 }
             } else {
-                Text("No cards in this deck")
-                    .font(.largeTitle)
-                    .foregroundStyle(.secondary)
+                VStack {
+                    Text("No cards in this deck")
+                        .font(.largeTitle)
+                        .foregroundStyle(.secondary)
+                    Button {
+                        newCard(is2Sided: true)
+                    } label: {
+                        Label("Add 2-Sided Card", systemImage: "plus.rectangle.on.rectangle")
+                    }
+                    Button {
+                        newCard(is2Sided: false)
+                    } label: {
+                        Label("Add 1-Sided Card", systemImage: "plus.rectangle")
+                    }
+                }
+                .buttonStyle(.borderedProminent)
             }
         }
+        .navigationTitle(deck.name)
         .sheet(item: $cardToRename) { card in
             CardSettingsView(card: card)
         }
@@ -63,12 +75,12 @@ struct CardListView: View {
                     Button {
                         newCard(is2Sided: true)
                     } label: {
-                        Label("Add 2-Sided Card", systemImage: "plus")
+                        Label("Add 2-Sided Card", systemImage: "plus.rectangle.on.rectangle")
                     }
                     Button {
                         newCard(is2Sided: false)
                     } label: {
-                        Label("Add 1-Sided Card", systemImage: "plus")
+                        Label("Add 1-Sided Card", systemImage: "plus.rectangle")
                     }
                     Divider()
                     Button("Delete All Cards", systemImage: "trash.fill") {
@@ -95,11 +107,12 @@ struct CardListView: View {
     }
 
     func deleteCard(at index: Int) {
+        selectedCard = nil
         deck.cards.remove(at: index)
     }
 
 }
 
 #Preview {
-    CardListView(deck: Deck(name: "Preview"))
+    CardListView(deck: Deck(name: "Preview"), selectedCard: .constant(nil))
 }

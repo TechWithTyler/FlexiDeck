@@ -18,20 +18,8 @@ struct CardView: View {
     @AppStorage("cardTextSize") var cardTextSize: Double = 14
 
     var body: some View {
-        #if os(macOS)
-        SAMVisualEffectViewSwiftUIRepresentable {
-            cardContent
-        }
-        #else
-        cardContent
-        #endif
-    }
-
-    @ViewBuilder
-    var cardContent: some View {
         TextEditor(text: isFlipped ? $card.back : $card.front)
             .font(.system(size: CGFloat(cardTextSize)))
-            .padding()
             .navigationTitle(card.is2Sided ? "\(card.title) - \(isFlipped ? "Back" : "Front")" : card.title)
             .toolbar {
                 ToolbarItemGroup {
