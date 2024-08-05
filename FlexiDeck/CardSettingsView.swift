@@ -27,6 +27,9 @@ struct CardSettingsView: View {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)
                 }
+                if !is2Sided && card.is2Sided {
+                    WarningText("Changing to a 1-sided card will remove the back side of the card.", prefix: .important)
+                }
             }
             .formStyle(.grouped)
             .toolbar {
