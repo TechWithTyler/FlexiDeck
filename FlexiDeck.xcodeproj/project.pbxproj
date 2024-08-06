@@ -17,18 +17,18 @@
 		8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621B2C5D734D0057E7DC /* CardListView.swift */; };
 		8DB0621E2C5D7AAB0057E7DC /* DeckRenameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621D2C5D7AAB0057E7DC /* DeckRenameView.swift */; };
 		8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */; };
-		8DE6B5252C5834BF00A6A759 /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; };
-		8DE6B5262C5834BF00A6A759 /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8DCB0A552C62BCC600EB82DC /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; };
+		8DCB0A562C62BCC600EB82DC /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8DE6B5272C5834BF00A6A759 /* Embed Frameworks */ = {
+		8DCB0A572C62BCC600EB82DC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8DE6B5262C5834BF00A6A759 /* SheftAppsStylishUI.framework in Embed Frameworks */,
+				8DCB0A562C62BCC600EB82DC /* SheftAppsStylishUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -37,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D4277482C6178DA0021A9B8 /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SheftAppsStylishUI.framework; path = "../../Library/Developer/Xcode/DerivedData/SheftApps-ghrzlrvaebvdhbfgpozgawcftnlj/Build/Products/Debug-iphoneos/SheftAppsStylishUI.framework"; sourceTree = "<group>"; };
 		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D5DE3282C582DB400FD0502 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -56,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DE6B5252C5834BF00A6A759 /* SheftAppsStylishUI.framework in Frameworks */,
+				8DCB0A552C62BCC600EB82DC /* SheftAppsStylishUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +110,7 @@
 		8DD2CB622C58334F00761E05 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8D4277482C6178DA0021A9B8 /* SheftAppsStylishUI.framework */,
 				8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */,
 			);
 			name = Frameworks;
@@ -124,7 +126,7 @@
 				8D0768562C543AED007F6501 /* Sources */,
 				8D0768572C543AED007F6501 /* Frameworks */,
 				8D0768582C543AED007F6501 /* Resources */,
-				8DE6B5272C5834BF00A6A759 /* Embed Frameworks */,
+				8DCB0A572C62BCC600EB82DC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -323,7 +325,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlexiDeck/FlexiDeck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
-				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "FlexiDeck/Preview\\ Content/Preview\\ Assets.xcassets";
 				DEVELOPMENT_TEAM = 3B6G4T54X3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -347,10 +349,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.FlexiDeck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
@@ -363,7 +366,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlexiDeck/FlexiDeck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
-				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "FlexiDeck/Preview\\ Content/Preview\\ Assets.xcassets";
 				DEVELOPMENT_TEAM = 3B6G4T54X3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -387,10 +390,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.FlexiDeck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
