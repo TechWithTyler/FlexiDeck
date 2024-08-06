@@ -66,6 +66,7 @@ struct ContentView: View {
                         }
                         Divider()
                         Button("Delete All Decks", systemImage: "trash.fill") {
+                            selectedCard = nil
                             selectedDeck = nil
                             for deck in decks {
                                 modelContext.delete(deck)

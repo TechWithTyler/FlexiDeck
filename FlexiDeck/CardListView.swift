@@ -84,6 +84,7 @@ struct CardListView: View {
                     }
                     Divider()
                     Button("Delete All Cards", systemImage: "trash.fill") {
+                        selectedCard = nil
                         deck.cards.removeAll()
                     }
                 }
