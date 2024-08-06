@@ -14,10 +14,13 @@ final class Deck {
 
     var name: String
 
+    var newCardsAre2Sided: Bool
+
     @Relationship(deleteRule: .cascade, inverse: \Card.deck)
     var cards: [Card] = []
 
-    init(name: String) {
+    init(name: String, newCardsAre2Sided: Bool) {
+        self.newCardsAre2Sided = newCardsAre2Sided
         self.name = name
     }
 

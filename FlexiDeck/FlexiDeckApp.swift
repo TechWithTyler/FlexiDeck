@@ -8,11 +8,12 @@
 
 import SwiftUI
 import SwiftData
+import SheftAppsStylishUI
 
 @main
 struct FlexiDeckApp: App {
 
-    @AppStorage("cardTextSize") var cardTextSize: Double = 14
+    @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -45,5 +46,13 @@ struct FlexiDeckApp: App {
                 .keyboardShortcut("+", modifiers: .command)
             }
         }
+        #if os(macOS)
+        Settings {
+            SAMVisualEffectViewSwiftUIRepresentable {
+                SettingsView()
+            }
+            .frame(width: 400, height: 300)
+        }
+        #endif
     }
 }

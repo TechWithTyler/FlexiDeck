@@ -46,16 +46,7 @@ struct CardListView: View {
                     Text("No cards in this deck")
                         .font(.largeTitle)
                         .foregroundStyle(.secondary)
-                    Button {
-                        newCard(is2Sided: true)
-                    } label: {
-                        Label("Add 2-Sided Card", systemImage: "plus.rectangle.on.rectangle")
-                    }
-                    Button {
-                        newCard(is2Sided: false)
-                    } label: {
-                        Label("Add 1-Sided Card", systemImage: "plus.rectangle")
-                    }
+                    addCardButton
                 }
                 .buttonStyle(.borderedProminent)
             }
@@ -72,16 +63,7 @@ struct CardListView: View {
 #endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
-                    Button {
-                        newCard(is2Sided: true)
-                    } label: {
-                        Label("Add 2-Sided Card", systemImage: "plus.rectangle.on.rectangle")
-                    }
-                    Button {
-                        newCard(is2Sided: false)
-                    } label: {
-                        Label("Add 1-Sided Card", systemImage: "plus.rectangle")
-                    }
+                    addCardButton
                     Divider()
                     Button("Delete All Cards", systemImage: "trash.fill") {
                         selectedCard = nil
@@ -89,6 +71,15 @@ struct CardListView: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    var addCardButton: some View {
+        Button {
+            newCard(is2Sided: deck.newCardsAre2Sided)
+        } label: {
+            Label(deck.newCardsAre2Sided ? "Add 2-Sided Card" : "Add 1-Sided Card", systemImage: deck.newCardsAre2Sided ? "plus.rectangle.on.rectangle" : "plus.rectangle")
         }
     }
 
@@ -115,5 +106,5 @@ struct CardListView: View {
 }
 
 #Preview {
-    CardListView(deck: Deck(name: "Preview"), selectedCard: .constant(nil))
+    CardListView(deck: Deck(name: "Preview", newCardsAre2Sided: true), selectedCard: .constant(nil))
 }

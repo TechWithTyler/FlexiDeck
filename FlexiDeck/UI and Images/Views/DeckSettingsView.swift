@@ -1,5 +1,5 @@
 //
-//  DeckRenameView.swift
+//  DeckSettingsView.swift
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/2/24.
@@ -9,11 +9,13 @@
 import SwiftUI
 import SheftAppsStylishUI
 
-struct DeckRenameView: View {
+struct DeckSettingsView: View {
 
     var deck: Deck
 
     @State var newName: String = String()
+
+    @State var newCardsAre2Sided: Bool = true
 
     @Environment(\.dismiss) var dismiss
 
@@ -21,6 +23,10 @@ struct DeckRenameView: View {
         NavigationStack {
             Form {
                 FormTextField("Deck Name", text: $newName)
+                Picker("Card Type for New Cards", selection: $newCardsAre2Sided) {
+                    Text("1-Sided").tag(false)
+                    Text("2-Sided").tag(true)
+                }
             }
             .formStyle(.grouped)
             .toolbar {
@@ -32,6 +38,7 @@ struct DeckRenameView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         deck.name = newName
+                        deck.newCardsAre2Sided = newCardsAre2Sided
                         dismiss()
                     }
                     .disabled(newName.isEmpty)
@@ -40,10 +47,11 @@ struct DeckRenameView: View {
         }
         .onAppear {
             newName = deck.name
+            newCardsAre2Sided = deck.newCardsAre2Sided
         }
     }
 }
 
 #Preview {
-    DeckRenameView(deck: Deck(name: "Deck"))
+    DeckSettingsView(deck: Deck(name: "Deck", newCardsAre2Sided: true))
 }

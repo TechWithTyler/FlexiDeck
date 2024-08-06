@@ -15,7 +15,7 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
-    @AppStorage("cardTextSize") var cardTextSize: Double = 14
+    @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
 
     var body: some View {
         TextEditor(text: isFlipped ? $card.back : $card.front)

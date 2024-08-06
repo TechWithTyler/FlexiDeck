@@ -14,6 +14,8 @@ struct ContentView: View {
     
     @Environment(\.modelContext) private var modelContext
 
+    @AppStorage("newDecksDefaultTo2SidedCards") var newDecksDefaultTo2SidedCards: Bool = true
+
     @Query private var decks: [Deck]
 
     @State private var selectedDeck: Deck? = nil
@@ -30,7 +32,7 @@ struct ContentView: View {
                         ForEach(decks) { deck in
                             NavigationLink(deck.name, value: deck)
                                 .contextMenu {
-                                    Button("Rename…", systemImage: "pencil") {
+                                    Button("Settings…", systemImage: "gear") {
                                         deckToRename = deck
                                     }
                                     Button(role: .destructive) {
@@ -97,13 +99,13 @@ struct ContentView: View {
             }
         }
         .sheet(item: $deckToRename) { deck in
-            DeckRenameView(deck: deck)
+            DeckSettingsView(deck: deck)
         }
     }
 
     private func addItem() {
         withAnimation {
-            let newItem = Deck(name: "New Deck")
+            let newItem = Deck(name: "New Deck", newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             modelContext.insert(newItem)
         }
     }
