@@ -15,6 +15,8 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
+    @EnvironmentObject var dialogManager: DialogManager
+
     @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
 
     var body: some View {
@@ -30,11 +32,16 @@ struct CardView: View {
                             cardTextSize += 1
                         }
                 }
-                if card.is2Sided {
                     ToolbarItem {
-                        Button("Flip", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
-                            isFlipped.toggle()
-                        }
+                        OptionsMenu(title: .menu) {
+                            if card.is2Sided {
+                            Button("Flip", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
+                                isFlipped.toggle()
+                            }
+                            }
+                            Button("Settings…", systemImage: "gear") {
+                                dialogManager.cardToRename = card
+                            }
                     }
                 }
             }

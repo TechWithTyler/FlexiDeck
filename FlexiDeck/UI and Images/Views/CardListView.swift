@@ -18,7 +18,7 @@ struct CardListView: View {
 
     @Environment(\.modelContext) var modelContext
 
-    @State var cardToRename: Card? = nil
+    @EnvironmentObject var dialogManager: DialogManager
 
     @Binding var selectedCard: Card?
 
@@ -32,7 +32,7 @@ struct CardListView: View {
                         }
                         .contextMenu {
                             Button("Settings…", systemImage: "gear") {
-                                cardToRename = card
+                                dialogManager.cardToRename = card
                             }
                             Button(role: .destructive) {
                                 deleteCard(at: deck.cards.firstIndex(of: card)!)
@@ -55,7 +55,7 @@ struct CardListView: View {
             }
         }
         .navigationTitle(deck.name)
-        .sheet(item: $cardToRename) { card in
+        .sheet(item: $dialogManager.cardToRename) { card in
             CardSettingsView(card: card)
         }
         .toolbar {
@@ -67,6 +67,9 @@ struct CardListView: View {
             ToolbarItem {
                 OptionsMenu(title: .menu) {
                     addCardButton
+                    Button("Settings…", systemImage: "gear") {
+                        dialogManager.deckToRename = deck
+                    }
                     Divider()
                     Button("Delete All Cards", systemImage: "trash.fill") {
                         selectedCard = nil

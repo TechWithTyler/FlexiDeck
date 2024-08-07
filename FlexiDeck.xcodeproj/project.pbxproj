@@ -20,6 +20,7 @@
 		8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */; };
 		8DCB0A5E2C63421A00EB82DC /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DCB0A5D2C63421A00EB82DC /* SheftAppsStylishUI.framework */; };
 		8DCB0A5F2C63421A00EB82DC /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DCB0A5D2C63421A00EB82DC /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCB0A612C6409AD00EB82DC /* DialogManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +52,7 @@
 		8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSettingsView.swift; sourceTree = "<group>"; };
 		8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8DCB0A5D2C63421A00EB82DC /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsStylishUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DCB0A612C6409AD00EB82DC /* DialogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogManager.swift; sourceTree = "<group>"; };
 		8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SheftAppsStylishUI.framework; path = "../../Library/Developer/Xcode/DerivedData/SheftApps-ghrzlrvaebvdhbfgpozgawcftnlj/Build/Products/Debug/SheftAppsStylishUI.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +132,7 @@
 				8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */,
 				8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */,
 				8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */,
+				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */,
 				8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */,
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
+				8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */,
 				8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */,
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
 				8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */,

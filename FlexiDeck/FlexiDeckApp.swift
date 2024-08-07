@@ -13,6 +13,8 @@ import SheftAppsStylishUI
 @main
 struct FlexiDeckApp: App {
 
+    @ObservedObject var dialogManager = DialogManager()
+
     @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
 
     var sharedModelContainer: ModelContainer = {
@@ -32,6 +34,7 @@ struct FlexiDeckApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(dialogManager)
         }
         .modelContainer(sharedModelContainer)
         .commands {

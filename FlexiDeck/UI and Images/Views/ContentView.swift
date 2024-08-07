@@ -22,7 +22,7 @@ struct ContentView: View {
 
     @State private var selectedCard: Card? = nil
 
-    @State var deckToRename: Deck? = nil
+    @EnvironmentObject var dialogManager: DialogManager
 
     #if !os(macOS)
     @State var showingSettings: Bool = false
@@ -37,7 +37,7 @@ struct ContentView: View {
                             NavigationLink(deck.name, value: deck)
                                 .contextMenu {
                                     Button("Settings…", systemImage: "gear") {
-                                        deckToRename = deck
+                                        dialogManager.deckToRename = deck
                                     }
                                     Button(role: .destructive) {
                                         deleteDeck(deck)
@@ -109,7 +109,7 @@ struct ContentView: View {
                 }
             }
         }
-        .sheet(item: $deckToRename) { deck in
+        .sheet(item: $dialogManager.deckToRename) { deck in
             DeckSettingsView(deck: deck)
         }
 #if !os(macOS)
