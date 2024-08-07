@@ -40,6 +40,7 @@ struct ContentView: View {
                                         dialogManager.showingDeleteDeck = true
                                     } label: {
                                         Label("Delete…", systemImage: "trash")
+                                            .foregroundStyle(.red)
                                     }
                                 }
 
@@ -58,7 +59,7 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.large)
             #endif
 #if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
+            .navigationSplitViewColumnWidth(min: 300, ideal: 300)
 #endif
             .alert("Delete this deck?", isPresented: $dialogManager.showingDeleteDeck, presenting: $dialogManager.deckToDelete) { deck in
                 Button("Delete") {
@@ -96,8 +97,11 @@ struct ContentView: View {
                             Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
                         }
                         Divider()
-                        Button("Delete All Decks…", systemImage: "trash.fill") {
+                        Button(role: .destructive) {
                             dialogManager.showingDeleteAllDecks = true
+                        } label: {
+                            Label("Delete All Decks…", systemImage: "trash.fill")
+                                .foregroundStyle(.red)
                         }
                         #if !os(macOS)
                         Button("Settings…", systemImage: "gear") {
@@ -108,25 +112,35 @@ struct ContentView: View {
                 }
             }
         } content: {
-            if let deck = selectedDeck {
-                CardListView(deck: deck, selectedCard: $selectedCard)
-            } else {
-                Text("Select a deck")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
-            }
-        } detail: {
-            if selectedDeck != nil {
-                if let card = selectedCard {
-                    CardView(card: card)
+            ZStack {
+                if let deck = selectedDeck {
+                    CardListView(deck: deck, selectedCard: $selectedCard)
                 } else {
-                    Text("Select a card")
+                    Text("Select a deck")
                         .font(.largeTitle)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
                 }
             }
+#if os(macOS)
+            .navigationSplitViewColumnWidth(min: 300, ideal: 300)
+#endif
+        } detail: {
+            ZStack {
+                if selectedDeck != nil {
+                    if let card = selectedCard {
+                        CardView(card: card)
+                    } else {
+                        Text("Select a card")
+                            .font(.largeTitle)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+#if os(macOS)
+            .navigationSplitViewColumnWidth(min: 500, ideal: 600)
+#endif
         }
         .sheet(item: $dialogManager.deckToRename) { deck in
             DeckSettingsView(deck: deck)

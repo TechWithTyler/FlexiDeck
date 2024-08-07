@@ -25,12 +25,23 @@ struct CardView: View {
             .navigationTitle(card.is2Sided ? "\(card.title) - \(isFlipped ? "Back" : "Front")" : card.title)
             .toolbar {
                 ToolbarItemGroup {
-                        Button("Decrease Text Size", systemImage: "textformat.size.smaller") {
+                        Button {
                             cardTextSize -= 1
+                        } label: {
+                            Label("Decrease Text Size", systemImage: "textformat.size.smaller")
+                                .frame(width: 30)
                         }
-                        Button("Increase Text Size", systemImage: "textformat.size.larger") {
+                        Button {
                             cardTextSize += 1
+                        } label: {
+                            Label("Increase Text Size", systemImage: "textformat.size.larger")
+                                .frame(width: 30)
                         }
+                } label: {
+                    Text("Text Size")
+                }
+                ToolbarItem {
+                    Spacer()
                 }
                     ToolbarItem {
                         OptionsMenu(title: .menu) {

@@ -39,6 +39,7 @@ struct CardListView: View {
                                 dialogManager.showingDeleteCard = true
                             } label: {
                                 Label("Delete…", systemImage: "trash")
+                                    .foregroundStyle(.red)
                             }
                         }
                     }
@@ -95,8 +96,11 @@ struct CardListView: View {
                         dialogManager.deckToRename = deck
                     }
                     Divider()
-                    Button("Delete All Cards…", systemImage: "trash.fill") {
+                    Button(role: .destructive) {
                         dialogManager.showingDeleteAllCards = true
+                    } label: {
+                        Label("Delete All Cards…", systemImage: "trash.fill")
+                            .foregroundStyle(.red)
                     }
                 }
             }
