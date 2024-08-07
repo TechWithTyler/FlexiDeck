@@ -23,11 +23,13 @@ struct CardListView: View {
     @Binding var selectedCard: Card?
 
     var body: some View {
-        Form {
+        ZStack {
             if deck.cards.count > 0 {
                 List(selection: $selectedCard) {
                     ForEach(deck.cards) { card in
-                        NavigationLink(card.title, value: card)
+                        NavigationLink(value: card) {
+                            Text(card.title)
+                        }
                         .contextMenu {
                             Button("Settings…", systemImage: "gear") {
                                 cardToRename = card
@@ -41,6 +43,7 @@ struct CardListView: View {
                     }
                     .onDelete(perform: deleteItems)
                 }
+                .listStyle(.insetGrouped)
             } else {
                 VStack {
                     Text("No cards in this deck")

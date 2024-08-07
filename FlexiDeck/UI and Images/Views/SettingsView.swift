@@ -11,6 +11,10 @@ import SheftAppsStylishUI
 
 struct SettingsView: View {
 
+#if !os(macOS)
+    @Environment(\.dismiss) var dismiss
+    #endif
+
     @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
 
     @AppStorage("newDecksDefaultTo2SidedCards") var newDecksDefaultTo2SidedCards: Bool = true
@@ -26,23 +30,34 @@ struct SettingsView: View {
     }
 
     var body: some View {
-        Form {
-            Section {
-                textSizeSlider
-                Text("The quick brown fox jumps over the lazy dog.")
-                    .font(.system(size: CGFloat(cardTextSize)))
-            }
-            .animation(.default, value: cardTextSize)
-            Section {
-                Picker("Default Card Type for New Decks", selection: $newDecksDefaultTo2SidedCards) {
-                    Text("1-Sided").tag(false)
-                    Text("2-Sided").tag(true)
+        NavigationStack {
+            Form {
+                Section {
+                    textSizeSlider
+                    Text("The quick brown fox jumps over the lazy dog.")
+                        .font(.system(size: CGFloat(cardTextSize)))
                 }
-            } footer: {
-                Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting specifies the default number of sides for new decks.")
+                .animation(.default, value: cardTextSize)
+                Section {
+                    Picker("Default Card Type for New Decks", selection: $newDecksDefaultTo2SidedCards) {
+                        Text("1-Sided").tag(false)
+                        Text("2-Sided").tag(true)
+                    }
+                } footer: {
+                    Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting specifies the default number of sides for new decks.")
+                }
             }
+            .formStyle(.grouped)
+#if !os(macOS)
+            .toolbar {
+                ToolbarItem {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        #endif
         }
-        .formStyle(.grouped)
     }
 
     // MARK: - Fact Text Size Slider

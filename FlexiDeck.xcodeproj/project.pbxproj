@@ -17,19 +17,19 @@
 		8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621B2C5D734D0057E7DC /* CardListView.swift */; };
 		8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */; };
 		8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */; };
-		8DCB0A552C62BCC600EB82DC /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; };
-		8DCB0A562C62BCC600EB82DC /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */; };
+		8DCB0A5E2C63421A00EB82DC /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DCB0A5D2C63421A00EB82DC /* SheftAppsStylishUI.framework */; };
+		8DCB0A5F2C63421A00EB82DC /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DCB0A5D2C63421A00EB82DC /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		8DCB0A572C62BCC600EB82DC /* Embed Frameworks */ = {
+		8DCB0A602C63421A00EB82DC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8DCB0A562C62BCC600EB82DC /* SheftAppsStylishUI.framework in Embed Frameworks */,
+				8DCB0A5F2C63421A00EB82DC /* SheftAppsStylishUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,6 +50,7 @@
 		8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsView.swift; sourceTree = "<group>"; };
 		8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSettingsView.swift; sourceTree = "<group>"; };
 		8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8DCB0A5D2C63421A00EB82DC /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsStylishUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SheftAppsStylishUI.framework; path = "../../Library/Developer/Xcode/DerivedData/SheftApps-ghrzlrvaebvdhbfgpozgawcftnlj/Build/Products/Debug/SheftAppsStylishUI.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DCB0A552C62BCC600EB82DC /* SheftAppsStylishUI.framework in Frameworks */,
+				8DCB0A5E2C63421A00EB82DC /* SheftAppsStylishUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +137,7 @@
 		8DD2CB622C58334F00761E05 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8DCB0A5D2C63421A00EB82DC /* SheftAppsStylishUI.framework */,
 				8DE6B5242C5834BF00A6A759 /* SheftAppsStylishUI.framework */,
 			);
 			name = Frameworks;
@@ -151,7 +153,7 @@
 				8D0768562C543AED007F6501 /* Sources */,
 				8D0768572C543AED007F6501 /* Frameworks */,
 				8D0768582C543AED007F6501 /* Resources */,
-				8DCB0A572C62BCC600EB82DC /* Embed Frameworks */,
+				8DCB0A602C63421A00EB82DC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

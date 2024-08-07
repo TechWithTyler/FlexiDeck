@@ -24,6 +24,10 @@ struct ContentView: View {
 
     @State var deckToRename: Deck? = nil
 
+    #if !os(macOS)
+    @State var showingSettings: Bool = false
+    #endif
+
     var body: some View {
         NavigationSplitView {
             ZStack {
@@ -52,6 +56,8 @@ struct ContentView: View {
                         .foregroundStyle(.secondary)
                 }
             }
+            .navigationTitle("FlexiDeck")
+            .navigationBarTitleDisplayMode(.large)
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif
@@ -74,6 +80,11 @@ struct ContentView: View {
                                 modelContext.delete(deck)
                             }
                         }
+                        #if !os(macOS)
+                        Button("Settings…", systemImage: "gear") {
+                            showingSettings = true
+                        }
+                        #endif
                     }
                 }
             }
@@ -101,6 +112,11 @@ struct ContentView: View {
         .sheet(item: $deckToRename) { deck in
             DeckSettingsView(deck: deck)
         }
+#if !os(macOS)
+        .sheet(isPresented: $showingSettings) {
+            SettingsView()
+        }
+        #endif
     }
 
     private func addItem() {
