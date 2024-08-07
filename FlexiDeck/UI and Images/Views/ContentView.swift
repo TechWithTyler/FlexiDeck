@@ -24,10 +24,6 @@ struct ContentView: View {
 
     @EnvironmentObject var dialogManager: DialogManager
 
-    #if !os(macOS)
-    @State var showingSettings: Bool = false
-    #endif
-
     var body: some View {
         NavigationSplitView {
             ZStack {
@@ -40,9 +36,10 @@ struct ContentView: View {
                                         dialogManager.deckToRename = deck
                                     }
                                     Button(role: .destructive) {
-                                        deleteDeck(deck)
+                                        dialogManager.deckToDelete = deck
+                                        dialogManager.showingDeleteDeck = true
                                     } label: {
-                                        Label("Delete", systemImage: "trash")
+                                        Label("Delete…", systemImage: "trash")
                                     }
                                 }
 
@@ -57,10 +54,36 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("FlexiDeck")
+            #if !os(macOS)
             .navigationBarTitleDisplayMode(.large)
+            #endif
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif
+            .alert("Delete this deck?", isPresented: $dialogManager.showingDeleteDeck, presenting: $dialogManager.deckToDelete) { deck in
+                Button("Delete") {
+                    deleteDeck(deck.wrappedValue!)
+                    dialogManager.deckToDelete = nil
+                    dialogManager.showingDeleteDeck = false
+                }
+                Button("Cancel", role: .cancel) {
+                    dialogManager.deckToDelete = nil
+                    dialogManager.showingDeleteDeck = false
+                }
+            }
+            .alert("Delete all decks?", isPresented: $dialogManager.showingDeleteAllDecks) {
+                Button("Delete") {
+                    selectedCard = nil
+                    selectedDeck = nil
+                    for deck in decks {
+                        modelContext.delete(deck)
+                    }
+                    dialogManager.showingDeleteAllDecks = false
+                }
+                Button("Cancel", role: .cancel) {
+                    dialogManager.showingDeleteAllDecks = false
+                }
+            }
             .toolbar {
 #if os(iOS)
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -73,16 +96,12 @@ struct ContentView: View {
                             Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
                         }
                         Divider()
-                        Button("Delete All Decks", systemImage: "trash.fill") {
-                            selectedCard = nil
-                            selectedDeck = nil
-                            for deck in decks {
-                                modelContext.delete(deck)
-                            }
+                        Button("Delete All Decks…", systemImage: "trash.fill") {
+                            dialogManager.showingDeleteAllDecks = true
                         }
                         #if !os(macOS)
                         Button("Settings…", systemImage: "gear") {
-                            showingSettings = true
+                            dialogManager.showingSettings = true
                         }
                         #endif
                     }
@@ -113,7 +132,7 @@ struct ContentView: View {
             DeckSettingsView(deck: deck)
         }
 #if !os(macOS)
-        .sheet(isPresented: $showingSettings) {
+        .sheet(isPresented: $dialogManager.showingSettings) {
             SettingsView()
         }
         #endif
@@ -129,7 +148,8 @@ struct ContentView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                deleteDeck(decks[index])
+                dialogManager.deckToDelete = decks[index]
+                dialogManager.showingDeleteDeck = true
             }
         }
     }

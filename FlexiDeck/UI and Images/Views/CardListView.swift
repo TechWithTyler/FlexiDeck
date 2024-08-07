@@ -35,15 +35,18 @@ struct CardListView: View {
                                 dialogManager.cardToRename = card
                             }
                             Button(role: .destructive) {
-                                deleteCard(at: deck.cards.firstIndex(of: card)!)
+                                dialogManager.cardToDelete = card
+                                dialogManager.showingDeleteCard = true
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("Delete…", systemImage: "trash")
                             }
                         }
                     }
                     .onDelete(perform: deleteItems)
                 }
+                #if !os(macOS)
                 .listStyle(.insetGrouped)
+                #endif
             } else {
                 VStack {
                     Text("No cards in this deck")
@@ -58,6 +61,27 @@ struct CardListView: View {
         .sheet(item: $dialogManager.cardToRename) { card in
             CardSettingsView(card: card)
         }
+        .alert("Delete this card?", isPresented: $dialogManager.showingDeleteCard, presenting: $dialogManager.cardToDelete) { card in
+            Button("Delete") {
+                deleteCard(at: deck.cards.firstIndex(of: card.wrappedValue!)!)
+                dialogManager.cardToDelete = nil
+                dialogManager.showingDeleteCard = false
+            }
+            Button("Cancel") {
+                dialogManager.cardToDelete = nil
+                dialogManager.showingDeleteCard = false
+            }
+        }
+        .alert("Delete all cards in this deck?", isPresented: $dialogManager.showingDeleteAllCards) {
+            Button("Delete") {
+                selectedCard = nil
+                deck.cards.removeAll()
+                dialogManager.showingDeleteAllCards = false
+            }
+            Button("Cancel", role: .cancel) {
+                dialogManager.showingDeleteAllCards = false
+            }
+        }
         .toolbar {
 #if os(iOS)
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -71,9 +95,8 @@ struct CardListView: View {
                         dialogManager.deckToRename = deck
                     }
                     Divider()
-                    Button("Delete All Cards", systemImage: "trash.fill") {
-                        selectedCard = nil
-                        deck.cards.removeAll()
+                    Button("Delete All Cards…", systemImage: "trash.fill") {
+                        dialogManager.showingDeleteAllCards = true
                     }
                 }
             }
@@ -99,7 +122,8 @@ struct CardListView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                deleteCard(at: index)
+                dialogManager.cardToDelete = deck.cards[index]
+                dialogManager.showingDeleteCard = true
             }
         }
     }

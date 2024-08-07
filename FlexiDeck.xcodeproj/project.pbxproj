@@ -107,8 +107,8 @@
 		8DCB0A582C62BE2D00EB82DC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8D5DE3282C582DB400FD0502 /* Card.swift */,
-				8DB062192C5D72640057E7DC /* Deck.swift */,
+				8DCB0A632C640B7B00EB82DC /* SwiftData */,
+				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -132,9 +132,17 @@
 				8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */,
 				8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */,
 				8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */,
-				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		8DCB0A632C640B7B00EB82DC /* SwiftData */ = {
+			isa = PBXGroup;
+			children = (
+				8D5DE3282C582DB400FD0502 /* Card.swift */,
+				8DB062192C5D72640057E7DC /* Deck.swift */,
+			);
+			path = SwiftData;
 			sourceTree = "<group>";
 		};
 		8DD2CB622C58334F00761E05 /* Frameworks */ = {
