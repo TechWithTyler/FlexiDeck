@@ -11,13 +11,23 @@ import SheftAppsStylishUI
 
 struct DeckSettingsView: View {
 
+    // MARK: - Properties - Deck
+
     var deck: Deck
+
+    // MARK: - Properties - Strings
 
     @State var newName: String = String()
 
+    // MARK: - Properties - Booleans
+
     @State var newCardsAre2Sided: Bool = true
 
+    // MARK: - Properties - Dismiss Action
+
     @Environment(\.dismiss) var dismiss
+
+    // MARK: - Body
 
     var body: some View {
         NavigationStack {
@@ -51,6 +61,8 @@ struct DeckSettingsView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     DeckSettingsView(deck: Deck(name: "Deck", newCardsAre2Sided: true))

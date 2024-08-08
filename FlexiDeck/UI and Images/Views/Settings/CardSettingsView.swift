@@ -11,13 +11,23 @@ import SheftAppsStylishUI
 
 struct CardSettingsView: View {
 
+    // MARK: - Properties - Card
+
     var card: Card
+
+    // MARK: - Properties - Strings
 
     @State var newName: String = String()
 
+    // MARK: - Properties - Booleans
+
     @State var is2Sided: Bool = true
 
+    // MARK: - Properties - Dismiss Action
+
     @Environment(\.dismiss) var dismiss
+
+    // MARK: - Body
 
     var body: some View {
         NavigationStack {
@@ -57,6 +67,8 @@ struct CardSettingsView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     CardSettingsView(card: Card(title: "Card", is2Sided: true))

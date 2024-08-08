@@ -11,13 +11,21 @@ import SheftAppsStylishUI
 
 struct SettingsView: View {
 
+    // MARK: - Properties - Dismiss Action
+
 #if !os(macOS)
     @Environment(\.dismiss) var dismiss
     #endif
 
+    // MARK: - Properties - Doubles
+
     @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
 
+    // MARK: - Properties - Booleans
+
     @AppStorage("newDecksDefaultTo2SidedCards") var newDecksDefaultTo2SidedCards: Bool = true
+
+    // MARK: - Properties - Integers
 
     var cardTextSizeAsInt: Int {
         return Int(cardTextSize)
@@ -28,6 +36,8 @@ struct SettingsView: View {
     var cardTextSizeSliderText: String {
         return "Card Text Size: \(cardTextSizeAsInt)pt"
     }
+
+    // MARK: - Body
 
     var body: some View {
         NavigationStack {
@@ -60,7 +70,7 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - Fact Text Size Slider
+    // MARK: - Text Size Slider
 
     @ViewBuilder
     var textSizeSlider: some View {
@@ -78,6 +88,7 @@ struct SettingsView: View {
 
 }
 
+// MARK: - Preview
 
 #Preview {
     SettingsView()

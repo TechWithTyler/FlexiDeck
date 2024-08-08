@@ -12,6 +12,8 @@ import SwiftData
 @Model
 final class Card {
 
+    // MARK: - Properties
+
     var deck: Deck?
 
     var title: String
@@ -21,6 +23,8 @@ final class Card {
     var back: String = String()
 
     var is2Sided: Bool
+
+    // MARK: - Initialization
 
     init(title: String, is2Sided: Bool) {
         self.title = title

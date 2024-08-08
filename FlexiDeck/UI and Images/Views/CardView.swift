@@ -11,13 +11,23 @@ import SheftAppsStylishUI
 
 struct CardView: View {
 
+    // MARK: - Properties - Card
+
     @Bindable var card: Card
+
+    // MARK: - Properties - Doubles
+
+    @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
+
+    // MARK: - Properties - Booleans
 
     @State var isFlipped: Bool = false
 
+    // MARK: - Properties - Dialog Manager
+
     @EnvironmentObject var dialogManager: DialogManager
 
-    @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
+    // MARK: - Body
 
     var body: some View {
         TextEditor(text: isFlipped ? $card.back : $card.front)
@@ -51,7 +61,7 @@ struct CardView: View {
                             }
                             }
                             Button("Settings…", systemImage: "gear") {
-                                dialogManager.cardToRename = card
+                                dialogManager.cardToShowSettings = card
                             }
                     }
                 }
@@ -59,6 +69,8 @@ struct CardView: View {
     }
 
 }
+
+// MARK: - Preview
 
 #Preview {
     CardView(card: Card(title: "Preview Card", is2Sided: true))

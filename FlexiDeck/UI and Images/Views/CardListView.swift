@@ -12,15 +12,21 @@ import SheftAppsStylishUI
 
 struct CardListView: View {
 
-    @Bindable var deck: Deck
-
-    @Environment(\.openWindow) var openWindow
+    // MARK: - Properties - Model Context
 
     @Environment(\.modelContext) var modelContext
 
+    // MARK: - Properties - Dialog Manager
+
     @EnvironmentObject var dialogManager: DialogManager
 
+    // MARK: - Properties - Decks and Cards
+
+    @Bindable var deck: Deck
+
     @Binding var selectedCard: Card?
+
+    // MARK: - Body
 
     var body: some View {
         ZStack {
@@ -32,7 +38,7 @@ struct CardListView: View {
                         }
                         .contextMenu {
                             Button("Settings…", systemImage: "gear") {
-                                dialogManager.cardToRename = card
+                                dialogManager.cardToShowSettings = card
                             }
                             Button(role: .destructive) {
                                 dialogManager.cardToDelete = card
@@ -59,7 +65,7 @@ struct CardListView: View {
             }
         }
         .navigationTitle(deck.name)
-        .sheet(item: $dialogManager.cardToRename) { card in
+        .sheet(item: $dialogManager.cardToShowSettings) { card in
             CardSettingsView(card: card)
         }
         .alert("Delete this card?", isPresented: $dialogManager.showingDeleteCard, presenting: $dialogManager.cardToDelete) { card in
@@ -85,7 +91,7 @@ struct CardListView: View {
         }
         .toolbar {
 #if os(iOS)
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarLeading) {
                 EditButton()
             }
 #endif
@@ -93,7 +99,7 @@ struct CardListView: View {
                 OptionsMenu(title: .menu) {
                     addCardButton
                     Button("Settings…", systemImage: "gear") {
-                        dialogManager.deckToRename = deck
+                        dialogManager.deckToShowSettings = deck
                     }
                     Divider()
                     Button(role: .destructive) {
@@ -107,6 +113,8 @@ struct CardListView: View {
         }
     }
 
+    // MARK: - Add Card Button
+
     @ViewBuilder
     var addCardButton: some View {
         Button {
@@ -115,6 +123,8 @@ struct CardListView: View {
             Label(deck.newCardsAre2Sided ? "Add 2-Sided Card" : "Add 1-Sided Card", systemImage: deck.newCardsAre2Sided ? "plus.rectangle.on.rectangle" : "plus.rectangle")
         }
     }
+
+    // MARK: - Data Management
 
     private func newCard(is2Sided: Bool) {
         withAnimation {
@@ -138,6 +148,8 @@ struct CardListView: View {
     }
 
 }
+
+// MARK: - Preview
 
 #Preview {
     CardListView(deck: Deck(name: "Preview", newCardsAre2Sided: true), selectedCard: .constant(nil))

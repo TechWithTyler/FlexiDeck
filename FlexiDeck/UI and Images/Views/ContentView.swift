@@ -11,10 +11,16 @@ import SwiftData
 import SheftAppsStylishUI
 
 struct ContentView: View {
-    
+
+    // MARK: - Properties - Model Context
+
     @Environment(\.modelContext) private var modelContext
 
+    // MARK: - Properties - Booleans
+
     @AppStorage("newDecksDefaultTo2SidedCards") var newDecksDefaultTo2SidedCards: Bool = true
+
+    // MARK: - Properties - Decks and Cards
 
     @Query private var decks: [Deck]
 
@@ -22,7 +28,11 @@ struct ContentView: View {
 
     @State private var selectedCard: Card? = nil
 
+    // MARK: - Properties - Dialog Manager
+
     @EnvironmentObject var dialogManager: DialogManager
+
+    // MARK: - Body
 
     var body: some View {
         NavigationSplitView {
@@ -33,7 +43,7 @@ struct ContentView: View {
                             NavigationLink(deck.name, value: deck)
                                 .contextMenu {
                                     Button("Settings…", systemImage: "gear") {
-                                        dialogManager.deckToRename = deck
+                                        dialogManager.deckToShowSettings = deck
                                     }
                                     Button(role: .destructive) {
                                         dialogManager.deckToDelete = deck
@@ -87,7 +97,7 @@ struct ContentView: View {
             }
             .toolbar {
 #if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarLeading) {
                     EditButton()
                 }
 #endif
@@ -142,7 +152,7 @@ struct ContentView: View {
             .navigationSplitViewColumnWidth(min: 500, ideal: 600)
 #endif
         }
-        .sheet(item: $dialogManager.deckToRename) { deck in
+        .sheet(item: $dialogManager.deckToShowSettings) { deck in
             DeckSettingsView(deck: deck)
         }
 #if !os(macOS)
@@ -151,6 +161,8 @@ struct ContentView: View {
         }
         #endif
     }
+
+    // MARK: - Data Management
 
     private func addItem() {
         withAnimation {
@@ -178,6 +190,8 @@ struct ContentView: View {
     }
 
 }
+
+// MARK: - Preview
 
 #Preview {
     ContentView()

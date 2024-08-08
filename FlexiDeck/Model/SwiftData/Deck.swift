@@ -12,12 +12,16 @@ import SwiftData
 @Model
 final class Deck {
 
+    // MARK: - Properties
+
     var name: String
 
     var newCardsAre2Sided: Bool
 
     @Relationship(deleteRule: .cascade, inverse: \Card.deck)
     var cards: [Card] = []
+
+    // MARK: - Initialization
 
     init(name: String, newCardsAre2Sided: Bool) {
         self.newCardsAre2Sided = newCardsAre2Sided
