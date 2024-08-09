@@ -61,6 +61,9 @@ struct CardSettingsView: View {
                 }
             }
         }
+#if !os(macOS)
+    .pickerStyle(.navigationLink)
+#endif
         .onAppear {
             newName = card.title
             is2Sided = card.is2Sided

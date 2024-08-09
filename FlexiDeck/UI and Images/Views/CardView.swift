@@ -33,36 +33,37 @@ struct CardView: View {
         TextEditor(text: isFlipped ? $card.back : $card.front)
             .font(.system(size: CGFloat(cardTextSize)))
             .navigationTitle(card.is2Sided ? "\(card.title) - \(isFlipped ? "Back" : "Front")" : card.title)
+            .padding()
             .toolbar {
                 ToolbarItemGroup {
-                        Button {
-                            cardTextSize -= 1
-                        } label: {
-                            Label("Decrease Text Size", systemImage: "textformat.size.smaller")
-                                .frame(width: 30)
-                        }
-                        Button {
-                            cardTextSize += 1
-                        } label: {
-                            Label("Increase Text Size", systemImage: "textformat.size.larger")
-                                .frame(width: 30)
-                        }
+                    Button {
+                        cardTextSize -= 1
+                    } label: {
+                        Label("Decrease Text Size", systemImage: "textformat.size.smaller")
+                            .frame(width: 30)
+                    }
+                    Button {
+                        cardTextSize += 1
+                    } label: {
+                        Label("Increase Text Size", systemImage: "textformat.size.larger")
+                            .frame(width: 30)
+                    }
                 } label: {
                     Text("Text Size")
                 }
                 ToolbarItem {
                     Spacer()
                 }
-                    ToolbarItem {
-                        OptionsMenu(title: .menu) {
-                            if card.is2Sided {
-                            Button("Flip", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
+                ToolbarItem {
+                    OptionsMenu(title: .menu) {
+                        if card.is2Sided {
+                            Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
                                 isFlipped.toggle()
                             }
-                            }
-                            Button("Settings…", systemImage: "gear") {
-                                dialogManager.cardToShowSettings = card
-                            }
+                        }
+                        Button("Settings…", systemImage: "gear") {
+                            dialogManager.cardToShowSettings = card
+                        }
                     }
                 }
             }

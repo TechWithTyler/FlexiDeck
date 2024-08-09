@@ -55,6 +55,9 @@ struct DeckSettingsView: View {
                 }
             }
         }
+#if !os(macOS)
+    .pickerStyle(.navigationLink)
+#endif
         .onAppear {
             newName = deck.name
             newCardsAre2Sided = deck.newCardsAre2Sided

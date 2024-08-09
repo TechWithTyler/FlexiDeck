@@ -43,7 +43,16 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
+#if os(macOS)
+                // Sliders show their labels by default on macOS.
+                textSizeSlider
+#else
+                VStack(spacing: 0) {
+                    Text(cardTextSizeSliderText)
+                        .padding(5)
                     textSizeSlider
+                }
+#endif
                     Text("The quick brown fox jumps over the lazy dog.")
                         .font(.system(size: CGFloat(cardTextSize)))
                 }
@@ -68,6 +77,9 @@ struct SettingsView: View {
             }
         #endif
         }
+#if !os(macOS)
+    .pickerStyle(.navigationLink)
+#endif
     }
 
     // MARK: - Text Size Slider

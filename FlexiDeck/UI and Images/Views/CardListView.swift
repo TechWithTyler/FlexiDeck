@@ -34,7 +34,7 @@ struct CardListView: View {
                 List(selection: $selectedCard) {
                     ForEach(deck.cards) { card in
                         NavigationLink(value: card) {
-                            Text(card.title)
+                            CardRowView(card: card)
                         }
                         .contextMenu {
                             Button("Settings…", systemImage: "gear") {
@@ -90,11 +90,6 @@ struct CardListView: View {
             }
         }
         .toolbar {
-#if os(iOS)
-            ToolbarItem(placement: .topBarLeading) {
-                EditButton()
-            }
-#endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
                     addCardButton

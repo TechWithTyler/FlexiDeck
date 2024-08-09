@@ -96,11 +96,6 @@ struct ContentView: View {
                 }
             }
             .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
-                }
-#endif
                 ToolbarItem {
                     OptionsMenu(title: .menu) {
                         Button(action: addItem) {
