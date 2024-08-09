@@ -132,10 +132,10 @@
 		8DCB0A592C62BE4500EB82DC /* UI and Images */ = {
 			isa = PBXGroup;
 			children = (
+				8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */,
 				8DCB0A5A2C62BE5C00EB82DC /* Views */,
 				8D5DE3272C582DB400FD0502 /* Assets.xcassets */,
 				8D5DE3262C582DB400FD0502 /* Preview Content */,
-				8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */,
 			);
 			path = "UI and Images";
 			sourceTree = "<group>";
