@@ -13,9 +13,15 @@ import SheftAppsStylishUI
 @main
 struct FlexiDeckApp: App {
 
+    // MARK: - Properties - Dialog Manager
+
     @ObservedObject var dialogManager = DialogManager()
 
+    // MARK: - Properties - Doubles
+
     @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
+
+    // MARK: - Properties - Model Container
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -30,6 +36,8 @@ struct FlexiDeckApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+
+    // MARK: - Windows and Views
 
     var body: some Scene {
         WindowGroup {
