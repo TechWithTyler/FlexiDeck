@@ -59,10 +59,17 @@ struct DeckSettingsView: View {
     .pickerStyle(.navigationLink)
 #endif
         .onAppear {
-            newName = deck.name
-            newCardsAre2Sided = deck.newCardsAre2Sided
+            reflectCurrentSettings()
         }
     }
+
+    // MARK: - Reflect Current Settings
+
+    func reflectCurrentSettings() {
+        newName = deck.name
+        newCardsAre2Sided = deck.newCardsAre2Sided
+    }
+
 }
 
 // MARK: - Preview
