@@ -22,6 +22,7 @@
 		8DE403AC2C65674200D61D6E /* SheftAppsStylishUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE403AB2C65674200D61D6E /* SheftAppsStylishUI.framework */; };
 		8DE403AD2C65674200D61D6E /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE403AB2C65674200D61D6E /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8DE403B12C65688700D61D6E /* CardRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B02C65688700D61D6E /* CardRowView.swift */; };
+		8DE403B32C66B55100D61D6E /* FlexiDeckCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +56,7 @@
 		8DCB0A612C6409AD00EB82DC /* DialogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogManager.swift; sourceTree = "<group>"; };
 		8DE403AB2C65674200D61D6E /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsStylishUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DE403B02C65688700D61D6E /* CardRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRowView.swift; sourceTree = "<group>"; };
+		8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckCommands.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 				8DCB0A5A2C62BE5C00EB82DC /* Views */,
 				8D5DE3272C582DB400FD0502 /* Assets.xcassets */,
 				8D5DE3262C582DB400FD0502 /* Preview Content */,
+				8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */,
 			);
 			path = "UI and Images";
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */,
 				8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */,
 				8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */,
+				8DE403B32C66B55100D61D6E /* FlexiDeckCommands.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

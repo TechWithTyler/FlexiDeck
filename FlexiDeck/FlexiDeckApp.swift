@@ -17,10 +17,6 @@ struct FlexiDeckApp: App {
 
     @ObservedObject var dialogManager = DialogManager()
 
-    // MARK: - Properties - Doubles
-
-    @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
-
     // MARK: - Properties - Model Container
 
     var sharedModelContainer: ModelContainer = {
@@ -46,16 +42,7 @@ struct FlexiDeckApp: App {
         }
         .modelContainer(sharedModelContainer)
         .commands {
-            CommandMenu("Format") {
-                Button("Decrease Text Size", systemImage: "textformat.size.smaller") {
-                    cardTextSize -= 1
-                }
-                .keyboardShortcut("-", modifiers: .command)
-                Button("Increase Text Size", systemImage: "textformat.size.larger") {
-                    cardTextSize += 1
-                }
-                .keyboardShortcut("+", modifiers: .command)
-            }
+            FlexiDeckCommands()
         }
         #if os(macOS)
         Settings {
