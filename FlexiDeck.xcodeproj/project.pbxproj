@@ -23,6 +23,7 @@
 		8DE403AD2C65674200D61D6E /* SheftAppsStylishUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE403AB2C65674200D61D6E /* SheftAppsStylishUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8DE403B12C65688700D61D6E /* CardRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B02C65688700D61D6E /* CardRowView.swift */; };
 		8DE403B32C66B55100D61D6E /* FlexiDeckCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */; };
+		8DE403B52C66B62600D61D6E /* UserDefaultsKeyNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,6 +58,7 @@
 		8DE403AB2C65674200D61D6E /* SheftAppsStylishUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsStylishUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DE403B02C65688700D61D6E /* CardRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRowView.swift; sourceTree = "<group>"; };
 		8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckCommands.swift; sourceTree = "<group>"; };
+		8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeyNames.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			children = (
 				8DCB0A632C640B7B00EB82DC /* SwiftData */,
 				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
+				8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
 				8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */,
 				8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */,
+				8DE403B52C66B62600D61D6E /* UserDefaultsKeyNames.swift in Sources */,
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
 				8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */,
 				8DE403B12C65688700D61D6E /* CardRowView.swift in Sources */,

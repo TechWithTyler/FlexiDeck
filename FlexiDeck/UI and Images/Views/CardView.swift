@@ -17,7 +17,7 @@ struct CardView: View {
 
     // MARK: - Properties - Doubles
 
-    @AppStorage("cardTextSize") var cardTextSize: Double = SATextViewMinFontSize
+    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
 
     // MARK: - Properties - Booleans
 
