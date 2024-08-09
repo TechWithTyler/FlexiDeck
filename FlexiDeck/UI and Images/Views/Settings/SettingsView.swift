@@ -23,7 +23,7 @@ struct SettingsView: View {
 
     // MARK: - Properties - Booleans
 
-    @AppStorage("newDecksDefaultTo2SidedCards") var newDecksDefaultTo2SidedCards: Bool = true
+    @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
     // MARK: - Properties - Integers
 
