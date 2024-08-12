@@ -47,8 +47,7 @@ struct DeckSettingsView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        deck.name = newName
-                        deck.newCardsAre2Sided = newCardsAre2Sided
+                        saveNewSettings()
                         dismiss()
                     }
                     .disabled(newName.isEmpty)
@@ -68,6 +67,13 @@ struct DeckSettingsView: View {
     func reflectCurrentSettings() {
         newName = deck.name
         newCardsAre2Sided = deck.newCardsAre2Sided
+    }
+
+    // MARK: - Save New Settings
+
+    func saveNewSettings() {
+        deck.name = newName
+        deck.newCardsAre2Sided = newCardsAre2Sided
     }
 
 }

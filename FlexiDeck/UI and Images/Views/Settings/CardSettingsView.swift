@@ -50,11 +50,7 @@ struct CardSettingsView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        card.title = newName
-                        card.is2Sided = is2Sided
-                        if !card.is2Sided && !card.back.isEmpty {
-                            card.back.removeAll()
-                        }
+                        saveNewSettings()
                         dismiss()
                     }
                     .disabled(newName.isEmpty)
@@ -74,6 +70,18 @@ struct CardSettingsView: View {
     func reflectCurrentSettings() {
         newName = card.title
         is2Sided = card.is2Sided
+    }
+
+    // MARK: - Save New Settings
+
+    func saveNewSettings() {
+        // 1. Save the new settings.
+        card.title = newName
+        card.is2Sided = is2Sided
+        // 2. If going from a 2-sided card to a 1-sided card and the back side has text on it, clear the back side.
+        if !card.is2Sided && !card.back.isEmpty {
+            card.back.removeAll()
+        }
     }
 
 }
