@@ -79,7 +79,7 @@ struct CardListView: View {
                 dialogManager.showingDeleteCard = false
             }
         }
-        .alert("Delete all cards in this deck?", isPresented: $dialogManager.showingDeleteAllCards) {
+        .alert("Delete all cards in deck \"\(deck.name)\"", isPresented: $dialogManager.showingDeleteAllCards) {
             Button("Delete") {
                 selectedCard = nil
                 deck.cards.removeAll()

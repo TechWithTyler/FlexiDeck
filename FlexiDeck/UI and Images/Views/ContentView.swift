@@ -99,6 +99,8 @@ struct ContentView: View {
                 dialogManager.deckToDelete = nil
                 dialogManager.showingDeleteDeck = false
             }
+        } message: { deck in
+            Text("All cards in this deck will be deleted.")
         }
         .alert("Delete all decks?", isPresented: $dialogManager.showingDeleteAllDecks) {
             Button("Delete") {
