@@ -148,4 +148,5 @@ struct CardListView: View {
 
 #Preview {
     CardListView(deck: Deck(name: "Preview", newCardsAre2Sided: true), selectedCard: .constant(nil))
+        .environmentObject(DialogManager())
 }
