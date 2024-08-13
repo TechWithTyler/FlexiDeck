@@ -31,7 +31,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section {
-                    TextSizeSlider(labelText: "Card Text Size", textSize: $cardTextSize, previewText: "The quick brown fox jumps over the lazy dog.")
+                    TextSizeSlider(labelText: "Card Text Size", textSize: $cardTextSize, previewText: SATextSettingsPreviewString)
                 }
                 Section {
                     Picker("Default Card Type for New Decks", selection: $newDecksDefaultTo2SidedCards) {
