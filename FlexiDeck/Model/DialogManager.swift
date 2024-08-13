@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+// Manages the display of dialogs in the app.
 class DialogManager: ObservableObject {
 
     // MARK: - Properties - Booleans

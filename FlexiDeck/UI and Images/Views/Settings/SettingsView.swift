@@ -15,7 +15,7 @@ struct SettingsView: View {
 
 #if !os(macOS)
     @Environment(\.dismiss) var dismiss
-    #endif
+#endif
 
     // MARK: - Properties - Doubles
 
@@ -25,38 +25,14 @@ struct SettingsView: View {
 
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
-    // MARK: - Properties - Integers
-
-    var cardTextSizeAsInt: Int {
-        return Int(cardTextSize)
-    }
-
-    // MARK: - Properties - Text Size Slider Text
-
-    var cardTextSizeSliderText: String {
-        return "Card Text Size: \(cardTextSizeAsInt)pt"
-    }
-
     // MARK: - Body
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-#if os(macOS)
-                // Sliders show their labels by default on macOS.
-                textSizeSlider
-#else
-                VStack(spacing: 0) {
-                    Text(cardTextSizeSliderText)
-                        .padding(5)
-                    textSizeSlider
+                    TextSizeSlider(labelText: "Card Text Size", textSize: $cardTextSize, previewText: "The quick brown fox jumps over the lazy dog.")
                 }
-#endif
-                    Text("The quick brown fox jumps over the lazy dog.")
-                        .font(.system(size: CGFloat(cardTextSize)))
-                }
-                .animation(.default, value: cardTextSize)
                 Section {
                     Picker("Default Card Type for New Decks", selection: $newDecksDefaultTo2SidedCards) {
                         Text("1-Sided").tag(false)
@@ -75,27 +51,11 @@ struct SettingsView: View {
                     }
                 }
             }
-        #endif
+#endif
         }
 #if !os(macOS)
-    .pickerStyle(.navigationLink)
+        .pickerStyle(.navigationLink)
 #endif
-    }
-
-    // MARK: - Text Size Slider
-
-    @ViewBuilder
-    var textSizeSlider: some View {
-        Slider(value: $cardTextSize, in: SATextViewFontSizeRange, step: 1) {
-            Text(cardTextSizeSliderText)
-        } minimumValueLabel: {
-            Image(systemName: "textformat.size.smaller")
-                .accessibilityLabel("Smaller")
-        } maximumValueLabel: {
-            Image(systemName: "textformat.size.larger")
-                .accessibilityLabel("Larger")
-        }
-        .accessibilityValue("\(cardTextSizeAsInt)")
     }
 
 }
