@@ -103,6 +103,12 @@ struct CardListView: View {
                         Label("Delete All Cards…", systemImage: "trash.fill")
                             .foregroundStyle(.red)
                     }
+                    Button(role: .destructive) {
+                        dialogManager.deckToDelete = deck
+                        dialogManager.showingDeleteDeck = true
+                    } label: {
+                        Label("Delete Deck…", systemImage: "trash")
+                    }
                 }
             }
         }

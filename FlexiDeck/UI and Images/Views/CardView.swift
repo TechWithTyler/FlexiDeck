@@ -64,6 +64,13 @@ struct CardView: View {
                         Button("Settings…", systemImage: "gear") {
                             dialogManager.cardToShowSettings = card
                         }
+                        Divider()
+                        Button(role: .destructive) {
+                            dialogManager.cardToDelete = card
+                            dialogManager.showingDeleteCard = true
+                        } label: {
+                            Label("Delete…", systemImage: "trash")
+                        }
                     }
                 }
             }
