@@ -30,9 +30,9 @@ struct CardListView: View {
 
     var body: some View {
         ZStack {
-            if deck.cards.count > 0 {
+            if (deck.cards?.count)! > 0 {
                 List(selection: $selectedCard) {
-                    ForEach(deck.cards) { card in
+                    ForEach(deck.cards!) { card in
                         NavigationLink(value: card) {
                             CardRowView(card: card)
                         }
@@ -64,13 +64,14 @@ struct CardListView: View {
                 .buttonStyle(.borderedProminent)
             }
         }
-        .navigationTitle(deck.name)
+        .navigationTitle(deck.name ?? String())
         .sheet(item: $dialogManager.cardToShowSettings) { card in
             CardSettingsView(card: card)
         }
         .alert("Delete this card?", isPresented: $dialogManager.showingDeleteCard, presenting: $dialogManager.cardToDelete) { card in
             Button("Delete") {
-                deleteCard(at: deck.cards.firstIndex(of: card.wrappedValue!)!)
+                guard let cards = deck.cards else { return }
+                deleteCard(at: cards.firstIndex(of: card.wrappedValue!)!)
                 dialogManager.cardToDelete = nil
                 dialogManager.showingDeleteCard = false
             }
@@ -82,7 +83,7 @@ struct CardListView: View {
         .alert("Delete all cards in deck \"\(deck.name)\"", isPresented: $dialogManager.showingDeleteAllCards) {
             Button("Delete") {
                 selectedCard = nil
-                deck.cards.removeAll()
+                deck.cards?.removeAll()
                 dialogManager.showingDeleteAllCards = false
             }
             Button("Cancel", role: .cancel) {
@@ -119,9 +120,9 @@ struct CardListView: View {
     @ViewBuilder
     var addCardButton: some View {
         Button {
-            newCard(is2Sided: deck.newCardsAre2Sided)
+            newCard(is2Sided: deck.newCardsAre2Sided ?? true)
         } label: {
-            Label(deck.newCardsAre2Sided ? "Add 2-Sided Card" : "Add 1-Sided Card", systemImage: deck.newCardsAre2Sided ? "plus.rectangle.on.rectangle" : "plus.rectangle")
+            Label((deck.newCardsAre2Sided)! ? "Add 2-Sided Card" : "Add 1-Sided Card", systemImage: (deck.newCardsAre2Sided)! ? "plus.rectangle.on.rectangle" : "plus.rectangle")
         }
     }
 
@@ -130,14 +131,14 @@ struct CardListView: View {
     private func newCard(is2Sided: Bool) {
         withAnimation {
             let newItem = Card(title: "New Card", is2Sided: is2Sided)
-            deck.cards.append(newItem)
+            deck.cards?.append(newItem)
         }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                dialogManager.cardToDelete = deck.cards[index]
+                dialogManager.cardToDelete = deck.cards?[index]
                 dialogManager.showingDeleteCard = true
             }
         }
@@ -145,7 +146,7 @@ struct CardListView: View {
 
     func deleteCard(at index: Int) {
         selectedCard = nil
-        deck.cards.remove(at: index)
+        deck.cards?.remove(at: index)
     }
 
 }

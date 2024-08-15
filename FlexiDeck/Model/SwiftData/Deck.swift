@@ -14,12 +14,12 @@ final class Deck {
 
     // MARK: - Properties
 
-    var name: String
+    var name: String?
 
-    var newCardsAre2Sided: Bool
+    var newCardsAre2Sided: Bool?
 
     @Relationship(deleteRule: .cascade, inverse: \Card.deck)
-    var cards: [Card] = []
+    var cards: [Card]? = []
 
     // MARK: - Initialization
 
