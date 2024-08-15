@@ -42,6 +42,7 @@ struct CardSettingsView: View {
                 }
             }
             .formStyle(.grouped)
+            .navigationTitle("Card Settings")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel", role: .cancel) {

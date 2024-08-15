@@ -39,6 +39,7 @@ struct DeckSettingsView: View {
                 }
             }
             .formStyle(.grouped)
+            .navigationTitle("Deck Settings")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel", role: .cancel) {
