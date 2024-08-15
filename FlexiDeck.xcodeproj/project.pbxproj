@@ -42,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D1B1AE42C6E9F3200656FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D5DE3282C582DB400FD0502 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -111,6 +112,7 @@
 		8D5DE32C2C582DB400FD0502 /* FlexiDeck */ = {
 			isa = PBXGroup;
 			children = (
+				8D1B1AE42C6E9F3200656FCD /* Info.plist */,
 				8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */,
 				8DCB0A592C62BE4500EB82DC /* UI and Images */,
 				8DCB0A582C62BE2D00EB82DC /* Model */,
@@ -388,6 +390,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlexiDeck/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 SheftApps. All rights reserved.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -429,6 +432,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlexiDeck/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 SheftApps. All rights reserved.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

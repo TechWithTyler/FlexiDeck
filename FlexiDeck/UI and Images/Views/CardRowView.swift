@@ -18,9 +18,11 @@ struct CardRowView: View {
     
     var body: some View {
         VStack {
-            Text(card.title)
-            Text(card.is2Sided ? "2-sided" : "1-sided")
-                .foregroundStyle(.secondary)
+            Text(card.title ?? String())
+            if let cardIs2Sided = card.is2Sided {
+                Text(cardIs2Sided ? "2-sided" : "1-sided")
+                    .foregroundStyle(.secondary)
+            }
         }
         
     }

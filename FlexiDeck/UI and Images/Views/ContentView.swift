@@ -58,7 +58,7 @@ struct ContentView: View {
             if decks.count > 0 {
                 List(selection: $selectedDeck) {
                     ForEach(decks) { deck in
-                        NavigationLink(deck.name, value: deck)
+                        NavigationLink(deck.name ?? String(), value: deck)
                             .contextMenu {
                                 Button("Settings…", systemImage: "gear") {
                                     dialogManager.deckToShowSettings = deck
@@ -195,7 +195,7 @@ struct ContentView: View {
     func deleteDeck(_ deck: Deck) {
         selectedCard = nil
         selectedDeck = nil
-        deck.cards.removeAll()
+        deck.cards?.removeAll()
         DispatchQueue.main.async {
             modelContext.delete(deck)
         }

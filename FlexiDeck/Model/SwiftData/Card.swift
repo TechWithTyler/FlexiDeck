@@ -16,13 +16,13 @@ final class Card {
 
     var deck: Deck?
 
-    var title: String
+    var title: String?
 
     var front: String = String()
 
     var back: String = String()
 
-    var is2Sided: Bool
+    var is2Sided: Bool?
 
     // MARK: - Initialization
 

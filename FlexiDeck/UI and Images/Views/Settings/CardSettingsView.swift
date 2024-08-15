@@ -37,7 +37,7 @@ struct CardSettingsView: View {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)
                 }
-                if !is2Sided && card.is2Sided {
+                if !is2Sided && (card.is2Sided)! {
                     WarningText("Changing to a 1-sided card will remove its back side.", prefix: .important)
                 }
             }
@@ -68,8 +68,8 @@ struct CardSettingsView: View {
     // MARK: - Reflect Current Settings
 
     func reflectCurrentSettings() {
-        newName = card.title
-        is2Sided = card.is2Sided
+        newName = card.title ?? String()
+        is2Sided = card.is2Sided ?? true
     }
 
     // MARK: - Save New Settings
@@ -79,7 +79,7 @@ struct CardSettingsView: View {
         card.title = newName
         card.is2Sided = is2Sided
         // 2. If going from a 2-sided card to a 1-sided card and the back side has text on it, clear the back side.
-        if !card.is2Sided && !card.back.isEmpty {
+        if !(card.is2Sided)! && !card.back.isEmpty {
             card.back.removeAll()
         }
     }
