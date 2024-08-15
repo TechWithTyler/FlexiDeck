@@ -180,6 +180,7 @@ struct ContentView: View {
         withAnimation {
             let newItem = Deck(name: "New Deck", newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             modelContext.insert(newItem)
+            dialogManager.deckToShowSettings = newItem
         }
     }
 
