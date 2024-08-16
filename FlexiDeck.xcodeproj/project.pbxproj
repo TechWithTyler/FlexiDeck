@@ -42,7 +42,7 @@
 
 /* Begin PBXFileReference section */
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D1B1AE42C6E9F3200656FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1B1AE42C6E9F3200656FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D5DE3282C582DB400FD0502 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -101,6 +101,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8D181A3A2C6FEF8A00E46376 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8D1B1AE42C6E9F3200656FCD /* Info.plist */,
+				8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		8D5DE3262C582DB400FD0502 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,11 +121,10 @@
 		8D5DE32C2C582DB400FD0502 /* FlexiDeck */ = {
 			isa = PBXGroup;
 			children = (
-				8D1B1AE42C6E9F3200656FCD /* Info.plist */,
 				8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */,
 				8DCB0A592C62BE4500EB82DC /* UI and Images */,
 				8DCB0A582C62BE2D00EB82DC /* Model */,
-				8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */,
+				8D181A3A2C6FEF8A00E46376 /* Supporting Files */,
 			);
 			path = FlexiDeck;
 			sourceTree = "<group>";
@@ -202,7 +210,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					8D0768592C543AED007F6501 = {
 						CreatedOnToolsVersion = 16.0;
@@ -297,6 +305,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -358,6 +367,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -382,15 +392,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = FlexiDeck/FlexiDeck.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				DEVELOPMENT_TEAM = 3B6G4T54X3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = FlexiDeck/Info.plist;
+				INFOPLIST_FILE = "FlexiDeck/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 SheftApps. All rights reserved.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -424,15 +435,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = FlexiDeck/FlexiDeck.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				DEVELOPMENT_TEAM = 3B6G4T54X3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = FlexiDeck/Info.plist;
+				INFOPLIST_FILE = "FlexiDeck/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 SheftApps. All rights reserved.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
