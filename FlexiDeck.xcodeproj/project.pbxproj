@@ -157,9 +157,9 @@
 			children = (
 				8D5DE3292C582DB400FD0502 /* ContentView.swift */,
 				8DB0621B2C5D734D0057E7DC /* CardListView.swift */,
+				8DE403B02C65688700D61D6E /* CardRowView.swift */,
 				8D5DE3342C582F1200FD0502 /* CardView.swift */,
 				8D02F07E2C655E3C00E6A48A /* Settings */,
-				8DE403B02C65688700D61D6E /* CardRowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

@@ -17,7 +17,7 @@ struct CardRowView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Text(card.title ?? String())
             if let cardIs2Sided = card.is2Sided {
                 Text(cardIs2Sided ? "2-sided" : "1-sided")
