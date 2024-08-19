@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */; };
 		8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3282C582DB400FD0502 /* Card.swift */; };
 		8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3292C582DB400FD0502 /* ContentView.swift */; };
 		8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaVersioning.swift; sourceTree = "<group>"; };
 		8D1B1AE42C6E9F3200656FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 			children = (
 				8D5DE3282C582DB400FD0502 /* Card.swift */,
 				8DB062192C5D72640057E7DC /* Deck.swift */,
+				8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */,
 			);
 			path = SwiftData;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */,
 				8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */,
 				8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */,
+				8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */,
 				8DE403B32C66B55100D61D6E /* FlexiDeckCommands.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,6 +334,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -384,6 +389,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -424,7 +430,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -467,7 +473,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 6.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};

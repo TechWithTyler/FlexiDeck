@@ -82,6 +82,9 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .onChange(of: selectedDeck) { oldValue, newValue in
+            selectedCard = nil
+        }
         .navigationTitle("FlexiDeck")
         #if !os(macOS)
         .navigationBarTitleDisplayMode(.large)

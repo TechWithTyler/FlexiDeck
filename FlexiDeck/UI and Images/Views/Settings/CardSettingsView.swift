@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import SheftAppsStylishUI
 
 struct CardSettingsView: View {
@@ -14,6 +15,10 @@ struct CardSettingsView: View {
     // MARK: - Properties - Card
 
     var card: Card
+
+    @Query var decks: [Deck] = []
+
+    @State var selectedDeck: Deck
 
     // MARK: - Properties - Strings
 
@@ -39,6 +44,11 @@ struct CardSettingsView: View {
                 }
                 if !is2Sided && (card.is2Sided)! {
                     WarningText("Changing to a 1-sided card will remove its back side.", prefix: .important)
+                }
+                Picker("Deck", selection: $selectedDeck) {
+                    ForEach(decks) { deck in
+                        Text(deck.name!).tag(deck)
+                    }
                 }
             }
             .formStyle(.grouped)
@@ -83,6 +93,9 @@ struct CardSettingsView: View {
         if !(card.is2Sided)! && !card.back.isEmpty {
             card.back.removeAll()
         }
+        if card.deck != selectedDeck {
+            card.deck = selectedDeck
+        }
     }
 
 }
@@ -90,5 +103,5 @@ struct CardSettingsView: View {
 // MARK: - Preview
 
 #Preview {
-    CardSettingsView(card: Card(title: "Card", is2Sided: true))
+    CardSettingsView(card: Card(title: "Card", is2Sided: true), selectedDeck: Deck(name: "Deck", newCardsAre2Sided: true))
 }

@@ -48,6 +48,9 @@ struct CardListView: View {
                                     .foregroundStyle(.red)
                             }
                         }
+                        .onChange(of: card.deck) { oldValue, newValue in
+                            selectedCard = nil
+                        }
                     }
                     .onDelete(perform: deleteItems)
                 }
@@ -66,7 +69,7 @@ struct CardListView: View {
         }
         .navigationTitle(deck.name ?? String())
         .sheet(item: $dialogManager.cardToShowSettings) { card in
-            CardSettingsView(card: card)
+            CardSettingsView(card: card, selectedDeck: deck)
         }
         .alert("Delete this card?", isPresented: $dialogManager.showingDeleteCard, presenting: $dialogManager.cardToDelete) { card in
             Button("Delete") {
