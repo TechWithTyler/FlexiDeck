@@ -32,7 +32,7 @@ struct DeckSettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                FormTextField("Deck Name", text: $newName)
+                FormTextField("Name", text: $newName)
                 Picker("Card Type for New Cards", selection: $newCardsAre2Sided) {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)

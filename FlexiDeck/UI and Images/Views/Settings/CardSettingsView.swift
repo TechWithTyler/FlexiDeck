@@ -37,18 +37,21 @@ struct CardSettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                FormTextField("Card Name", text: $newName)
-                Picker("Card Type", selection: $is2Sided) {
+                FormTextField("Name", text: $newName)
+                Picker("Type", selection: $is2Sided) {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)
                 }
-                if !is2Sided && (card.is2Sided)! {
+                if !is2Sided && (card.is2Sided)! && !card.back.isEmpty {
                     WarningText("Changing to a 1-sided card will remove its back side.", prefix: .important)
                 }
                 Picker("Deck", selection: $selectedDeck) {
                     ForEach(decks) { deck in
                         Text(deck.name!).tag(deck)
                     }
+                }
+                if card.deck != selectedDeck {
+                    InfoText("This card will be moved from \"\((card.deck?.name)!)\" to \"\((selectedDeck.name)!)\".")
                 }
             }
             .formStyle(.grouped)
@@ -93,6 +96,7 @@ struct CardSettingsView: View {
         if !(card.is2Sided)! && !card.back.isEmpty {
             card.back.removeAll()
         }
+        // 3. If the card isn't in the selected deck, move it to that deck.
         if card.deck != selectedDeck {
             card.deck = selectedDeck
         }
