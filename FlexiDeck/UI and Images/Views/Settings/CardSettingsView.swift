@@ -42,7 +42,7 @@ struct CardSettingsView: View {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)
                 }
-                if !is2Sided && (card.is2Sided)! && !card.back.isEmpty {
+                if !is2Sided && (card.is2Sided)! && card.encodedBack.isEmpty {
                     WarningText("Changing to a 1-sided card will remove its back side.", prefix: .important)
                 }
                 Picker("Deck", selection: $selectedDeck) {
@@ -93,8 +93,9 @@ struct CardSettingsView: View {
         card.title = newName
         card.is2Sided = is2Sided
         // 2. If going from a 2-sided card to a 1-sided card and the back side has text on it, clear the back side.
-        if !(card.is2Sided)! && !card.back.isEmpty {
-            card.back.removeAll()
+        if !(card.is2Sided)! && card.encodedBack.isEmpty {
+            // Data objects can be manipulated like arrays.
+            card.encodedBack.removeAll()
         }
         // 3. If the card isn't in the selected deck, move it to that deck.
         if card.deck != selectedDeck {

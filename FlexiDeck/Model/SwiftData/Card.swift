@@ -18,9 +18,9 @@ final class Card {
 
     var title: String?
 
-    var front: String = String()
+    var encodedFront: Data = String().data(using: .utf8)!
 
-    var back: String = String()
+    var encodedBack: Data = String().data(using: .utf8)!
 
     var is2Sided: Bool?
 

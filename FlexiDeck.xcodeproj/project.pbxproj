@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */; };
+		8D4231862C75384B0077A5E8 /* RichTextKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8D4231852C75384B0077A5E8 /* RichTextKit */; };
+		8D4231892C7539D40077A5E8 /* StringDataConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4231882C7539D40077A5E8 /* StringDataConverter.swift */; };
 		8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3282C582DB400FD0502 /* Card.swift */; };
 		8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3292C582DB400FD0502 /* ContentView.swift */; };
 		8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */; };
@@ -45,6 +47,7 @@
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaVersioning.swift; sourceTree = "<group>"; };
 		8D1B1AE42C6E9F3200656FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D4231882C7539D40077A5E8 /* StringDataConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringDataConverter.swift; sourceTree = "<group>"; };
 		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D5DE3282C582DB400FD0502 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -69,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D4231862C75384B0077A5E8 /* RichTextKit in Frameworks */,
 				8DE403AC2C65674200D61D6E /* SheftAppsStylishUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +110,7 @@
 		8D181A3A2C6FEF8A00E46376 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8D4231882C7539D40077A5E8 /* StringDataConverter.swift */,
 				8D1B1AE42C6E9F3200656FCD /* Info.plist */,
 				8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */,
 			);
@@ -200,6 +205,7 @@
 			);
 			name = FlexiDeck;
 			packageProductDependencies = (
+				8D4231852C75384B0077A5E8 /* RichTextKit */,
 			);
 			productName = FlexiDeck;
 			productReference = 8D07685A2C543AED007F6501 /* FlexiDeck.app */;
@@ -229,6 +235,9 @@
 				Base,
 			);
 			mainGroup = 8D0768512C543AEC007F6501;
+			packageReferences = (
+				8D4231842C75384B0077A5E8 /* XCRemoteSwiftPackageReference "RichTextKit" */,
+			);
 			productRefGroup = 8D07685B2C543AED007F6501 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -262,6 +271,7 @@
 				8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */,
 				8DE403B52C66B62600D61D6E /* UserDefaultsKeyNames.swift in Sources */,
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
+				8D4231892C7539D40077A5E8 /* StringDataConverter.swift in Sources */,
 				8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */,
 				8DE403B12C65688700D61D6E /* CardRowView.swift in Sources */,
 				8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */,
@@ -501,6 +511,26 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8D4231842C75384B0077A5E8 /* XCRemoteSwiftPackageReference "RichTextKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielsaidi/RichTextKit.git";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 5.0.0;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8D4231852C75384B0077A5E8 /* RichTextKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D4231842C75384B0077A5E8 /* XCRemoteSwiftPackageReference "RichTextKit" */;
+			productName = RichTextKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8D0768522C543AED007F6501 /* Project object */;
 }

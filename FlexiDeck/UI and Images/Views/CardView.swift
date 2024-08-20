@@ -8,6 +8,7 @@
 
 import SwiftUI
 import SheftAppsStylishUI
+import RichTextKit
 
 struct CardView: View {
 
@@ -23,6 +24,10 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
+    @State var front: NSAttributedString = NSMutableAttributedString(string: String())
+
+    @State var back: NSAttributedString = NSMutableAttributedString(string: String())
+
     // MARK: - Properties - Dialog Manager
 
     @EnvironmentObject var dialogManager: DialogManager
@@ -30,10 +35,16 @@ struct CardView: View {
     // MARK: - Body
 
     var body: some View {
-        TextEditor(text: isFlipped ? $card.back : $card.front)
+        RichTextEditor(text: isFlipped ? $back : $front, context: RichTextContext())
             .font(.system(size: CGFloat(cardTextSize)))
             .navigationTitle((card.is2Sided)! ? "\(card.title ?? String()) - \(isFlipped ? "Back" : "Front")" : card.title ?? String())
             .padding()
+            .onAppear {
+                loadCard()
+            }
+            .onDisappear {
+                saveCard()
+            }
             .toolbar {
                 ToolbarItemGroup {
                     Button {
@@ -74,6 +85,18 @@ struct CardView: View {
                     }
                 }
             }
+    }
+
+    func loadCard() {
+        front = StringDataConverter.convertDataToAttributedString(card.encodedFront) ?? NSAttributedString()
+        back = StringDataConverter.convertDataToAttributedString(card.encodedBack) ?? NSAttributedString()
+    }
+
+    func saveCard() {
+        let front = StringDataConverter.convertAttributedStringToArchivedData(front)
+        let back = StringDataConverter.convertAttributedStringToArchivedData(back)
+        card.encodedFront = front!
+        card.encodedBack = back!
     }
 
 }
