@@ -67,6 +67,7 @@ struct ContentView: View {
                                 Button("Settings…", systemImage: "gear") {
                                     dialogManager.deckToShowSettings = deck
                                 }
+                                Divider()
                                 Button(role: .destructive) {
                                     dialogManager.deckToDelete = deck
                                     dialogManager.showingDeleteDeck = true
@@ -151,10 +152,12 @@ struct ContentView: View {
             if let deck = selectedDeck {
                 CardListView(deck: deck, selectedCard: $selectedCard)
             } else {
+                if !decks.isEmpty {
                 Text("Select a deck")
                     .font(.largeTitle)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
+                }
             }
         }
 #if os(macOS)
