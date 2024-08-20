@@ -20,6 +20,8 @@ struct ContentView: View {
 
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
+    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
+
     // MARK: - Properties - Decks and Cards
 
     @Query private var decks: [Deck]
@@ -183,7 +185,9 @@ struct ContentView: View {
         withAnimation {
             let newItem = Deck(name: "New Deck", newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             modelContext.insert(newItem)
-            dialogManager.deckToShowSettings = newItem
+            if showSettingsWhenCreating {
+                dialogManager.deckToShowSettings = newItem
+            }
         }
     }
 

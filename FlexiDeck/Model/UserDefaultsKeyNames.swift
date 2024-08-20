@@ -16,6 +16,8 @@ extension UserDefaults {
 
         static let newDecksDefaultTo2SidedCards: String = "newDecksDefaultTo2SidedCards"
 
+        static let showSettingsWhenCreating: String = "showSettingsWhenCreating"
+
     }
 
 }
