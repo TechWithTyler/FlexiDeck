@@ -98,7 +98,8 @@ struct CardSettingsView: View {
         }
         // 3. If the card isn't in the selected deck, move it to that deck.
         if card.deck != selectedDeck {
-            card.deck = selectedDeck
+            card.deck?.cards?.remove(at: (card.deck?.cards?.firstIndex(of: card)!)!)
+            selectedDeck.cards?.append(card)
         }
     }
 
