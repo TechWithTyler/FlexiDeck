@@ -60,7 +60,9 @@ struct ContentView: View {
             if decks.count > 0 {
                 List(selection: $selectedDeck) {
                     ForEach(decks) { deck in
-                        NavigationLink(deck.name ?? String(), value: deck)
+                        NavigationLink(value: deck) {
+                            DeckRowView(deck: deck)
+                        }
                             .contextMenu {
                                 Button("Settings…", systemImage: "gear") {
                                     dialogManager.deckToShowSettings = deck
