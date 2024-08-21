@@ -42,12 +42,14 @@ struct CardView: View {
                         Label("Decrease Text Size", systemImage: "textformat.size.smaller")
                             .frame(width: 30)
                     }
+                    .disabled(cardTextSize == SATextViewMinFontSize)
                     Button {
                         cardTextSize += 1
                     } label: {
                         Label("Increase Text Size", systemImage: "textformat.size.larger")
                             .frame(width: 30)
                     }
+                    .disabled(cardTextSize == SATextViewMaxFontSize)
                 } label: {
                     Text("Text Size")
                 }

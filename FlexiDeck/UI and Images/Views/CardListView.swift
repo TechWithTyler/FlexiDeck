@@ -98,6 +98,7 @@ struct CardListView: View {
                             .foregroundStyle(.tertiary)
                     }
                 }
+                .padding()
             }
         }
         .navigationTitle(deck.name ?? String())
