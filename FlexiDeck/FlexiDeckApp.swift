@@ -27,10 +27,10 @@ struct FlexiDeckApp: App {
             Card.self
         ])
         // 2. Create a ModelConfiguration with the schema.
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, allowsSave: true, cloudKitDatabase: .automatic)
         do {
             // 3. Try to create a model container with the schema and model configuration.
-            let modelContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let modelContainer = try ModelContainer(for: schema, migrationPlan: FlexiDeckMigrationPlan.self, configurations: [modelConfiguration])
             return modelContainer
         } catch {
             // 4. If a model container can't be created, throw a fatal error.
