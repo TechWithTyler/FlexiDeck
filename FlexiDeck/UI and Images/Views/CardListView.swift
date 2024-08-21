@@ -20,11 +20,26 @@ struct CardListView: View {
 
     @EnvironmentObject var dialogManager: DialogManager
 
+    // MARK: - Properties - Integers
+
+    @State var cardFilter: Int = 0
+
     // MARK: - Properties - Decks and Cards
 
     @Bindable var deck: Deck
 
     @Binding var selectedCard: Card?
+
+    var filteredCards: [Card] {
+        guard let cards = deck.cards else {
+            fatalError("Couldn't filter cards")
+        }
+        switch cardFilter {
+        case 1: return cards.filter { !$0.is2Sided! }
+        case 2: return cards.filter { $0.is2Sided! }
+        default: return cards
+        }
+    }
 
     // MARK: - Properties - Booleans
 
@@ -34,9 +49,9 @@ struct CardListView: View {
 
     var body: some View {
         ZStack {
-            if (deck.cards?.count)! > 0 {
+            if filteredCards.count > 0 {
                 List(selection: $selectedCard) {
-                    ForEach(deck.cards!) { card in
+                    ForEach(filteredCards) { card in
                         NavigationLink(value: card) {
                             CardRowView(card: card)
                         }
@@ -56,20 +71,33 @@ struct CardListView: View {
                         .onChange(of: card.deck) { oldValue, newValue in
                             selectedCard = nil
                         }
+                        .onChange(of: cardFilter) { oldValue, newValue in
+                            selectedCard = nil
+                        }
                     }
                     .onDelete(perform: deleteItems)
                 }
-                #if !os(macOS)
+#if !os(macOS)
                 .listStyle(.insetGrouped)
-                #endif
+#endif
             } else {
                 VStack {
-                    Text("No cards in this deck")
-                        .font(.largeTitle)
-                        .foregroundStyle(.secondary)
-                    addCardButton
+                    if cardFilter == 0 {
+                        Text("No cards in this deck")
+                            .font(.largeTitle)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        addCardButton
+                            .buttonStyle(.borderedProminent)
+                    } else {
+                        Text("No \(cardFilter == 1 ? "1-sided" : "2-sided") cards in this deck")
+                            .font(.largeTitle)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        Text("Adjust your filter or add a new card.")
+                            .foregroundStyle(.tertiary)
+                    }
                 }
-                .buttonStyle(.borderedProminent)
             }
         }
         .navigationTitle(deck.name ?? String())
@@ -100,8 +128,22 @@ struct CardListView: View {
         }
         .toolbar {
             ToolbarItem {
+                Menu {
+                    Picker("Filter", selection: $cardFilter) {
+                        Text("Off").tag(0)
+                        Text("1-Sided Cards").tag(1)
+                        Text("2-Sided Cards").tag(2)
+                    }
+                    .pickerStyle(.inline)
+                    } label: {
+                        Label("Filter", systemImage: cardFilter == 0 ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                    }
+                    .menuIndicator(.hidden)
+            }
+            ToolbarItem {
                 OptionsMenu(title: .menu) {
                     addCardButton
+                    Divider()
                     Button("Settings…", systemImage: "gear") {
                         dialogManager.deckToShowSettings = deck
                     }
