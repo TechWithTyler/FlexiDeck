@@ -51,6 +51,7 @@ struct SettingsView: View {
             }
             .formStyle(.grouped)
 #if !os(macOS)
+            .navigationTitle("Settings")
             .toolbar {
                 ToolbarItem {
                     Button("Done") {
