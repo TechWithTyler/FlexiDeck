@@ -18,6 +18,10 @@ extension UserDefaults {
 
         static let showSettingsWhenCreating: String = "showSettingsWhenCreating"
 
+        static let selectedVoiceID: String = "selectedVoiceID"
+
+        static let speakOnSelectionOrFlip: String = "speakOnSelectionOrFlip"
+
     }
 
 }

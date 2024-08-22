@@ -11,6 +11,8 @@ import SheftAppsStylishUI
 
 struct SettingsView: View {
 
+    @EnvironmentObject var speechManager: SpeechManager
+
     // MARK: - Properties - Dismiss Action
 
 #if !os(macOS)
@@ -23,6 +25,8 @@ struct SettingsView: View {
 
     // MARK: - Properties - Booleans
 
+    @AppStorage(UserDefaults.KeyNames.speakOnSelectionOrFlip) var speakOnSelectionOrFlip: Bool = false
+
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
@@ -34,6 +38,12 @@ struct SettingsView: View {
             Form {
                 Section {
                     TextSizeSlider(labelText: "Card Text Size", textSize: $cardTextSize, previewText: SATextSettingsPreviewString)
+                }
+                Section {
+                    VoicePicker(selectedVoiceID: speechManager.$selectedVoiceID, voices: speechManager.voices) { voiceID in
+                        speechManager.speak(text: (AVSpeechSynthesisVoice(identifier: voiceID)?.nameIncludingQuality)!)
+                    }
+                    Toggle("Speak on Card Selection/Flip", isOn: $speakOnSelectionOrFlip)
                 }
                 Section {
                     Picker("Default Card Type for New Decks", selection: $newDecksDefaultTo2SidedCards) {

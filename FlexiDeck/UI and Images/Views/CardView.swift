@@ -11,6 +11,8 @@ import SheftAppsStylishUI
 
 struct CardView: View {
 
+    @EnvironmentObject var speechManager: SpeechManager
+
     // MARK: - Properties - Card
 
     @Bindable var card: Card
@@ -18,6 +20,8 @@ struct CardView: View {
     // MARK: - Properties - Doubles
 
     @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
+
+    @AppStorage(UserDefaults.KeyNames.speakOnSelectionOrFlip) var speakOnSelectionOrFlip: Bool = false
 
     // MARK: - Properties - Booleans
 
@@ -34,8 +38,22 @@ struct CardView: View {
             .font(.system(size: CGFloat(cardTextSize)))
             .navigationTitle((card.is2Sided)! ? "\(card.title ?? String()) - \(isFlipped ? "Back" : "Front")" : card.title ?? String())
             .padding()
+            .onAppear {
+                if speakOnSelectionOrFlip {
+                    speechManager.speak(text: card.front)
+                }
+            }
             .onChange(of: card) { oldValue, newValue in
                 isFlipped = false
+                if speakOnSelectionOrFlip {
+                    speechManager.speak(text: card.front)
+                }
+            }
+            .onChange(of: isFlipped) { oldValue, newValue in
+                speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+                if speakOnSelectionOrFlip {
+                    speechManager.speak(text: isFlipped ? card.back : card.front)
+                }
             }
             .toolbar {
                 ToolbarItemGroup {
@@ -65,6 +83,9 @@ struct CardView: View {
                             Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
                                 isFlipped.toggle()
                             }
+                        }
+                        if isFlipped ? !card.back.isEmpty : !card.front.isEmpty {
+                            SpeakButton(for: isFlipped ? card.back : card.front)
                         }
                         Button("Settings…", systemImage: "gear") {
                             dialogManager.cardToShowSettings = card

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */; };
+		8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D26277E2C77D81000D11F80 /* SpeechManager.swift */; };
+		8D2627812C77D87A00D11F80 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2627802C77D87A00D11F80 /* Globals.swift */; };
+		8D2627832C77D9B600D11F80 /* SpeakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2627822C77D9B600D11F80 /* SpeakButton.swift */; };
 		8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3282C582DB400FD0502 /* Card.swift */; };
 		8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3292C582DB400FD0502 /* ContentView.swift */; };
 		8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */; };
@@ -46,6 +49,9 @@
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaVersioning.swift; sourceTree = "<group>"; };
 		8D1B1AE42C6E9F3200656FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D26277E2C77D81000D11F80 /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
+		8D2627802C77D87A00D11F80 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		8D2627822C77D9B600D11F80 /* SpeakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButton.swift; sourceTree = "<group>"; };
 		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D5DE3282C582DB400FD0502 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -110,8 +116,18 @@
 			children = (
 				8D1B1AE42C6E9F3200656FCD /* Info.plist */,
 				8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */,
+				8D2627802C77D87A00D11F80 /* Globals.swift */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8D26277D2C77D80000D11F80 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
+				8D26277E2C77D81000D11F80 /* SpeechManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		8D5DE3262C582DB400FD0502 /* Preview Content */ = {
@@ -146,7 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				8DCB0A632C640B7B00EB82DC /* SwiftData */,
-				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
+				8D26277D2C77D80000D11F80 /* Managers */,
 				8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */,
 			);
 			path = Model;
@@ -166,6 +182,7 @@
 		8DCB0A5A2C62BE5C00EB82DC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
 				8D5DE3292C582DB400FD0502 /* ContentView.swift */,
 				8DB0621B2C5D734D0057E7DC /* CardListView.swift */,
 				8DA20A162C7562B5001ED42E /* List Row Content */,
@@ -267,8 +284,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */,
+				8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */,
 				8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */,
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
+				8D2627812C77D87A00D11F80 /* Globals.swift in Sources */,
 				8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */,
 				8DA20A152C7547EA001ED42E /* DeckRowView.swift in Sources */,
 				8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */,
@@ -276,6 +295,7 @@
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
 				8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */,
 				8DE403B12C65688700D61D6E /* CardRowView.swift in Sources */,
+				8D2627832C77D9B600D11F80 /* SpeakButton.swift in Sources */,
 				8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */,
 				8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */,
 				8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */,

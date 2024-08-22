@@ -17,6 +17,8 @@ struct FlexiDeckApp: App {
 
     @ObservedObject var dialogManager = DialogManager()
 
+    @ObservedObject var speechManager = SpeechManager()
+
     // MARK: - Properties - Model Container
 
     // Returns the shared model container for the application.
@@ -44,6 +46,7 @@ struct FlexiDeckApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(dialogManager)
+                .environmentObject(speechManager)
         }
         .modelContainer(sharedModelContainer)
         .commands {
@@ -53,6 +56,7 @@ struct FlexiDeckApp: App {
         Settings {
             SAMVisualEffectViewSwiftUIRepresentable {
                 SettingsView()
+                    .environmentObject(speechManager)
             }
             .frame(width: 400, height: 300)
         }
