@@ -34,6 +34,9 @@ struct CardView: View {
             .font(.system(size: CGFloat(cardTextSize)))
             .navigationTitle((card.is2Sided)! ? "\(card.title ?? String()) - \(isFlipped ? "Back" : "Front")" : card.title ?? String())
             .padding()
+            .onChange(of: card) { oldValue, newValue in
+                isFlipped = false
+            }
             .toolbar {
                 ToolbarItemGroup {
                     Button {
