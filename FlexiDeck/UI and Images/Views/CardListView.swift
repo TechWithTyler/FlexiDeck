@@ -145,6 +145,10 @@ struct CardListView: View {
                 OptionsMenu(title: .menu) {
                     addCardButton
                     Divider()
+                    Button("Show Random Card", systemImage: "questionmark.square") {
+                        showRandomCard()
+                    }
+                    Divider()
                     Button("Settings…", systemImage: "gear") {
                         dialogManager.deckToShowSettings = deck
                     }
@@ -174,6 +178,17 @@ struct CardListView: View {
             newCard(is2Sided: deck.newCardsAre2Sided ?? true)
         } label: {
             Label((deck.newCardsAre2Sided)! ? "Add 2-Sided Card" : "Add 1-Sided Card", systemImage: (deck.newCardsAre2Sided)! ? "plus.rectangle.on.rectangle" : "plus.rectangle")
+        }
+    }
+
+    // MARK: - Show Random Card
+
+    func showRandomCard() {
+        let randomCard = deck.cards?.randomElement()!
+        if randomCard != selectedCard {
+            selectedCard = randomCard
+        } else {
+            showRandomCard()
         }
     }
 
