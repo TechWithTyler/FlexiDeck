@@ -28,6 +28,8 @@ struct CardSettingsView: View {
 
     @State var is2Sided: Bool = true
 
+    @State var useTitleAsFrontFirstLine: Bool = false
+
     // MARK: - Properties - Dismiss Action
 
     @Environment(\.dismiss) var dismiss
@@ -38,6 +40,14 @@ struct CardSettingsView: View {
         NavigationStack {
             Form {
                 FormTextField("Name", text: $newName)
+                if card.front.isEmpty {
+                    Toggle("Use Title as Front First Line", isOn: $useTitleAsFrontFirstLine)
+                } else {
+                    Button("Set to Front First Line") {
+                        let firstLineOfFront = card.front.components(separatedBy: .newlines).first!
+                        newName = firstLineOfFront
+                    }
+                }
                 Picker("Type", selection: $is2Sided) {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)
@@ -100,6 +110,10 @@ struct CardSettingsView: View {
         if card.deck != selectedDeck {
             card.deck?.cards?.remove(at: (card.deck?.cards?.firstIndex(of: card)!)!)
             selectedDeck.cards?.append(card)
+        }
+        // 4. If the option to use the card's title as the text of the front's first line is enabled, set the card's front side to the title.
+        if useTitleAsFrontFirstLine {
+            card.front = card.title!
         }
     }
 
