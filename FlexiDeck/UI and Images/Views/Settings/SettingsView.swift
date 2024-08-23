@@ -41,7 +41,7 @@ struct SettingsView: View {
                 }
                 Section {
                     VoicePicker(selectedVoiceID: speechManager.$selectedVoiceID, voices: speechManager.voices) { voiceID in
-                        speechManager.speak(text: (AVSpeechSynthesisVoice(identifier: voiceID)?.nameIncludingQuality)!)
+                        speechManager.speak(text: SATextSettingsPreviewString)
                     }
                     Toggle("Speak on Card Selection/Flip", isOn: $speakOnSelectionOrFlip)
                 }
