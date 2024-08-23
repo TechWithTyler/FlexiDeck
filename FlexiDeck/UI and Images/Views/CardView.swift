@@ -42,6 +42,9 @@ struct CardView: View {
             .onAppear {
                 loadCard()
             }
+            .onChange(of: card) { oldValue, newValue in
+                loadCard()
+            }
             .onDisappear {
                 saveCard()
             }
