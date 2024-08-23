@@ -58,7 +58,7 @@ struct FlexiDeckApp: App {
                 SettingsView()
                     .environmentObject(speechManager)
             }
-            .frame(width: 400, height: 300)
+            .frame(width: 500, height: 500)
         }
         #endif
     }
