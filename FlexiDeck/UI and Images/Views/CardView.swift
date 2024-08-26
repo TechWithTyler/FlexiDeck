@@ -24,6 +24,8 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
+    @State var text: NSAttributedString = NSMutableAttributedString(string: String())
+
     @State var front: NSAttributedString = NSMutableAttributedString(string: String())
 
     @State var back: NSAttributedString = NSMutableAttributedString(string: String())
@@ -32,10 +34,12 @@ struct CardView: View {
 
     @EnvironmentObject var dialogManager: DialogManager
 
+    @StateObject var context = RichTextContext()
+
     // MARK: - Body
 
     var body: some View {
-        RichTextEditor(text: isFlipped ? $back : $front, context: RichTextContext())
+        RichTextEditor(text: $text, context: context)
             .font(.system(size: CGFloat(cardTextSize)))
             .navigationTitle((card.is2Sided)! ? "\(card.title ?? String()) - \(isFlipped ? "Back" : "Front")" : card.title ?? String())
             .padding()
@@ -44,6 +48,16 @@ struct CardView: View {
             }
             .onChange(of: card) { oldValue, newValue in
                 loadCard()
+            }
+            .onChange(of: text) { oldValue, newValue in
+                if isFlipped {
+                    back = newValue
+                } else {
+                    front = newValue
+                }
+            }
+            .onChange(of: isFlipped) { oldValue, newValue in
+                context.setAttributedString(to: newValue ? back : front)
             }
             .onDisappear {
                 saveCard()
@@ -93,6 +107,7 @@ struct CardView: View {
     func loadCard() {
         front = StringDataConverter.convertDataToAttributedString(card.encodedFront) ?? NSAttributedString()
         back = StringDataConverter.convertDataToAttributedString(card.encodedBack) ?? NSAttributedString()
+        context.setAttributedString(to: front)
     }
 
     func saveCard() {
