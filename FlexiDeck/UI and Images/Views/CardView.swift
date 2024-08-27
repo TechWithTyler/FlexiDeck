@@ -87,7 +87,7 @@ struct CardView: View {
                         if isFlipped ? !card.back.isEmpty : !card.front.isEmpty {
                             SpeakButton(for: isFlipped ? card.back : card.front)
                         }
-                        Button("Settings…", systemImage: "gear") {
+                        Button("Card Settings…", systemImage: "gear") {
                             dialogManager.cardToShowSettings = card
                         }
                         Divider()

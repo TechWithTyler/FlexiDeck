@@ -56,7 +56,7 @@ struct CardListView: View {
                             CardRowView(card: card)
                         }
                         .contextMenu {
-                            Button("Settings…", systemImage: "gear") {
+                            Button("Card Settings…", systemImage: "gear") {
                                 dialogManager.cardToShowSettings = card
                             }
                             Divider()
@@ -149,7 +149,7 @@ struct CardListView: View {
                         showRandomCard()
                     }
                     Divider()
-                    Button("Settings…", systemImage: "gear") {
+                    Button("Deck Settings…", systemImage: "gear") {
                         dialogManager.deckToShowSettings = deck
                     }
                     Divider()

@@ -64,7 +64,7 @@ struct ContentView: View {
                             DeckRowView(deck: deck)
                         }
                             .contextMenu {
-                                Button("Settings…", systemImage: "gear") {
+                                Button("Deck Settings…", systemImage: "gear") {
                                     dialogManager.deckToShowSettings = deck
                                 }
                                 Divider()
