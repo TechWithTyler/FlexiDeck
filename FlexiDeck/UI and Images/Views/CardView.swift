@@ -39,7 +39,13 @@ struct CardView: View {
     // MARK: - Body
 
     var body: some View {
-        RichTextEditor(text: $text, context: context)
+        VStack {
+            RichTextEditor(text: $text, context: context) { viewConfiguration in
+                loadCard()
+                viewConfiguration.setRichTextColor(.foreground, to: ColorRepresentable(Color.primary))
+                viewConfiguration.setRichTextFontSize(CGFloat(cardTextSize))
+            }
+        }
             .font(.system(size: CGFloat(cardTextSize)))
             .navigationTitle((card.is2Sided)! ? "\(card.title ?? String()) - \(isFlipped ? "Back" : "Front")" : card.title ?? String())
             .padding()
