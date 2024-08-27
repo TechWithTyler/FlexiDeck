@@ -24,11 +24,11 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
-    @State var text: NSAttributedString = NSMutableAttributedString(string: String())
+    @State var text: NSAttributedString = .empty
 
-    @State var front: NSAttributedString = NSMutableAttributedString(string: String())
+    @State var front: NSAttributedString = .empty
 
-    @State var back: NSAttributedString = NSMutableAttributedString(string: String())
+    @State var back: NSAttributedString = .empty
 
     // MARK: - Properties - Dialog Manager
 
@@ -41,7 +41,6 @@ struct CardView: View {
     var body: some View {
         VStack {
             RichTextEditor(text: $text, context: context) { viewConfiguration in
-                loadCard()
                 viewConfiguration.setRichTextColor(.foreground, to: ColorRepresentable(Color.primary))
                 viewConfiguration.setRichTextFontSize(CGFloat(cardTextSize))
             }
@@ -56,6 +55,7 @@ struct CardView: View {
                 loadCard()
             }
             .onChange(of: text) { oldValue, newValue in
+                NSSound.beep()
                 if isFlipped {
                     back = newValue
                 } else {
@@ -63,7 +63,7 @@ struct CardView: View {
                 }
             }
             .onChange(of: isFlipped) { oldValue, newValue in
-                context.setAttributedString(to: newValue ? back : front)
+                text = newValue ? back : front
             }
             .onDisappear {
                 saveCard()
@@ -113,7 +113,7 @@ struct CardView: View {
     func loadCard() {
         front = StringDataConverter.convertDataToAttributedString(card.encodedFront) ?? NSAttributedString()
         back = StringDataConverter.convertDataToAttributedString(card.encodedBack) ?? NSAttributedString()
-        context.setAttributedString(to: front)
+        text = front
     }
 
     func saveCard() {
