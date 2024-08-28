@@ -45,18 +45,14 @@ struct CardListView: View {
         }
     }
 
-    // MARK: - Properties - Booleans
-
-    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
-
     var searchResults: [Card] {
         // Define the content being searched.
         let content = filteredCards
-        // If searchText is empty, return all strings.
+        // If searchText is empty, return all cards.
         if searchText.isEmpty {
             return content
         } else {
-            // Return strings that contain all or part of the search text.
+            // Return cards with titles that contain all or part of the search text.
             return content.filter { card in
                 let range = card.title?.range(of: searchText, options: .caseInsensitive)
                 let textMatchesSearchTerm = range != nil
@@ -64,6 +60,10 @@ struct CardListView: View {
             }
         }
     }
+
+    // MARK: - Properties - Booleans
+
+    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
 
     // MARK: - Body
 

@@ -14,6 +14,8 @@ struct CardRowView: View {
     
     var card: Card
 
+    // MARK: - Properties - Strings
+
     var searchText: String
 
     // MARK: - Body
@@ -28,6 +30,8 @@ struct CardRowView: View {
         }
         
     }
+
+    // MARK: - Color Matching Terms
 
     func cardWithColoredMatchingTerms(_ title: String, searchText: String) -> AttributedString {
         // 1. Convert the card title String to an AttributedString. As AttributedString is a data type, it's declared in the Foundation framework instead of the SwiftUI framework, even though its cross-platform design makes it shine with SwiftUI. Unlike with NSAttributedString, you can simply initialize it with a String argument without having to use an argument label.
