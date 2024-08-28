@@ -57,7 +57,11 @@ struct CardSettingsView: View {
                 }
                 Picker("Deck", selection: $selectedDeck) {
                     ForEach(decks) { deck in
-                        Text(deck.name!).tag(deck)
+                        if deck.name == card.deck?.name {
+                            Text("\(deck.name!) (current)").tag(deck)
+                        } else {
+                            Text(deck.name!).tag(deck)
+                        }
                     }
                 }
                 if card.deck != selectedDeck {
