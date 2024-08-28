@@ -20,6 +20,10 @@ struct CardListView: View {
 
     @EnvironmentObject var dialogManager: DialogManager
 
+    // MARK: - Properties - Strings
+
+    @State var searchText: String = String()
+
     // MARK: - Properties - Integers
 
     @State var cardFilter: Int = 0
@@ -45,15 +49,31 @@ struct CardListView: View {
 
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
 
+    var searchResults: [Card] {
+        // Define the content being searched.
+        let content = filteredCards
+        // If searchText is empty, return all strings.
+        if searchText.isEmpty {
+            return content
+        } else {
+            // Return strings that contain all or part of the search text.
+            return content.filter { card in
+                let range = card.title?.range(of: searchText, options: .caseInsensitive)
+                let textMatchesSearchTerm = range != nil
+                return textMatchesSearchTerm
+            }
+        }
+    }
+
     // MARK: - Body
 
     var body: some View {
         ZStack {
-            if filteredCards.count > 0 {
+            if searchResults.count > 0 {
                 List(selection: $selectedCard) {
-                    ForEach(filteredCards) { card in
+                    ForEach(searchResults) { card in
                         NavigationLink(value: card) {
-                            CardRowView(card: card)
+                            CardRowView(card: card, searchText: searchText)
                         }
                         .contextMenu {
                             Button("Card Settings…", systemImage: "gear") {
@@ -101,6 +121,8 @@ struct CardListView: View {
                 .padding()
             }
         }
+        .animation(.default, value: searchResults)
+        .searchable(text: $searchText, placement: .automatic, prompt: Text("Search"))
         .navigationTitle(deck.name ?? String())
         .sheet(item: $dialogManager.cardToShowSettings) { card in
             CardSettingsView(card: card, selectedDeck: deck)
@@ -145,8 +167,10 @@ struct CardListView: View {
                 OptionsMenu(title: .menu) {
                     addCardButton
                     Divider()
-                    Button("Show Random Card", systemImage: "questionmark.square") {
-                        showRandomCard()
+                    if !searchResults.isEmpty {
+                        Button("Show Random Card", systemImage: "questionmark.square") {
+                            showRandomCard()
+                        }
                     }
                     Divider()
                     Button("Deck Settings…", systemImage: "gear") {
