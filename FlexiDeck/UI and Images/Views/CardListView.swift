@@ -28,7 +28,7 @@ struct CardListView: View {
 
     @State var cardFilter: Int = 0
 
-    @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
+    @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .modifiedDateDescending
 
     // MARK: - Properties - Decks and Cards
 
@@ -40,21 +40,30 @@ struct CardListView: View {
         guard let cards = deck.cards else {
             fatalError("Couldn't sort cards")
         }
-        if cardSortMode == .titleAscending {
+        switch cardSortMode {
+        case .titleAscending:
             return cards.sorted { cardA, cardB in
                 return cardA.title! < cardB.title!
             }
-        } else if cardSortMode == .titleDescending {
+        case .titleDescending:
             return cards.sorted { cardA, cardB in
                 return cardA.title! > cardB.title!
             }
-        } else if cardSortMode == .creationDateAscending {
+        case .creationDateAscending:
             return cards.sorted { cardA, cardB in
                 return cardA.creationDate < cardB.creationDate
             }
-        } else {
+        case .creationDateDescending:
             return cards.sorted { cardA, cardB in
                 return cardA.creationDate > cardB.creationDate
+            }
+        case .modifiedDateAscending:
+            return cards.sorted { cardA, cardB in
+                return cardA.modifiedDate < cardB.modifiedDate
+            }
+        default:
+            return cards.sorted { cardA, cardB in
+                return cardA.modifiedDate > cardB.modifiedDate
             }
         }
     }
@@ -194,6 +203,8 @@ struct CardListView: View {
                         Text("Title (descending)").tag(Card.SortMode.titleDescending)
                         Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
                         Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
+                        Text("Date Modified (ascending)").tag(Card.SortMode.modifiedDateAscending)
+                        Text("Date Modified (descending)").tag(Card.SortMode.modifiedDateDescending)
                     }
                     Divider()
                     if !searchResults.isEmpty {

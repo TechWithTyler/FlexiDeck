@@ -49,6 +49,12 @@ struct CardView: View {
                     speechManager.speak(text: card.front)
                 }
             }
+            .onChange(of: card.front) { oldValue, newValue in
+                card.modifiedDate = Date()
+            }
+            .onChange(of: card.back) { oldValue, newValue in
+                card.modifiedDate = Date()
+            }
             .onChange(of: isFlipped) { oldValue, newValue in
                 speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
                 if speakOnSelectionOrFlip {
