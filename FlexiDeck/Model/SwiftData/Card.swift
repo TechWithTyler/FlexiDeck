@@ -12,11 +12,25 @@ import SwiftData
 @Model
 final class Card {
 
+    enum SortMode: Int {
+
+        case titleAscending = 0
+
+        case titleDescending = 1
+
+        case creationDateAscending = 2
+
+        case creationDateDescending = 3
+
+    }
+
     // MARK: - Properties
 
     var deck: Deck?
 
     var title: String?
+
+    var creationDate = Date()
 
     var front: String = String()
 

@@ -21,8 +21,13 @@ struct CardRowView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
+        HStack {
+            VStack(alignment: .leading) {
+                Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
+                Text(DateFormatter.localizedString(from: card.creationDate, dateStyle: .short, timeStyle: .short))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
             if let cardIs2Sided = card.is2Sided {
                 Text(cardIs2Sided ? "2-sided" : "1-sided")
                     .foregroundStyle(.secondary)

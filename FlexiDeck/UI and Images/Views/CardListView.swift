@@ -28,20 +28,42 @@ struct CardListView: View {
 
     @State var cardFilter: Int = 0
 
+    @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
+
     // MARK: - Properties - Decks and Cards
 
     @Bindable var deck: Deck
 
     @Binding var selectedCard: Card?
 
-    var filteredCards: [Card] {
+    var sortedCards: [Card] {
         guard let cards = deck.cards else {
-            fatalError("Couldn't filter cards")
+            fatalError("Couldn't sort cards")
         }
+        if cardSortMode == .titleAscending {
+            return cards.sorted { cardA, cardB in
+                return cardA.title! < cardB.title!
+            }
+        } else if cardSortMode == .titleDescending {
+            return cards.sorted { cardA, cardB in
+                return cardA.title! > cardB.title!
+            }
+        } else if cardSortMode == .creationDateAscending {
+            return cards.sorted { cardA, cardB in
+                return cardA.creationDate < cardB.creationDate
+            }
+        } else {
+            return cards.sorted { cardA, cardB in
+                return cardA.creationDate > cardB.creationDate
+            }
+        }
+    }
+
+    var filteredCards: [Card] {
         switch cardFilter {
-        case 1: return cards.filter { !$0.is2Sided! }
-        case 2: return cards.filter { $0.is2Sided! }
-        default: return cards
+        case 1: return sortedCards.filter { !$0.is2Sided! }
+        case 2: return sortedCards.filter { $0.is2Sided! }
+        default: return sortedCards
         }
     }
 
@@ -166,6 +188,13 @@ struct CardListView: View {
             ToolbarItem {
                 OptionsMenu(title: .menu) {
                     addCardButton
+                    Divider()
+                    Picker("Sort", selection: $cardSortMode) {
+                        Text("Title (ascending)").tag(Card.SortMode.titleAscending)
+                        Text("Title (descending)").tag(Card.SortMode.titleDescending)
+                        Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
+                        Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
+                    }
                     Divider()
                     if !searchResults.isEmpty {
                         Button("Show Random Card", systemImage: "questionmark.square") {
