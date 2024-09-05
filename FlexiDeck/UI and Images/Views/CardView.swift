@@ -15,7 +15,7 @@ struct CardView: View {
 
     // MARK: - Properties - Card
 
-    @Bindable var card: Card
+    @Bindable var selectedCard: Card
 
     // MARK: - Properties - Doubles
 
@@ -34,31 +34,31 @@ struct CardView: View {
     // MARK: - Body
 
     var body: some View {
-        TextEditor(text: isFlipped ? $card.back : $card.front)
+        TextEditor(text: isFlipped ? $selectedCard.back : $selectedCard.front)
             .font(.system(size: CGFloat(cardTextSize)))
-            .navigationTitle((card.is2Sided)! ? "\(card.title ?? String()) - \(isFlipped ? "Back" : "Front")" : card.title ?? String())
+            .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
             .padding()
             .onAppear {
                 if speakOnSelectionOrFlip {
-                    speechManager.speak(text: card.front)
+                    speechManager.speak(text: selectedCard.front)
                 }
             }
-            .onChange(of: card) { oldValue, newValue in
+            .onChange(of: selectedCard) { oldValue, newValue in
                 isFlipped = false
                 if speakOnSelectionOrFlip {
-                    speechManager.speak(text: card.front)
+                    speechManager.speak(text: selectedCard.front)
                 }
             }
-            .onChange(of: card.front) { oldValue, newValue in
-                card.modifiedDate = Date()
+            .onChange(of: selectedCard.front) { oldValue, newValue in
+                selectedCard.modifiedDate = Date()
             }
-            .onChange(of: card.back) { oldValue, newValue in
-                card.modifiedDate = Date()
+            .onChange(of: selectedCard.back) { oldValue, newValue in
+                selectedCard.modifiedDate = Date()
             }
             .onChange(of: isFlipped) { oldValue, newValue in
                 speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
                 if speakOnSelectionOrFlip {
-                    speechManager.speak(text: isFlipped ? card.back : card.front)
+                    speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
                 }
             }
             .toolbar {
@@ -85,20 +85,20 @@ struct CardView: View {
                 }
                 ToolbarItem {
                     OptionsMenu(title: .menu) {
-                        if (card.is2Sided)! {
+                        if (selectedCard.is2Sided)! {
                             Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
                                 isFlipped.toggle()
                             }
                         }
-                        if isFlipped ? !card.back.isEmpty : !card.front.isEmpty {
-                            SpeakButton(for: isFlipped ? card.back : card.front)
+                        if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
+                            SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
                         }
                         Button("Card Settings…", systemImage: "gear") {
-                            dialogManager.cardToShowSettings = card
+                            dialogManager.cardToShowSettings = selectedCard
                         }
                         Divider()
                         Button(role: .destructive) {
-                            dialogManager.cardToDelete = card
+                            dialogManager.cardToDelete = selectedCard
                             dialogManager.showingDeleteCard = true
                         } label: {
                             Label("Delete…", systemImage: "trash")
@@ -113,6 +113,6 @@ struct CardView: View {
 // MARK: - Preview
 
 #Preview {
-    CardView(card: Card(title: "Preview Card", is2Sided: true))
+    CardView(selectedCard: Card(title: "Preview Card", is2Sided: true))
         .environmentObject(DialogManager())
 }

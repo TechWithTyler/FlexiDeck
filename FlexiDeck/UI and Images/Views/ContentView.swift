@@ -170,7 +170,7 @@ struct ContentView: View {
         ZStack {
             if selectedDeck != nil {
                 if let card = selectedCard {
-                    CardView(card: card)
+                    CardView(selectedCard: card)
                 } else {
                     Text("Select a card")
                         .font(.largeTitle)
