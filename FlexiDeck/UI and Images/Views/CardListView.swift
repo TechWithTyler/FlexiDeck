@@ -28,7 +28,7 @@ struct CardListView: View {
 
     @State var cardFilter: Int = 0
 
-    @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .modifiedDateDescending
+    @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
 
     // MARK: - Properties - Decks and Cards
 
@@ -53,17 +53,9 @@ struct CardListView: View {
             return cards.sorted { cardA, cardB in
                 return cardA.creationDate < cardB.creationDate
             }
-        case .creationDateDescending:
-            return cards.sorted { cardA, cardB in
-                return cardA.creationDate > cardB.creationDate
-            }
-        case .modifiedDateAscending:
-            return cards.sorted { cardA, cardB in
-                return cardA.modifiedDate < cardB.modifiedDate
-            }
         default:
             return cards.sorted { cardA, cardB in
-                return cardA.modifiedDate > cardB.modifiedDate
+                return cardA.creationDate > cardB.creationDate
             }
         }
     }
@@ -203,8 +195,6 @@ struct CardListView: View {
                         Text("Title (descending)").tag(Card.SortMode.titleDescending)
                         Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
                         Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
-                        Text("Date Modified (ascending)").tag(Card.SortMode.modifiedDateAscending)
-                        Text("Date Modified (descending)").tag(Card.SortMode.modifiedDateDescending)
                     }
                     Divider()
                     if !searchResults.isEmpty {

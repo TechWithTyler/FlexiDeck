@@ -119,8 +119,6 @@ struct CardSettingsView: View {
         if useTitleAsFrontFirstLine {
             card.front = card.title!
         }
-        // 5. Set the card's modified date to now.
-        card.modifiedDate = Date()
     }
 
 }

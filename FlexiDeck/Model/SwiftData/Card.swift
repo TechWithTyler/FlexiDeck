@@ -22,25 +22,15 @@ final class Card {
 
         case creationDateDescending = 3
 
-        case modifiedDateAscending = 4
-
-        case modifiedDateDescending = 5
-
     }
 
     // MARK: - Properties
 
-    var deck: Deck? {
-        didSet {
-            modifiedDate = Date()
-        }
-    }
+    var deck: Deck?
 
     var title: String?
 
     var creationDate = Date()
-
-    var modifiedDate = Date()
 
     var front: String = String()
 
