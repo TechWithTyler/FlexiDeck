@@ -182,11 +182,11 @@
 		8DCB0A5A2C62BE5C00EB82DC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
 				8D5DE3292C582DB400FD0502 /* ContentView.swift */,
 				8DB0621B2C5D734D0057E7DC /* CardListView.swift */,
 				8DA20A162C7562B5001ED42E /* List Row Content */,
 				8D5DE3342C582F1200FD0502 /* CardView.swift */,
+				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
 				8D02F07E2C655E3C00E6A48A /* Settings */,
 			);
 			path = Views;
