@@ -125,7 +125,12 @@ struct CardListView: View {
 #endif
             } else {
                 VStack {
-                    if cardFilter == 0 {
+                    if !searchText.isEmpty {
+                        Text("No cards with titles containing \"\(searchText)\"")
+                            .font(.largeTitle)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    } else if cardFilter == 0 {
                         Text("No cards in this deck")
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
