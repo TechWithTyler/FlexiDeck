@@ -49,7 +49,7 @@ class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
             speechSynthesizer.stopSpeaking(at: .immediate)
             // 2. If the text to be spoken is the text currently being spoken, speech is stopped and we don't continue. The exception is the sample text which is spoken when choosing a voice--the sample text is spoken each time the voice is changed regardless of whether it's currently being spoken.
             if textBeingSpoken != text || text == SATextSettingsPreviewString {
-                // 3. If we get here, create an AVSpeechUtterance with the given String (in this case, the fact passed into this method).
+                // 3. If we get here, create an AVSpeechUtterance with the given String (in this case, the text passed into this method).
                 let utterance = AVSpeechUtterance(string: text)
                 // 4. Set the voice for the utterance.
                 utterance.voice = AVSpeechSynthesisVoice(identifier: selectedVoiceID)
