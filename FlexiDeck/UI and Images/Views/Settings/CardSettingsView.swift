@@ -89,13 +89,13 @@ struct CardSettingsView: View {
     .pickerStyle(.navigationLink)
 #endif
         .onAppear {
-            reflectCurrentSettings()
+            applyCurrentSettings()
         }
     }
 
     // MARK: - Reflect Current Settings
 
-    func reflectCurrentSettings() {
+    func applyCurrentSettings() {
         newName = card.title ?? String()
         is2Sided = card.is2Sided ?? true
     }
