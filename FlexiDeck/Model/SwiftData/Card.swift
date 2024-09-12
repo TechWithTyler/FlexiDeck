@@ -32,6 +32,8 @@ final class Card {
 
     var creationDate = Date()
 
+    var tags: [String] = []
+
     var front: String = String()
 
     var back: String = String()

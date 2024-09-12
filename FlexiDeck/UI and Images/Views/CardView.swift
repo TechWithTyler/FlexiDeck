@@ -17,6 +17,12 @@ struct CardView: View {
 
     @Bindable var selectedCard: Card
 
+    // MARK: - Properties - Strings
+
+    @State var front: String = String()
+
+    @State var back: String = String()
+
     // MARK: - Properties - Doubles
 
     @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
@@ -34,17 +40,29 @@ struct CardView: View {
     // MARK: - Body
 
     var body: some View {
-        TextEditor(text: isFlipped ? $selectedCard.back : $selectedCard.front)
+        TextEditor(text: isFlipped ? $back : $front)
             .font(.system(size: CGFloat(cardTextSize)))
             .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
             .padding()
             .onAppear {
+                loadCard(card: selectedCard)
                 if speakOnSelectionOrFlip {
-                    speechManager.speak(text: selectedCard.front)
+                    speechManager.speak(text: front)
                 }
             }
+            .onDisappear {
+                saveCard(card: selectedCard)
+            }
+            .onChange(of: front, { oldValue, newValue in
+                saveCard(card: selectedCard)
+            })
+            .onChange(of: back, { oldValue, newValue in
+                saveCard(card: selectedCard)
+            })
             .onChange(of: selectedCard) { oldValue, newValue in
                 isFlipped = false
+                saveCard(card: oldValue)
+                loadCard(card: newValue)
                 if speakOnSelectionOrFlip {
                     speechManager.speak(text: selectedCard.front)
                 }
@@ -100,6 +118,19 @@ struct CardView: View {
                     }
                 }
             }
+    }
+
+    func loadCard(card: Card) {
+        front = card.front
+        back = card.back
+    }
+
+    func saveCard(card: Card) {
+        card.front = front
+        card.back = back
+        let words = front.components(separatedBy: .whitespacesAndNewlines)
+        let tags = words.filter { $0.first == "#"}
+        card.tags = tags
     }
 
 }

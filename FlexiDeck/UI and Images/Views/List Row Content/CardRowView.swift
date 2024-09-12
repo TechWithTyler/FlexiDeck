@@ -18,6 +18,13 @@ struct CardRowView: View {
 
     var searchText: String
 
+    var tagDisplay: String {
+        // 1. Create a String from the card's tags array, separating each one with a space.
+        let tags = card.tags.joined(separator: " ")
+        // 2. Return the tag string.
+        return tags
+    }
+
     // MARK: - Body
     
     var body: some View {
@@ -26,6 +33,8 @@ struct CardRowView: View {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
                 Text(DateFormatter.localizedString(from: card.creationDate, dateStyle: .short, timeStyle: .short))
                     .foregroundStyle(.secondary)
+                Text(tagDisplay)
+                    .foregroundStyle(.tint)
             }
             Spacer()
             if let cardIs2Sided = card.is2Sided {
