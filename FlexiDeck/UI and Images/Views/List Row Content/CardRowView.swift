@@ -31,7 +31,7 @@ struct CardRowView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
-                Text(DateFormatter.localizedString(from: card.creationDate, dateStyle: .short, timeStyle: .short))
+                Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: .short))
                     .foregroundStyle(.secondary)
                 Text(tagDisplay)
                     .foregroundStyle(.tint)

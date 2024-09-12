@@ -26,7 +26,9 @@ struct CardListView: View {
 
     // MARK: - Properties - Integers
 
-    @State var cardFilter: Int = 0
+    @State var cardFilterSides: Int = 0
+
+    @State var cardFilterTags: String = "none"
 
     @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
 
@@ -35,6 +37,20 @@ struct CardListView: View {
     @Bindable var deck: Deck
 
     @Binding var selectedCard: Card?
+
+    var allTags: [String] {
+        guard let cards = deck.cards else {
+            fatalError("Couldn't get tags")
+        }
+        var tags: [String] = []
+        for card in cards {
+            for tag in card.tags {
+                tags.append(tag)
+            }
+        }
+        tags.removeDuplicates()
+        return tags.sorted(by: <)
+    }
 
     var sortedCards: [Card] {
         guard let cards = deck.cards else {
@@ -53,19 +69,39 @@ struct CardListView: View {
             return cards.sorted { cardA, cardB in
                 return cardA.creationDate < cardB.creationDate
             }
-        default:
+        case .creationDateDescending:
             return cards.sorted { cardA, cardB in
                 return cardA.creationDate > cardB.creationDate
+            }
+        case .modifiedDateAscending:
+            return cards.sorted { cardA, cardB in
+                return cardA.modifiedDate < cardB.modifiedDate
+            }
+        default:
+            return cards.sorted { cardA, cardB in
+                return cardA.modifiedDate > cardB.modifiedDate
             }
         }
     }
 
-    var filteredCards: [Card] {
-        switch cardFilter {
+    var sidesFilteredCards: [Card] {
+        switch cardFilterSides {
         case 1: return sortedCards.filter { !$0.is2Sided! }
         case 2: return sortedCards.filter { $0.is2Sided! }
         default: return sortedCards
         }
+    }
+
+    var tagsFilteredCards: [Card] {
+        switch cardFilterTags {
+        case "none": return sidesFilteredCards
+        default: return sidesFilteredCards.filter { $0.tags.contains(cardFilterTags) }
+        }
+    }
+
+    var filteredCards: [Card] {
+        // Return the last filter.
+        return tagsFilteredCards
     }
 
     var searchResults: [Card] {
@@ -87,6 +123,10 @@ struct CardListView: View {
     // MARK: - Properties - Booleans
 
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
+
+    var cardFilterEnabled: Bool {
+        return cardFilterTags != "none" || cardFilterSides != 0
+    }
 
     // MARK: - Body
 
@@ -114,7 +154,20 @@ struct CardListView: View {
                         .onChange(of: card.deck) { oldValue, newValue in
                             selectedCard = nil
                         }
-                        .onChange(of: cardFilter) { oldValue, newValue in
+                        .onChange(of: card.tags) { oldValue, newValue in
+                            if !newValue.contains(cardFilterTags) {
+                                cardFilterTags = "none"
+                            }
+                        }
+                        .onChange(of: allTags) { oldValue, newValue in
+                            if !allTags.contains(cardFilterTags) {
+                                cardFilterTags = "none"
+                            }
+                        }
+                        .onChange(of: cardFilterSides) { oldValue, newValue in
+                            selectedCard = nil
+                        }
+                        .onChange(of: cardFilterTags) { oldValue, newValue in
                             selectedCard = nil
                         }
                     }
@@ -130,7 +183,7 @@ struct CardListView: View {
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
-                    } else if cardFilter == 0 {
+                    } else if cardFilterSides == 0 && cardFilterTags == "none" {
                         Text("No cards in this deck")
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
@@ -138,7 +191,7 @@ struct CardListView: View {
                         addCardButton
                             .buttonStyle(.borderedProminent)
                     } else {
-                        Text("No \(cardFilter == 1 ? "1-sided" : "2-sided") cards in this deck")
+                        Text("No cards matching the selected filters")
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
@@ -180,14 +233,27 @@ struct CardListView: View {
         .toolbar {
             ToolbarItem {
                 Menu {
-                    Picker("Filter", selection: $cardFilter) {
-                        Text("Off").tag(0)
-                        Text("1-Sided Cards").tag(1)
-                        Text("2-Sided Cards").tag(2)
+                    Picker("Sides (\(cardFilterSides == 0 ? "off" : "on"))", selection: $cardFilterSides) {
+                            Text("Off").tag(0)
+                        Divider()
+                            Text("1-Sided Cards").tag(1)
+                            Text("2-Sided Cards").tag(2)
+                        }
+                    Picker("Tags (\(cardFilterTags == "none" ? "off" : "on"))", selection: $cardFilterTags) {
+                            // All tags are prefixed with #, so there can't be any confusion between "Off" and a tag "#none".
+                            Text("Off").tag("none")
+                        Divider()
+                        ForEach(allTags, id: \.self) { tag in
+                                Text(tag).tag(tag)
+                            }
+                        }
+                    Divider()
+                    Button("Reset") {
+                        cardFilterTags = "none"
+                        cardFilterSides = 0
                     }
-                    .pickerStyle(.inline)
                     } label: {
-                        Label("Filter", systemImage: cardFilter == 0 ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill")
+                        Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                     }
                     .menuIndicator(.hidden)
             }
@@ -200,6 +266,8 @@ struct CardListView: View {
                         Text("Title (descending)").tag(Card.SortMode.titleDescending)
                         Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
                         Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
+                        Text("Modified Date (ascending)").tag(Card.SortMode.modifiedDateAscending)
+                        Text("Modified Date (descending)").tag(Card.SortMode.modifiedDateDescending)
                     }
                     Divider()
                     if !searchResults.isEmpty {

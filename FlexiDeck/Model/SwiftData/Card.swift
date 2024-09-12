@@ -22,6 +22,10 @@ final class Card {
 
         case creationDateDescending = 3
 
+        case modifiedDateAscending = 4
+
+        case modifiedDateDescending = 5
+
     }
 
     // MARK: - Properties
@@ -31,6 +35,8 @@ final class Card {
     var title: String?
 
     var creationDate = Date()
+
+    var modifiedDate = Date()
 
     var tags: [String] = []
 

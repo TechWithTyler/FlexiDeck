@@ -126,6 +126,9 @@ struct CardView: View {
     }
 
     func saveCard(card: Card) {
+        if front != card.front || back != card.back {
+            card.modifiedDate = Date()
+        }
         card.front = front
         card.back = back
         let words = front.components(separatedBy: .whitespacesAndNewlines)
