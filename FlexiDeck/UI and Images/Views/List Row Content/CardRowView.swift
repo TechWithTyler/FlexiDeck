@@ -33,6 +33,7 @@ struct CardRowView: View {
                 Text("Completed")
             }
             .toggleStyle(CircleCheckboxToggleStyle())
+            .padding(.trailing, 5)
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
                 Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: .short))

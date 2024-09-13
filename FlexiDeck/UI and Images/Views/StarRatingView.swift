@@ -22,8 +22,11 @@ struct StarRatingView: View {
                     }
                 }
                     .accessibilityLabel("\(rating) star")
+                    .padding(.horizontal, 5)
             }
         }
+        .padding(.horizontal, 5)
+        .padding(.vertical, 2)
         .accessibilityLabel("\(card.starRating)-star rating")
     }
 

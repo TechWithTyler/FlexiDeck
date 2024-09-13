@@ -16,7 +16,7 @@ struct CircleCheckboxToggleStyle: ToggleStyle {
                     configuration.isOn.toggle()
                 }
             }
-            .foregroundStyle(.tint)
+            .foregroundStyle(configuration.isOn ? Color.accentColor : Color.primary)
     }
 
 }
