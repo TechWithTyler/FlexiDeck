@@ -24,6 +24,7 @@ struct StarRatingView: View {
                     .accessibilityLabel("\(rating) star")
             }
         }
+        .accessibilityLabel("\(card.starRating)-star rating")
     }
 
 }

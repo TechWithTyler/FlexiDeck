@@ -49,7 +49,29 @@ struct CardRowView: View {
                     .foregroundStyle(.secondary)
             }
         }
-        
+        .accessibilityAction(named: "Mark \(card.isCompleted ? "Not Completed" : "Completed")") {
+            card.isCompleted.toggle()
+        }
+        .accessibilityAction(named: "Clear Star Rating") {
+            card.starRating = 0
+        }
+        .accessibilityAction(named: "Rate 1 Star") {
+            card.starRating = 1
+        }
+        .accessibilityAction(named: "Rate 2 Stars") {
+            card.starRating = 2
+        }
+        .accessibilityAction(named: "Rate 3 Stars") {
+            card.starRating = 3
+        }
+        .accessibilityAction(named: "Rate 4 Stars") {
+            card.starRating = 4
+        }
+        .accessibilityAction(named: "Rate 5 Stars") {
+            card.starRating = 5
+        }
+        .accessibilityLabel("\(card.title!), \(card.starRating)-star rating, \(card.tags.isEmpty ? "no tags" : tagDisplay), \(card.is2Sided! ? "2-sided" : "1-sided"), \(card.isCompleted ? "completed" : "not completed")")
+        .accessibilityHint("Start interacting with the list row, then select an action to change completed status or star rating.")
     }
 
     // MARK: - Color Matching Terms
