@@ -33,8 +33,10 @@ struct CardRowView: View {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
                 Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: .short))
                     .foregroundStyle(.secondary)
-                Text(tagDisplay)
-                    .foregroundStyle(.tint)
+                if !card.tags.isEmpty {
+                    Text(tagDisplay)
+                        .foregroundStyle(.tint)
+                }
             }
             Spacer()
             if let cardIs2Sided = card.is2Sided {
