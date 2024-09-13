@@ -46,6 +46,8 @@ final class Card {
 
     var is2Sided: Bool?
 
+    var isCompleted: Bool = false
+
     // MARK: - Initialization
 
     init(title: String, is2Sided: Bool) {

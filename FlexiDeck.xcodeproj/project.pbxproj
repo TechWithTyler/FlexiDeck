@@ -18,6 +18,7 @@
 		8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */; };
 		8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3342C582F1200FD0502 /* CardView.swift */; };
 		8D85550C2C938959006A14E3 /* DupeRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550B2C938959006A14E3 /* DupeRemover.swift */; };
+		8D85550E2C94D445006A14E3 /* CircleCheckboxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550D2C94D445006A14E3 /* CircleCheckboxToggleStyle.swift */; };
 		8DA20A152C7547EA001ED42E /* DeckRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA20A142C7547EA001ED42E /* DeckRowView.swift */; };
 		8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB062192C5D72640057E7DC /* Deck.swift */; };
 		8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621B2C5D734D0057E7DC /* CardListView.swift */; };
@@ -61,6 +62,7 @@
 		8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckApp.swift; sourceTree = "<group>"; };
 		8D5DE3342C582F1200FD0502 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		8D85550B2C938959006A14E3 /* DupeRemover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DupeRemover.swift; sourceTree = "<group>"; };
+		8D85550D2C94D445006A14E3 /* CircleCheckboxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCheckboxToggleStyle.swift; sourceTree = "<group>"; };
 		8DA20A142C7547EA001ED42E /* DeckRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckRowView.swift; sourceTree = "<group>"; };
 		8DB062192C5D72640057E7DC /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		8DB0621B2C5D734D0057E7DC /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				8D5DE3342C582F1200FD0502 /* CardView.swift */,
 				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
 				8D02F07E2C655E3C00E6A48A /* Settings */,
+				8D85550D2C94D445006A14E3 /* CircleCheckboxToggleStyle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 			files = (
 				8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */,
 				8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */,
+				8D85550E2C94D445006A14E3 /* CircleCheckboxToggleStyle.swift in Sources */,
 				8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */,
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
 				8D2627812C77D87A00D11F80 /* Globals.swift in Sources */,

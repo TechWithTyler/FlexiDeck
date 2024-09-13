@@ -12,7 +12,7 @@ struct CardRowView: View {
     
     // MARK: - Properties - Card
     
-    var card: Card
+    @Bindable var card: Card
 
     // MARK: - Properties - Strings
 
@@ -29,6 +29,10 @@ struct CardRowView: View {
     
     var body: some View {
         HStack {
+            Toggle(isOn: $card.isCompleted) {
+                Text("Completed")
+            }
+            .toggleStyle(CircleCheckboxToggleStyle())
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
                 Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: .short))

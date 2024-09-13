@@ -30,6 +30,8 @@ struct CardListView: View {
 
     @State var cardFilterTags: String = "none"
 
+    @State var cardFilterComplete: Int = 0
+
     @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
 
     // MARK: - Properties - Decks and Cards
@@ -99,9 +101,17 @@ struct CardListView: View {
         }
     }
 
+    var completeFilteredCards: [Card] {
+        switch cardFilterComplete {
+        case 1: return tagsFilteredCards.filter { !$0.isCompleted }
+        case 2: return tagsFilteredCards.filter { $0.isCompleted }
+        default: return tagsFilteredCards
+        }
+    }
+
     var filteredCards: [Card] {
         // Return the last filter.
-        return tagsFilteredCards
+        return completeFilteredCards
     }
 
     var searchResults: [Card] {
@@ -168,6 +178,9 @@ struct CardListView: View {
                             selectedCard = nil
                         }
                         .onChange(of: cardFilterTags) { oldValue, newValue in
+                            selectedCard = nil
+                        }
+                        .onChange(of: cardFilterComplete) { oldValue, newValue in
                             selectedCard = nil
                         }
                     }
@@ -247,10 +260,17 @@ struct CardListView: View {
                                 Text(tag).tag(tag)
                             }
                         }
+                    Picker("Completed Status (\(cardFilterComplete == 0 ? "off" : "on"))", selection: $cardFilterComplete) {
+                            Text("Off").tag(0)
+                        Divider()
+                            Text("Not Completed").tag(1)
+                            Text("Completed").tag(2)
+                        }
                     Divider()
                     Button("Reset") {
                         cardFilterTags = "none"
                         cardFilterSides = 0
+                        cardFilterComplete = 0
                     }
                     } label: {
                         Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
