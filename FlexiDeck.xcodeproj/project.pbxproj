@@ -154,8 +154,8 @@
 		8DA20A162C7562B5001ED42E /* List Row Content */ = {
 			isa = PBXGroup;
 			children = (
-				8DE403B02C65688700D61D6E /* CardRowView.swift */,
 				8DA20A142C7547EA001ED42E /* DeckRowView.swift */,
+				8DE403B02C65688700D61D6E /* CardRowView.swift */,
 			);
 			path = "List Row Content";
 			sourceTree = "<group>";
