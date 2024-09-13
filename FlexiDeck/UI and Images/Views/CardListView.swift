@@ -67,6 +67,14 @@ struct CardListView: View {
             return cards.sorted { cardA, cardB in
                 return cardA.title! > cardB.title!
             }
+        case .starRatingAscending:
+            return cards.sorted { cardA, cardB in
+                return cardA.starRating < cardB.starRating
+            }
+        case .starRatingDescending:
+            return cards.sorted { cardA, cardB in
+                return cardA.starRating > cardB.starRating
+            }
         case .creationDateAscending:
             return cards.sorted { cardA, cardB in
                 return cardA.creationDate < cardB.creationDate

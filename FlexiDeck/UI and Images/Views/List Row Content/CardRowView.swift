@@ -37,6 +37,7 @@ struct CardRowView: View {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
                 Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: .short))
                     .foregroundStyle(.secondary)
+                StarRatingView(card: card)
                 if !card.tags.isEmpty {
                     Text(tagDisplay)
                         .foregroundStyle(.tint)

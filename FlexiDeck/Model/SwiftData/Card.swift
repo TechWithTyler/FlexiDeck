@@ -18,13 +18,17 @@ final class Card {
 
         case titleDescending = 1
 
-        case creationDateAscending = 2
+        case starRatingAscending = 2
 
-        case creationDateDescending = 3
+        case starRatingDescending = 3
 
-        case modifiedDateAscending = 4
+        case creationDateAscending = 4
 
-        case modifiedDateDescending = 5
+        case creationDateDescending = 5
+
+        case modifiedDateAscending = 6
+
+        case modifiedDateDescending = 7
 
     }
 
@@ -38,13 +42,15 @@ final class Card {
 
     var modifiedDate = Date()
 
-    var tags: [String] = []
-
     var front: String = String()
 
     var back: String = String()
 
     var is2Sided: Bool?
+
+    var tags: [String] = []
+
+    var starRating: Int = 0
 
     var isCompleted: Bool = false
 
