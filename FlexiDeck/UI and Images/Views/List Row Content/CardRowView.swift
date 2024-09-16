@@ -72,7 +72,7 @@ struct CardRowView: View {
             card.starRating = 5
         }
         .accessibilityLabel("\(card.title!), \(card.starRating)-star rating, \(card.tags.isEmpty ? "no tags" : tagDisplay), \(card.is2Sided! ? "2-sided" : "1-sided"), \(card.isCompleted ? "completed" : "not completed")")
-        .accessibilityHint("Start interacting with the list row, then select an action to change completed status or star rating.")
+        .accessibilityHint("Select an action to change completed status or star rating.")
     }
 
     // MARK: - Color Matching Terms
