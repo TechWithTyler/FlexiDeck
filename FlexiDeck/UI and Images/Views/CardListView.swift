@@ -216,7 +216,7 @@ struct CardListView: View {
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
-                        Text("Adjust your filter or add a new card.")
+                        Text("Adjust your filters or add a new card.")
                             .foregroundStyle(.tertiary)
                     }
                 }
