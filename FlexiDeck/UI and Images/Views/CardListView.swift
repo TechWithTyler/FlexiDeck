@@ -297,6 +297,7 @@ struct CardListView: View {
                         Text("Modified Date (ascending)").tag(Card.SortMode.modifiedDateAscending)
                         Text("Modified Date (descending)").tag(Card.SortMode.modifiedDateDescending)
                     }
+                    .pickerStyle(.menu)
                     Divider()
                     if !searchResults.isEmpty {
                         Button("Show Random Card", systemImage: "questionmark.square") {
