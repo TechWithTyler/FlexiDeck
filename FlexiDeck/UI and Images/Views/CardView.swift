@@ -40,11 +40,13 @@ struct CardView: View {
     // MARK: - Body
 
     var body: some View {
-        VStack {
-            StarRatingView(card: selectedCard)
+        TranslucentFooterVStack {
             TextEditor(text: isFlipped ? $back : $front)
                 .font(.system(size: CGFloat(cardTextSize)))
-                .padding()
+                .scrollContentBackground(.hidden)
+        } translucentFooterContent: {
+            Divider()
+                StarRatingView(card: selectedCard)
         }
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
                 .onAppear {
