@@ -66,7 +66,12 @@ struct DeckSettingsView: View {
     // MARK: - Reflect Current Settings
 
     func applyCurrentSettings() {
-        newName = deck.name ?? String()
+        let currentName = deck.name ?? String()
+        if currentName != defaultDeckName {
+            newName = currentName
+        } else {
+            newName = String()
+        }
         newCardsAre2Sided = deck.newCardsAre2Sided ?? true
     }
 

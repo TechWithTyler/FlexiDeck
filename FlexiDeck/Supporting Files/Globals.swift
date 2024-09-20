@@ -8,5 +8,13 @@
 
 import Foundation
 
+// MARK: - Properties - Strings
+
+// The default name for new decks.
+let defaultDeckName = "New Deck"
+
+// The default name for new cards.
+let defaultCardName = "New Card"
+
 // The name of the filled-bubble speaker SF Symbol used for speech.
 let speechSymbolName = "speaker.wave.2.bubble.left"

@@ -351,7 +351,7 @@ struct CardListView: View {
 
     private func newCard(is2Sided: Bool) {
         withAnimation {
-            let newItem = Card(title: "New Card", is2Sided: is2Sided)
+            let newItem = Card(title: defaultCardName, is2Sided: is2Sided)
             deck.cards?.append(newItem)
             if showSettingsWhenCreating {
                 dialogManager.cardToShowSettings = newItem

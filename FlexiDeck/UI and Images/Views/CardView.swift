@@ -40,16 +40,20 @@ struct CardView: View {
     // MARK: - Body
 
     var body: some View {
-        TextEditor(text: isFlipped ? $back : $front)
-            .font(.system(size: CGFloat(cardTextSize)))
-            .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
-            .padding()
-            .onAppear {
-                loadCard(card: selectedCard)
-                if speakOnSelectionOrFlip {
-                    speechManager.speak(text: front)
+        VStack {
+            StarRatingView(card: selectedCard)
+            TextEditor(text: isFlipped ? $back : $front)
+                .font(.system(size: CGFloat(cardTextSize)))
+                .padding()
+        }
+        .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
+                .onAppear {
+                    loadCard(card: selectedCard)
+                    if speakOnSelectionOrFlip {
+                        speechManager.speak(text: front)
+                    }
                 }
-            }
+
             .onDisappear {
                 saveCard(card: selectedCard)
             }

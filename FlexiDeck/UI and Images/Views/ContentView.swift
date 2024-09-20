@@ -188,7 +188,7 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Deck(name: "New Deck", newCardsAre2Sided: newDecksDefaultTo2SidedCards)
+            let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             modelContext.insert(newItem)
             if showSettingsWhenCreating {
                 dialogManager.deckToShowSettings = newItem

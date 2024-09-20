@@ -10,6 +10,8 @@ import SwiftUI
 
 struct StarButtonView: View {
 
+    var rating: Int
+
     var isSelected: Bool
 
     var action: () -> Void
@@ -22,13 +24,15 @@ struct StarButtonView: View {
                 .symbolRenderingMode(.multicolor)
         }
         .buttonStyle(.borderless)
+        .accessibilityLabel("\(rating) star")
+        .accessibilityConditionalTrait(.isSelected, condition: isSelected)
     }
 }
 
 #Preview("Selected Star") {
-    StarButtonView(isSelected: true) {}
+    StarButtonView(rating: 1, isSelected: true) {}
 }
 
 #Preview("Unselected Star") {
-    StarButtonView(isSelected: false) {}
+    StarButtonView(rating: 1, isSelected: false) {}
 }

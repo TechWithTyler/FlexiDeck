@@ -96,7 +96,12 @@ struct CardSettingsView: View {
     // MARK: - Reflect Current Settings
 
     func applyCurrentSettings() {
-        newName = card.title ?? String()
+        let currentName = card.title ?? String()
+        if currentName != defaultCardName {
+            newName = currentName
+        } else {
+            newName = String()
+        }
         is2Sided = card.is2Sided ?? true
     }
 

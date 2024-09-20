@@ -12,22 +12,25 @@ struct StarRatingView: View {
     var card: Card
 
     var body: some View {
-        HStack {
-            ForEach(1..<6) { rating in
-                StarButtonView(isSelected: card.starRating >= rating) {
-                    if card.starRating == rating {
-                        card.starRating = 0
-                    } else {
-                        card.starRating = rating
+        VStack {
+            Text("Rating")
+            HStack {
+                ForEach(1..<6) { rating in
+                    StarButtonView(rating: rating, isSelected: card.starRating >= rating) {
+                        if card.starRating == rating {
+                            card.starRating = 0
+                        } else {
+                            card.starRating = rating
+                        }
+                        card.modifiedDate = Date()
                     }
-                }
-                    .accessibilityLabel("\(rating) star")
                     .padding(.horizontal, 5)
+                }
             }
+            .padding(.horizontal, 5)
+            .padding(.vertical, 2)
         }
-        .padding(.horizontal, 5)
-        .padding(.vertical, 2)
-        .accessibilityLabel("\(card.starRating)-star rating")
+        .padding(.top, 10)
     }
 
 }
