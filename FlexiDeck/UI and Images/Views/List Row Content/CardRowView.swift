@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SheftAppsStylishUI
 
 struct CardRowView: View {
     
@@ -32,7 +33,7 @@ struct CardRowView: View {
             Toggle(isOn: $card.isCompleted) {
                 Text("Completed")
             }
-            .toggleStyle(CircleCheckboxToggleStyle())
+            .toggleStyle(.circleCheckbox)
             .padding(.trailing, 5)
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
