@@ -36,6 +36,7 @@ struct CardRowView: View {
             .padding(.trailing, 5)
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
+                    .strikethrough(card.isCompleted)
                 Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: .short))
                     .foregroundStyle(.secondary)
                 if !card.tags.isEmpty {
