@@ -24,7 +24,7 @@ struct StarButtonView: View {
                 .symbolRenderingMode(.multicolor)
         }
         .buttonStyle(.borderless)
-        .accessibilityLabel("\(rating) star")
+        .accessibilityLabel("\(rating)-star")
         .accessibilityConditionalTrait(.isSelected, condition: isSelected)
     }
 }

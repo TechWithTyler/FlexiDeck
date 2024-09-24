@@ -32,6 +32,8 @@ struct CardListView: View {
 
     @State var cardFilterComplete: Int = 0
 
+    @State var cardFilterRating: Int = 0
+
     @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
 
     // MARK: - Properties - Decks and Cards
@@ -117,9 +119,20 @@ struct CardListView: View {
         }
     }
 
+    var ratingFilteredCards: [Card] {
+        switch cardFilterRating {
+        case -1:
+            return completeFilteredCards.filter { $0.starRating == 0 }
+        case 0:
+            return completeFilteredCards
+        default:
+            return completeFilteredCards.filter { $0.starRating == cardFilterRating }
+        }
+    }
+
     var filteredCards: [Card] {
         // Return the last filter.
-        return completeFilteredCards
+        return ratingFilteredCards
     }
 
     var searchResults: [Card] {
@@ -143,7 +156,7 @@ struct CardListView: View {
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
 
     var cardFilterEnabled: Bool {
-        return cardFilterTags != "none" || cardFilterSides != 0
+        return cardFilterTags != "none" || cardFilterSides != 0 || cardFilterRating != 0
     }
 
     // MARK: - Body
@@ -177,20 +190,6 @@ struct CardListView: View {
                                 cardFilterTags = "none"
                             }
                         }
-                        .onChange(of: allTags) { oldValue, newValue in
-                            if !allTags.contains(cardFilterTags) {
-                                cardFilterTags = "none"
-                            }
-                        }
-                        .onChange(of: cardFilterSides) { oldValue, newValue in
-                            selectedCard = nil
-                        }
-                        .onChange(of: cardFilterTags) { oldValue, newValue in
-                            selectedCard = nil
-                        }
-                        .onChange(of: cardFilterComplete) { oldValue, newValue in
-                            selectedCard = nil
-                        }
                     }
                     .onDelete(perform: deleteItems)
                 }
@@ -222,6 +221,27 @@ struct CardListView: View {
                 }
                 .padding()
             }
+        }
+        .onChange(of: allTags) { oldValue, newValue in
+            if !allTags.contains(cardFilterTags) {
+                cardFilterTags = "none"
+            }
+        }
+        .onChange(of: cardFilterSides) { oldValue, newValue in
+            selectedCard = nil
+        }
+        .onChange(of: cardFilterTags) { oldValue, newValue in
+            selectedCard = nil
+        }
+        .onChange(of: cardFilterComplete) { oldValue, newValue in
+            selectedCard = nil
+        }
+        .onChange(of: cardFilterRating) { oldValue, newValue in
+            selectedCard = nil
+        }
+        .onChange(of: searchText) {
+            oldValue, newValue in
+            selectedCard = nil
         }
         .animation(.default, value: searchResults)
         .searchable(text: $searchText, placement: .automatic, prompt: Text("Search"))
@@ -274,15 +294,27 @@ struct CardListView: View {
                             Text("Not Completed").tag(1)
                             Text("Completed").tag(2)
                         }
+                    Picker("Star Rating (\(cardFilterRating == 0 ? "off" : "on"))", selection: $cardFilterRating) {
+                            Text("Off").tag(0)
+                        Divider()
+                            Text("No Rating").tag(-1)
+                            Text("1 Star").tag(1)
+                            Text("2 Stars").tag(2)
+                            Text("3 Stars").tag(3)
+                            Text("4 Stars").tag(4)
+                            Text("5 Stars").tag(5)
+                        }
                     Divider()
                     Button("Reset") {
                         cardFilterTags = "none"
                         cardFilterSides = 0
                         cardFilterComplete = 0
+                        cardFilterRating = 0
                     }
                     } label: {
                         Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                     }
+                    .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
                     .menuIndicator(.hidden)
             }
             ToolbarItem {
