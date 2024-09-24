@@ -185,6 +185,11 @@ struct CardListView: View {
                         .onChange(of: card.deck) { oldValue, newValue in
                             selectedCard = nil
                         }
+                        .onChange(of: card.starRating) { oldValue, newValue in
+                            if !ratingFilteredCards.contains(selectedCard!) {
+                                selectedCard = nil
+                            }
+                        }
                         .onChange(of: card.tags) { oldValue, newValue in
                             if !newValue.contains(cardFilterTags) {
                                 cardFilterTags = "none"
@@ -328,10 +333,12 @@ struct CardListView: View {
                         Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
                         Text("Modified Date (ascending)").tag(Card.SortMode.modifiedDateAscending)
                         Text("Modified Date (descending)").tag(Card.SortMode.modifiedDateDescending)
+                        Text("Star Rating (ascending)").tag(Card.SortMode.starRatingAscending)
+                        Text("Star Rating (descending)").tag(Card.SortMode.starRatingDescending)
                     }
                     .pickerStyle(.menu)
                     Divider()
-                    if !searchResults.isEmpty {
+                    if searchResults.count > 1 {
                         Button("Show Random Card", systemImage: "questionmark.square") {
                             showRandomCard()
                         }
