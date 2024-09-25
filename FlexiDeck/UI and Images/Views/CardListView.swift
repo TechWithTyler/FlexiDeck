@@ -311,10 +311,7 @@ struct CardListView: View {
                         }
                     Divider()
                     Button("Reset") {
-                        cardFilterTags = "none"
-                        cardFilterSides = 0
-                        cardFilterComplete = 0
-                        cardFilterRating = 0
+                        resetCardFilter()
                     }
                     } label: {
                         Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
@@ -379,12 +376,24 @@ struct CardListView: View {
     // MARK: - Show Random Card
 
     func showRandomCard() {
+        // 1. Get a random card.
         let randomCard = deck.cards?.randomElement()!
+        // 2. If the random card is different than the selected card, show it.
         if randomCard != selectedCard {
             selectedCard = randomCard
-        } else {
+        } else{
+            // 3. Otherwise, call this method until a different card is found.
             showRandomCard()
         }
+    }
+
+    // MARK: - Reset Card Filter
+
+    func resetCardFilter() {
+        cardFilterTags = "none"
+        cardFilterSides = 0
+        cardFilterComplete = 0
+        cardFilterRating = 0
     }
 
     // MARK: - Data Management
