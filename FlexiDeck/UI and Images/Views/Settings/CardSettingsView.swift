@@ -30,6 +30,8 @@ struct CardSettingsView: View {
 
     @State var useTitleAsFrontFirstLine: Bool = false
 
+    @FocusState var editingName: Bool
+
     // MARK: - Properties - Dismiss Action
 
     @Environment(\.dismiss) var dismiss
@@ -40,6 +42,7 @@ struct CardSettingsView: View {
         NavigationStack {
             Form {
                 FormTextField("Name", text: $newName)
+                    .focused($editingName, equals: true)
                 if card.front.isEmpty {
                     Toggle("Use Title as Front First Line", isOn: $useTitleAsFrontFirstLine)
                 } else {
@@ -96,13 +99,9 @@ struct CardSettingsView: View {
     // MARK: - Reflect Current Settings
 
     func applyCurrentSettings() {
-        let currentName = card.title ?? String()
-        if currentName != defaultCardName {
-            newName = currentName
-        } else {
-            newName = String()
-        }
+        newName = card.title ?? String()
         is2Sided = card.is2Sided ?? true
+        editingName = true
     }
 
     // MARK: - Save New Settings
