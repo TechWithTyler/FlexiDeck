@@ -40,6 +40,7 @@ struct DeckSettingsView: View {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)
                 }
+                InfoText("This setting only applies when the sides filter is turned off.")
             }
             .formStyle(.grouped)
             .navigationTitle("Deck Settings")

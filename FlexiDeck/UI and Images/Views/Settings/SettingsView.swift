@@ -51,12 +51,12 @@ struct SettingsView: View {
                         Text("2-Sided").tag(true)
                     }
                 } footer: {
-                    Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting specifies the default number of sides for new decks.")
+                    Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting determines the default number of sides for new decks.")
                 }
                 Section {
                     Toggle("Show Deck/Card Settings When Creating", isOn: $showSettingsWhenCreating)
                 } footer: {
-                    Text("Turn this on to show the deck/card settings when creating a new deck or card.")
+                    Text("Turn this on to show the deck/card settings when creating a new deck/card.")
                 }
             }
             .formStyle(.grouped)
