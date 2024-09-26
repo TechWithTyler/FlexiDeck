@@ -429,7 +429,7 @@ struct CardListView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                dialogManager.cardToDelete = deck.cards?[index]
+                dialogManager.cardToDelete = searchResults[index]
                 dialogManager.showingDeleteCard = true
             }
         }
