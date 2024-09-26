@@ -161,6 +161,22 @@ struct CardListView: View {
         return cardFilterTags != "none" || cardFilterSides != 0 || cardFilterRating != 0
     }
 
+    var shouldCreate2SidedCards: Bool {
+        // 1. If the sides filter is enabled, decide based on it.
+        switch cardFilterSides {
+        case 1: return false
+        case 2: return true
+        default:
+            // 2. Otherwise, decide based on the deck's "number of sides" setting.
+            guard let deckDefaultsTo2SidedCards = deck.newCardsAre2Sided else { return true }
+            if deckDefaultsTo2SidedCards {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
     // MARK: - Body
 
     var body: some View {
@@ -369,9 +385,9 @@ struct CardListView: View {
     @ViewBuilder
     var addCardButton: some View {
         Button {
-            newCard(is2Sided: deck.newCardsAre2Sided ?? true)
+            newCard(is2Sided: shouldCreate2SidedCards)
         } label: {
-            Label((deck.newCardsAre2Sided)! ? "Add 2-Sided Card" : "Add 1-Sided Card", systemImage: (deck.newCardsAre2Sided)! ? "plus.rectangle.on.rectangle" : "plus.rectangle")
+            Label(shouldCreate2SidedCards ? "Add 2-Sided Card" : "Add 1-Sided Card", systemImage: shouldCreate2SidedCards ? "plus.rectangle.on.rectangle" : "plus.rectangle")
         }
     }
 
