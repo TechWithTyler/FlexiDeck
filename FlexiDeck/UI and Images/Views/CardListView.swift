@@ -142,10 +142,12 @@ struct CardListView: View {
         if searchText.isEmpty {
             return content
         } else {
-            // Return cards with titles that contain all or part of the search text.
+            // Return cards with titles or text that contain all or part of the search text.
             return content.filter { card in
-                let range = card.title?.range(of: searchText, options: .caseInsensitive)
-                let textMatchesSearchTerm = range != nil
+                let titleRange = card.title?.range(of: searchText, options: .caseInsensitive)
+                let frontRange = card.front.range(of: searchText, options: .caseInsensitive)
+                let backRange = card.back.range(of: searchText, options: .caseInsensitive)
+                let textMatchesSearchTerm = titleRange != nil || frontRange != nil || backRange != nil
                 return textMatchesSearchTerm
             }
         }
@@ -204,7 +206,7 @@ struct CardListView: View {
             } else {
                 VStack {
                     if !searchText.isEmpty {
-                        Text("No cards with titles containing \"\(searchText)\"")
+                        Text("No cards containing \"\(searchText)\"")
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
