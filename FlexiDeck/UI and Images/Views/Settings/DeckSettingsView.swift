@@ -23,6 +23,8 @@ struct DeckSettingsView: View {
 
     @State var newCardsAre2Sided: Bool = true
 
+    @FocusState var editingName: Bool
+
     // MARK: - Properties - Dismiss Action
 
     @Environment(\.dismiss) var dismiss
@@ -33,6 +35,7 @@ struct DeckSettingsView: View {
         NavigationStack {
             Form {
                 FormTextField("Name", text: $newName)
+                    .focused($editingName, equals: true)
                 Picker("Card Type for New Cards", selection: $newCardsAre2Sided) {
                     Text("1-Sided").tag(false)
                     Text("2-Sided").tag(true)
@@ -66,13 +69,9 @@ struct DeckSettingsView: View {
     // MARK: - Reflect Current Settings
 
     func applyCurrentSettings() {
-        let currentName = deck.name ?? String()
-        if currentName != defaultDeckName {
-            newName = currentName
-        } else {
-            newName = String()
-        }
+        newName = deck.name ?? String()
         newCardsAre2Sided = deck.newCardsAre2Sided ?? true
+        editingName = true
     }
 
     // MARK: - Save New Settings
