@@ -11,7 +11,9 @@ import SheftAppsStylishUI
 
 struct SettingsView: View {
 
-    @EnvironmentObject var speechManager: SpeechManager
+    // MARK: - Properties - Dialog Manager
+
+    @EnvironmentObject var dialogManager: DialogManager
 
     // MARK: - Properties - Dismiss Action
 
@@ -19,60 +21,79 @@ struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
 #endif
 
-    // MARK: - Properties - Doubles
-
-    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
-
-    // MARK: - Properties - Booleans
-
-    @AppStorage(UserDefaults.KeyNames.speakOnSelectionOrFlip) var speakOnSelectionOrFlip: Bool = false
-
-    @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
-
-    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
-
     // MARK: - Body
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    TextSizeSlider(labelText: "Card Text Size", textSize: $cardTextSize, previewText: SATextSettingsPreviewString)
+#if os(macOS)
+            // macOS settings window
+        SAMVisualEffectViewSwiftUIRepresentable {
+            TabView(selection: $dialogManager.selectedSettingsPage) {
+                SAMVisualEffectViewSwiftUIRepresentable {
+                    DisplaySettingsPageView()
                 }
-                Section {
-                    VoicePicker(selectedVoiceID: speechManager.$selectedVoiceID, voices: speechManager.voices) { voiceID in
-                        speechManager.speak(text: SATextSettingsPreviewString)
-                    }
-                    Toggle("Speak on Card Selection/Flip", isOn: $speakOnSelectionOrFlip)
+                .frame(width: 400, height: 270)
+                .formStyle(.grouped)
+                .tabItem {
+                    Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
                 }
-                Section {
-                    Picker("Default Card Type for New Decks", selection: $newDecksDefaultTo2SidedCards) {
-                        Text("1-Sided").tag(false)
-                        Text("2-Sided").tag(true)
-                    }
-                } footer: {
-                    Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting determines the default number of sides for new decks.")
+                .tag(SettingsPage.display)
+                SAMVisualEffectViewSwiftUIRepresentable {
+                    SpeechSettingsPageView()
                 }
-                Section {
-                    Toggle("Show Deck/Card Settings When Creating", isOn: $showSettingsWhenCreating)
-                } footer: {
-                    Text("Turn this on to show the deck/card settings when creating a new deck/card.")
+                .frame(width: 400, height: 185)
+                .formStyle(.grouped)
+                .tabItem {
+                    Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
                 }
+                .tag(SettingsPage.speech)
+                SAMVisualEffectViewSwiftUIRepresentable {
+                    DecksCardsSettingsPageView()
+                }
+                .frame(width: 400, height: 245)
+                .formStyle(.grouped)
+                .tabItem {
+                    Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)
+                }
+                .tag(SettingsPage.decksCards)
             }
-            .formStyle(.grouped)
-#if !os(macOS)
-            .navigationTitle("Settings")
-            .toolbar {
-                ToolbarItem {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
-#endif
         }
-#if !os(macOS)
-        .pickerStyle(.navigationLink)
+#else
+            // iOS/visionOS settings page
+            NavigationStack {
+                Form {
+                    Section {
+                        NavigationLink {
+                            DisplaySettingsPageView()
+                                .navigationTitle(SettingsPage.display.rawValue.capitalized)
+                        } label: {
+                            Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
+                        }
+                        NavigationLink {
+                            SpeechSettingsPageView()
+                                .navigationTitle(SettingsPage.speech.rawValue.capitalized)
+                        } label: {
+                            Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
+                        }
+                        NavigationLink {
+                            DecksCardsSettingsPageView()
+                                .navigationTitle(SettingsPage.decksCards.rawValue.capitalized)
+                        } label: {
+                            Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)
+                        }
+                    }
+                }
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.automatic)
+                .formStyle(.grouped)
+                .pickerStyle(.navigationLink)
+                .toolbar {
+                    ToolbarItem {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+            }
 #endif
     }
 

@@ -11,6 +11,13 @@ import SwiftUI
 // Manages the display of dialogs in the app.
 class DialogManager: ObservableObject {
 
+    // MARK: - Properties - Selected Settings Page
+
+#if os(macOS)
+    // The page currently selected in the Settings window on macOS.
+    @AppStorage("selectedSettingsPage") var selectedSettingsPage: SettingsPage = .display
+#endif
+
     // MARK: - Properties - Booleans
 
     // Whether the "delete this card" alert should be/is being displayed.

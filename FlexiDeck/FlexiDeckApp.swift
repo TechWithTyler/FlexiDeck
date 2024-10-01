@@ -56,9 +56,9 @@ struct FlexiDeckApp: App {
         Settings {
             SAMVisualEffectViewSwiftUIRepresentable {
                 SettingsView()
+                    .environmentObject(dialogManager)
                     .environmentObject(speechManager)
             }
-            .frame(width: 500, height: 500)
         }
         #endif
     }
