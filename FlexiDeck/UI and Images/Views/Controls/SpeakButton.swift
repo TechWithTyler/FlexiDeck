@@ -33,4 +33,5 @@ struct SpeakButton: View {
 #Preview {
         SpeakButton(for: "This is a test")
             .labelStyle(.topIconBottomTitle)
+            .environmentObject(SpeechManager())
 }

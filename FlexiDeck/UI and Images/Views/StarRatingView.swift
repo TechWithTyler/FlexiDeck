@@ -16,7 +16,7 @@ struct StarRatingView: View {
             Text("Rating")
             HStack {
                 ForEach(1..<6) { rating in
-                    StarButtonView(rating: rating, isSelected: card.starRating >= rating) {
+                    StarButton(rating: rating, isSelected: card.starRating >= rating) {
                         if card.starRating == rating {
                             card.starRating = 0
                         } else {

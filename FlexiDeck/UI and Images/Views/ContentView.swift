@@ -222,4 +222,5 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Card.self, inMemory: true)
         .environmentObject(DialogManager())
+        .environmentObject(SpeechManager())
 }

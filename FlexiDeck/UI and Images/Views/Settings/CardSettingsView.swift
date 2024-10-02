@@ -132,5 +132,10 @@ struct CardSettingsView: View {
 // MARK: - Preview
 
 #Preview {
-    CardSettingsView(card: Card(title: "Card", is2Sided: true), selectedDeck: Deck(name: "Deck", newCardsAre2Sided: true))
+    let deck = Deck(name: "Deck", newCardsAre2Sided: true)
+    let card = Card(title: "Card", is2Sided: true)
+    deck.cards?.append(card)
+    card.deck = deck
+    return CardSettingsView(card: card, selectedDeck: deck)
+        .modelContainer(for: [Deck.self, Card.self], inMemory: true)
 }

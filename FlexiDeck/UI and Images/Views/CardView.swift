@@ -149,4 +149,5 @@ struct CardView: View {
 #Preview {
     CardView(selectedCard: Card(title: "Preview Card", is2Sided: true))
         .environmentObject(DialogManager())
+        .environmentObject(SpeechManager())
 }

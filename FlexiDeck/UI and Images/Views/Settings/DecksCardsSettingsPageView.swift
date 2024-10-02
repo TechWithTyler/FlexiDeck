@@ -37,4 +37,5 @@ struct DecksCardsSettingsPageView: View {
 
 #Preview {
     DecksCardsSettingsPageView()
+        .formStyle(.grouped)
 }

@@ -26,4 +26,6 @@ struct DisplaySettingsPageView: View {
 
 #Preview {
     DisplaySettingsPageView()
+        .frame(height: 200)
+        .formStyle(.grouped)
 }

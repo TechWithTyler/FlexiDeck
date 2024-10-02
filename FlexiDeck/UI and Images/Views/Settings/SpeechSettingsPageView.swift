@@ -37,4 +37,6 @@ struct SpeechSettingsPageView: View {
 
 #Preview {
     SpeechSettingsPageView()
+        .environmentObject(SpeechManager())
+        .formStyle(.grouped)
 }

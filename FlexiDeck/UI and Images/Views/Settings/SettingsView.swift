@@ -103,4 +103,6 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
+        .environmentObject(DialogManager())
+        .environmentObject(SpeechManager())
 }

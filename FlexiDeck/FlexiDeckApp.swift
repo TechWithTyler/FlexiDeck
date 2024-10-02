@@ -13,7 +13,7 @@ import SheftAppsStylishUI
 @main
 struct FlexiDeckApp: App {
 
-    // MARK: - Properties - Dialog Manager
+    // MARK: - Properties - Objects
 
     @ObservedObject var dialogManager = DialogManager()
 
@@ -62,4 +62,5 @@ struct FlexiDeckApp: App {
         }
         #endif
     }
+    
 }

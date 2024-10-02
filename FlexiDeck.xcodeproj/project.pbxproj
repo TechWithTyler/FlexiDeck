@@ -22,7 +22,7 @@
 		8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */; };
 		8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3342C582F1200FD0502 /* CardView.swift */; };
 		8D85550C2C938959006A14E3 /* DupeRemover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550B2C938959006A14E3 /* DupeRemover.swift */; };
-		8D8555102C94D696006A14E3 /* StarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550F2C94D696006A14E3 /* StarButtonView.swift */; };
+		8D8555102C94D696006A14E3 /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550F2C94D696006A14E3 /* StarButton.swift */; };
 		8D8555122C94D6FD006A14E3 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8555112C94D6FD006A14E3 /* StarRatingView.swift */; };
 		8DA20A152C7547EA001ED42E /* DeckRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA20A142C7547EA001ED42E /* DeckRowView.swift */; };
 		8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB062192C5D72640057E7DC /* Deck.swift */; };
@@ -71,7 +71,7 @@
 		8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckApp.swift; sourceTree = "<group>"; };
 		8D5DE3342C582F1200FD0502 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		8D85550B2C938959006A14E3 /* DupeRemover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DupeRemover.swift; sourceTree = "<group>"; };
-		8D85550F2C94D696006A14E3 /* StarButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButtonView.swift; sourceTree = "<group>"; };
+		8D85550F2C94D696006A14E3 /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
 		8D8555112C94D6FD006A14E3 /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
 		8DA20A142C7547EA001ED42E /* DeckRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckRowView.swift; sourceTree = "<group>"; };
 		8DB062192C5D72640057E7DC /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
@@ -131,9 +131,9 @@
 		8D181A3A2C6FEF8A00E46376 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8D2627802C77D87A00D11F80 /* Globals.swift */,
 				8D1B1AE42C6E9F3200656FCD /* Info.plist */,
 				8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */,
-				8D2627802C77D87A00D11F80 /* Globals.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -145,6 +145,24 @@
 				8D26277E2C77D81000D11F80 /* SpeechManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		8D38ED612CAC98AC00CCC422 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
+				8D85550F2C94D696006A14E3 /* StarButton.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
+		8D38ED622CAC98E300CCC422 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				8D38ED5F2CAC906D00CCC422 /* SettingsPage.swift */,
+				8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		8D5DE3262C582DB400FD0502 /* Preview Content */ = {
@@ -178,10 +196,9 @@
 		8DCB0A582C62BE2D00EB82DC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8D38ED5F2CAC906D00CCC422 /* SettingsPage.swift */,
 				8DCB0A632C640B7B00EB82DC /* SwiftData */,
 				8D26277D2C77D80000D11F80 /* Managers */,
-				8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */,
+				8D38ED622CAC98E300CCC422 /* Settings */,
 				8D85550B2C938959006A14E3 /* DupeRemover.swift */,
 			);
 			path = Model;
@@ -205,10 +222,9 @@
 				8DB0621B2C5D734D0057E7DC /* CardListView.swift */,
 				8DA20A162C7562B5001ED42E /* List Row Content */,
 				8D5DE3342C582F1200FD0502 /* CardView.swift */,
-				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
-				8D02F07E2C655E3C00E6A48A /* Settings */,
-				8D85550F2C94D696006A14E3 /* StarButtonView.swift */,
 				8D8555112C94D6FD006A14E3 /* StarRatingView.swift */,
+				8D02F07E2C655E3C00E6A48A /* Settings */,
+				8D38ED612CAC98AC00CCC422 /* Controls */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,7 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */,
-				8D8555102C94D696006A14E3 /* StarButtonView.swift in Sources */,
+				8D8555102C94D696006A14E3 /* StarButton.swift in Sources */,
 				8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */,
 				8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */,
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  StarButtonView.swift
+//  StarButton.swift
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 9/13/24.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct StarButtonView: View {
+struct StarButton: View {
 
     var rating: Int
 
@@ -30,9 +30,9 @@ struct StarButtonView: View {
 }
 
 #Preview("Selected Star") {
-    StarButtonView(rating: 1, isSelected: true) {}
+    StarButton(rating: 1, isSelected: true) {}
 }
 
 #Preview("Unselected Star") {
-    StarButtonView(rating: 1, isSelected: false) {}
+    StarButton(rating: 1, isSelected: false) {}
 }
