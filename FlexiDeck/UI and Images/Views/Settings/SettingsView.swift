@@ -85,7 +85,6 @@ struct SettingsView: View {
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.automatic)
                 .formStyle(.grouped)
-                .pickerStyle(.navigationLink)
                 .toolbar {
                     ToolbarItem {
                         Button("Done") {
@@ -94,6 +93,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .pickerStyle(.navigationLink)
 #endif
     }
 
