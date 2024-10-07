@@ -15,6 +15,12 @@ struct CardRowView: View {
     
     @Bindable var card: Card
 
+    // MARK: - Properties - Booleans
+
+    @AppStorage(UserDefaults.KeyNames.showNumberOfSides) var showNumberOfSides: Bool = false
+
+    @AppStorage(UserDefaults.KeyNames.cardDateTimeDisplay) var cardDateTimeDisplay: Bool = false
+
     // MARK: - Properties - Strings
 
     var searchText: String
@@ -38,7 +44,7 @@ struct CardRowView: View {
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
                     .strikethrough(card.isCompleted)
-                Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: .short))
+                Text(DateFormatter.localizedString(from: card.modifiedDate, dateStyle: .short, timeStyle: cardDateTimeDisplay ? .short : .none))
                     .foregroundStyle(.secondary)
                 if !card.tags.isEmpty {
                     Text(tagDisplay)
@@ -46,7 +52,7 @@ struct CardRowView: View {
                 }
             }
             Spacer()
-            if let cardIs2Sided = card.is2Sided {
+            if let cardIs2Sided = card.is2Sided, showNumberOfSides {
                 Text(cardIs2Sided ? "2-sided" : "1-sided")
                     .foregroundStyle(.secondary)
             }

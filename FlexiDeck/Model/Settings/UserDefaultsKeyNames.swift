@@ -22,6 +22,10 @@ extension UserDefaults {
 
         static let showSettingsWhenCreating: String = "showSettingsWhenCreating"
 
+        static let showNumberOfSides: String = "showNumberOfSides"
+
+        static let cardDateTimeDisplay: String = "cardDateTimeDisplay"
+
         static let selectedVoiceID: String = "selectedVoiceID"
 
         static let speakOnSelectionOrFlip: String = "speakOnSelectionOrFlip"
