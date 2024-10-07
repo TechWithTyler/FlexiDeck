@@ -275,7 +275,7 @@ struct CardListView: View {
             CardSettingsView(card: card, selectedDeck: deck)
         }
         .alert("Delete this card?", isPresented: $dialogManager.showingDeleteCard, presenting: $dialogManager.cardToDelete) { card in
-            Button("Delete") {
+            Button("Delete", role: .destructive) {
                 guard let cards = deck.cards else { return }
                 deleteCard(at: cards.firstIndex(of: card.wrappedValue!)!)
                 dialogManager.cardToDelete = nil
@@ -287,7 +287,7 @@ struct CardListView: View {
             }
         }
         .alert("Delete all cards in deck \"\(deck.name!)\"", isPresented: $dialogManager.showingDeleteAllCards) {
-            Button("Delete") {
+            Button("Delete", role: .destructive) {
                 selectedCard = nil
                 deck.cards?.removeAll()
                 dialogManager.showingDeleteAllCards = false

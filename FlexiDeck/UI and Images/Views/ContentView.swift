@@ -98,7 +98,7 @@ struct ContentView: View {
         .navigationSplitViewColumnWidth(min: 300, ideal: 300)
 #endif
         .alert("Delete this deck?", isPresented: $dialogManager.showingDeleteDeck, presenting: $dialogManager.deckToDelete) { deck in
-            Button("Delete") {
+            Button("Delete", role: .destructive) {
                 deleteDeck(deck.wrappedValue!)
                 dialogManager.deckToDelete = nil
                 dialogManager.showingDeleteDeck = false
@@ -111,7 +111,7 @@ struct ContentView: View {
             Text("All cards in this deck will be deleted.")
         }
         .alert("Delete all decks?", isPresented: $dialogManager.showingDeleteAllDecks) {
-            Button("Delete") {
+            Button("Delete", role: .destructive) {
                 selectedCard = nil
                 selectedDeck = nil
                 for deck in decks {
