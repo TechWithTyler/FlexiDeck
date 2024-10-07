@@ -269,7 +269,7 @@ struct CardListView: View {
             selectedCard = nil
         }
         .animation(.default, value: searchResults)
-        .searchable(text: $searchText, placement: .automatic, prompt: Text("Search"))
+        .searchable(text: $searchText, placement: .automatic, prompt: Text("Search \((deck.name)!)"))
         .navigationTitle(deck.name ?? String())
         .sheet(item: $dialogManager.cardToShowSettings) { card in
             CardSettingsView(card: card, selectedDeck: deck)
