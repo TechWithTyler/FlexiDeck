@@ -125,11 +125,12 @@ struct ContentView: View {
         }
         .toolbar {
             ToolbarItem {
+                Button(action: addItem) {
+                    Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
+                }
+            }
+            ToolbarItem {
                 OptionsMenu(title: .menu) {
-                    Button(action: addItem) {
-                        Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
-                    }
-                    Divider()
                     Button(role: .destructive) {
                         dialogManager.showingDeleteAllDecks = true
                     } label: {
@@ -190,6 +191,7 @@ struct ContentView: View {
         withAnimation {
             let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             modelContext.insert(newItem)
+            selectedDeck = newItem
             if showSettingsWhenCreating {
                 dialogManager.deckToShowSettings = newItem
             }

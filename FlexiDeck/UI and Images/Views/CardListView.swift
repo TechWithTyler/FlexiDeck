@@ -338,9 +338,10 @@ struct CardListView: View {
                     .menuIndicator(.hidden)
             }
             ToolbarItem {
+                addCardButton
+            }
+            ToolbarItem {
                 OptionsMenu(title: .menu) {
-                    addCardButton
-                    Divider()
                     Picker("Sort", selection: $cardSortMode) {
                         Text("Title (ascending)").tag(Card.SortMode.titleAscending)
                         Text("Title (descending)").tag(Card.SortMode.titleDescending)
@@ -420,6 +421,7 @@ struct CardListView: View {
         withAnimation {
             let newItem = Card(title: defaultCardName, is2Sided: is2Sided)
             deck.cards?.append(newItem)
+            selectedCard = newItem
             if showSettingsWhenCreating {
                 dialogManager.cardToShowSettings = newItem
             }
