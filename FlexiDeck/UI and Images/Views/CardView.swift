@@ -46,6 +46,8 @@ struct CardView: View {
                 .scrollContentBackground(.hidden)
         } translucentFooterContent: {
             Divider()
+            Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
+                .foregroundStyle(.secondary)
                 StarRatingView(card: selectedCard)
         }
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
