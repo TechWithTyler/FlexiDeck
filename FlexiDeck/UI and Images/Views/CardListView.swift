@@ -336,6 +336,7 @@ struct CardListView: View {
                     }
                     .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
                     .menuIndicator(.hidden)
+                    .pickerStyle(.menu)
             }
             ToolbarItem {
                 addCardButton
