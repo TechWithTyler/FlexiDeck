@@ -158,7 +158,7 @@ struct CardListView: View {
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
 
     var cardFilterEnabled: Bool {
-        return cardFilterTags != "none" || cardFilterSides != 0 || cardFilterRating != 0
+        return cardFilterTags != "none" || cardFilterSides != 0 || cardFilterRating != 0 || cardFilterComplete != 0
     }
 
     var shouldCreate2SidedCards: Bool {
@@ -226,20 +226,22 @@ struct CardListView: View {
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
-                    } else if cardFilterSides == 0 && cardFilterTags == "none" {
-                        Text("No cards in this deck")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        addCardButton
-                            .buttonStyle(.borderedProminent)
-                    } else {
+                    } else if cardFilterEnabled {
                         Text("No cards matching the selected filters")
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                         Text("Adjust your filters or add a new card.")
                             .foregroundStyle(.tertiary)
+                        addCardButton
+                            .buttonStyle(.borderedProminent)
+                    } else {
+                        Text("No cards in this deck")
+                            .font(.largeTitle)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                        addCardButton
+                            .buttonStyle(.borderedProminent)
                     }
                 }
                 .padding()
@@ -426,6 +428,9 @@ struct CardListView: View {
             if showSettingsWhenCreating {
                 dialogManager.cardToShowSettings = newItem
             }
+            cardFilterRating = 0
+            cardFilterComplete = 0
+            cardFilterTags = "none"
         }
     }
 
