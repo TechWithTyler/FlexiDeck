@@ -226,12 +226,16 @@ struct CardListView: View {
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
+                        Text("Please check your search terms.")
+                            .font(.callout)
+                            .foregroundStyle(.tertiary)
                     } else if cardFilterEnabled {
                         Text("No cards matching the selected filters")
                             .font(.largeTitle)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                         Text("Adjust your filters or add a new card.")
+                            .font(.callout)
                             .foregroundStyle(.tertiary)
                         addCardButton
                             .buttonStyle(.borderedProminent)
