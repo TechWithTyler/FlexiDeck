@@ -155,7 +155,7 @@ struct CardListView: View {
 
     // MARK: - Properties - Booleans
 
-    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
+    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = false
 
     var cardFilterEnabled: Bool {
         return cardFilterTags != "none" || cardFilterSides != 0 || cardFilterRating != 0 || cardFilterComplete != 0

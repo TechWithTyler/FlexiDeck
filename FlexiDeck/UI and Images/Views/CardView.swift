@@ -138,6 +138,9 @@ struct CardView: View {
         if front != card.front || back != card.back {
             card.modifiedDate = Date()
         }
+        if card.front.components(separatedBy: .newlines).first! == card.title || card.title == defaultCardName {
+            card.title = front.isEmpty ? defaultCardName : front.components(separatedBy: .newlines).first!
+        }
         card.front = front
         card.back = back
         let words = front.components(separatedBy: .whitespacesAndNewlines)
