@@ -285,7 +285,7 @@ struct CardListView: View {
                 dialogManager.cardToDelete = nil
                 dialogManager.showingDeleteCard = false
             }
-            Button("Cancel") {
+            Button("Cancel", role: .cancel) {
                 dialogManager.cardToDelete = nil
                 dialogManager.showingDeleteCard = false
             }
