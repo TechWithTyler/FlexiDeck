@@ -27,8 +27,6 @@ struct CardView: View {
 
     @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
 
-    @AppStorage(UserDefaults.KeyNames.speakOnSelectionOrFlip) var speakOnSelectionOrFlip: Bool = false
-
     // MARK: - Properties - Booleans
 
     @State var isFlipped: Bool = false
@@ -53,7 +51,7 @@ struct CardView: View {
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
                 .onAppear {
                     loadCard(card: selectedCard)
-                    if speakOnSelectionOrFlip {
+                    if speechManager.speakOnSelectionOrFlip {
                         speechManager.speak(text: front)
                     }
                 }
@@ -72,7 +70,7 @@ struct CardView: View {
             }
             .onChange(of: isFlipped) { oldValue, newValue in
                 speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
-                if speakOnSelectionOrFlip {
+                if speechManager.speakOnSelectionOrFlip {
                     speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
                 }
             }
@@ -159,7 +157,7 @@ struct CardView: View {
         // 4. Stop speech.
         speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
         // 5. If the option to speak card text on selection or flip is enabled, speak the newly-selected card's front side.
-        if speakOnSelectionOrFlip {
+        if speechManager.speakOnSelectionOrFlip {
             speechManager.speak(text: selectedCard.front)
         }
     }

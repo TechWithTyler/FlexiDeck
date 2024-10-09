@@ -15,10 +15,6 @@ struct SpeechSettingsPageView: View {
 
     @EnvironmentObject var speechManager: SpeechManager
 
-    // MARK: - Properties - Booleans
-
-    @AppStorage(UserDefaults.KeyNames.speakOnSelectionOrFlip) var speakOnSelectionOrFlip: Bool = false
-
     var body: some View {
         Form {
             Section {
@@ -27,7 +23,7 @@ struct SpeechSettingsPageView: View {
                 }
             }
             Section {
-                Toggle("Speak on Card Selection/Flip", isOn: $speakOnSelectionOrFlip)
+                Toggle("Speak on Card Selection/Flip", isOn: $speechManager.speakOnSelectionOrFlip)
             } footer: {
                 Text("Turn this on to have the front side of a card spoken when it's selected, or the displayed side of a card spoken when it's flipped.")
             }

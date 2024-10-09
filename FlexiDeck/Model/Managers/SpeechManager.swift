@@ -18,6 +18,10 @@ class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
 
     @Published var textBeingSpoken: String = String()
 
+    // MARK: - Properties - Booleans
+
+    @AppStorage(UserDefaults.KeyNames.speakOnSelectionOrFlip) var speakOnSelectionOrFlip: Bool = false
+
     // MARK: - Properties - Speech
 
     @Published var voices: [AVSpeechSynthesisVoice] = []
