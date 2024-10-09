@@ -67,13 +67,8 @@ struct CardView: View {
             .onChange(of: back, { oldValue, newValue in
                 saveCard(card: selectedCard)
             })
-            .onChange(of: selectedCard) { oldValue, newValue in
-                isFlipped = false
-                saveCard(card: oldValue)
-                loadCard(card: newValue)
-                if speakOnSelectionOrFlip {
-                    speechManager.speak(text: selectedCard.front)
-                }
+            .onChange(of: selectedCard) { oldCard, newCard in
+                selectedCardChanged(oldCard: oldCard, newCard: newCard)
             }
             .onChange(of: isFlipped) { oldValue, newValue in
                 speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
@@ -129,23 +124,44 @@ struct CardView: View {
             }
     }
 
+    // MARK: - Data Management
+
     func loadCard(card: Card) {
         front = card.front
         back = card.back
     }
 
     func saveCard(card: Card) {
+        // 1. If the card was modified, update the modified date.
         if front != card.front || back != card.back {
             card.modifiedDate = Date()
         }
+        // 2. If the title matches the front's first line before the front was changed, set the title to the front's first line. If the front is empty, reset the title to "New Card".
         if card.front.components(separatedBy: .newlines).first! == card.title || card.title == defaultCardName {
             card.title = front.isEmpty ? defaultCardName : front.components(separatedBy: .newlines).first!
         }
+        // 3. Set the card's front and back text.
         card.front = front
         card.back = back
+        // 4. Create the list of tags for the card by finding any words that begin with a hashtag (#), and set the card's tags to that list.
         let words = front.components(separatedBy: .whitespacesAndNewlines)
         let tags = words.filter { $0.first == "#"}
         card.tags = tags
+    }
+
+    func selectedCardChanged(oldCard: Card, newCard: Card) {
+        // 1. Flip the card to the front side.
+        isFlipped = false
+        // 2. Save the previously-selected card.
+        saveCard(card: oldCard)
+        // 3. Load the newly-selected card.
+        loadCard(card: newCard)
+        // 4. Stop speech.
+        speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+        // 5. If the option to speak card text on selection or flip is enabled, speak the newly-selected card's front side.
+        if speakOnSelectionOrFlip {
+            speechManager.speak(text: selectedCard.front)
+        }
     }
 
 }
