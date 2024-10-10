@@ -31,6 +31,8 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
+    @FocusState var editingText: Bool
+
     // MARK: - Properties - Dialog Manager
 
     @EnvironmentObject var dialogManager: DialogManager
@@ -43,6 +45,7 @@ struct CardView: View {
                 .font(.system(size: CGFloat(cardTextSize)))
                 .scrollContentBackground(.hidden)
                 .scrollClipDisabled(true)
+                .focused($editingText)
             } translucentFooterContent: {
             Divider()
             Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
@@ -55,6 +58,7 @@ struct CardView: View {
                     if speechManager.speakOnSelectionOrFlip {
                         speechManager.speak(text: front)
                     }
+                    editingText = true
                 }
                 .onDisappear {
                     saveCard(card: selectedCard)
@@ -69,6 +73,7 @@ struct CardView: View {
                 selectedCardChanged(oldCard: oldCard, newCard: newCard)
             }
             .onChange(of: isFlipped) { oldValue, newValue in
+                editingText = true
                 speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
                 if speechManager.speakOnSelectionOrFlip {
                     speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
@@ -159,6 +164,7 @@ struct CardView: View {
         if speechManager.speakOnSelectionOrFlip {
             speechManager.speak(text: selectedCard.front)
         }
+        editingText = true
     }
 
 }
