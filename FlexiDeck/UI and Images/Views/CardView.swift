@@ -42,7 +42,8 @@ struct CardView: View {
             TextEditor(text: isFlipped ? $back : $front)
                 .font(.system(size: CGFloat(cardTextSize)))
                 .scrollContentBackground(.hidden)
-        } translucentFooterContent: {
+                .scrollClipDisabled(true)
+            } translucentFooterContent: {
             Divider()
             Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
                 .foregroundStyle(.secondary)

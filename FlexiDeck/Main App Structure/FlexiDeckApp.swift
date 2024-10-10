@@ -13,6 +13,12 @@ import SheftAppsStylishUI
 @main
 struct FlexiDeckApp: App {
 
+    // MARK: - Properties - macOS App Delegate Adaptor
+
+    #if os(macOS)
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    #endif
+
     // MARK: - Properties - Objects
 
     @ObservedObject var dialogManager = DialogManager()
@@ -47,6 +53,7 @@ struct FlexiDeckApp: App {
             ContentView()
                 .environmentObject(dialogManager)
                 .environmentObject(speechManager)
+                .ignoresSafeArea(edges: .all)
         }
         .modelContainer(sharedModelContainer)
         .commands {
