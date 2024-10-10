@@ -42,7 +42,7 @@ struct CardSettingsView: View {
                 FormTextField("Name", text: $newName)
                     .focused($editingName, equals: true)
                 let firstLineOfFront = card.front.components(separatedBy: .newlines).first!
-                if newName == defaultCardName || newName.isEmpty {
+                if (newName == defaultCardName || newName.isEmpty) && !firstLineOfFront.isEmpty {
                         HStack {
                             Text("Suggested Title")
                             Spacer()
@@ -51,7 +51,7 @@ struct CardSettingsView: View {
                         Button("Use Suggested Title") {
                             newName = firstLineOfFront
                         }
-                } else if newName == firstLineOfFront {
+                } else if newName == firstLineOfFront && !firstLineOfFront.isEmpty {
                     InfoText("The first line of this card's front side will be used as its title.")
                 }
                 Picker("Type", selection: $is2Sided) {
