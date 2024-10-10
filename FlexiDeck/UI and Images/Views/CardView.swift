@@ -55,10 +55,9 @@ struct CardView: View {
                         speechManager.speak(text: front)
                     }
                 }
-
-            .onDisappear {
-                saveCard(card: selectedCard)
-            }
+                .onDisappear {
+                    saveCard(card: selectedCard)
+                }
             .onChange(of: front, { oldValue, newValue in
                 saveCard(card: selectedCard)
             })
@@ -102,7 +101,6 @@ struct CardView: View {
                             Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
                                 isFlipped.toggle()
                             }
-                            .keyboardShortcut(.return, modifiers: .command)
                         }
                         if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
                             SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)

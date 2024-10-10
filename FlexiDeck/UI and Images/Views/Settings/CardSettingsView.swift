@@ -28,8 +28,6 @@ struct CardSettingsView: View {
 
     @State var is2Sided: Bool = true
 
-    @State var useTitleAsFrontFirstLine: Bool = false
-
     @FocusState var editingName: Bool
 
     // MARK: - Properties - Dismiss Action
@@ -44,9 +42,7 @@ struct CardSettingsView: View {
                 FormTextField("Name", text: $newName)
                     .focused($editingName, equals: true)
                 let firstLineOfFront = card.front.components(separatedBy: .newlines).first!
-                if card.front.isEmpty {
-                    Toggle("Use Title as Front First Line", isOn: $useTitleAsFrontFirstLine)
-                } else if newName == defaultCardName || newName.isEmpty {
+                if newName == defaultCardName || newName.isEmpty {
                         HStack {
                             Text("Suggested Title")
                             Spacer()
@@ -126,11 +122,7 @@ struct CardSettingsView: View {
             card.deck?.cards?.remove(at: (card.deck?.cards?.firstIndex(of: card)!)!)
             selectedDeck.cards?.append(card)
         }
-        // 4. If the option to use the card's title as the text of the front's first line is enabled, set the card's front side to the title.
-        if useTitleAsFrontFirstLine {
-            card.front = card.title!
-        }
-        // 5. Update the card's modified date.
+        // 4. Update the card's modified date.
         card.modifiedDate = Date()
     }
 
