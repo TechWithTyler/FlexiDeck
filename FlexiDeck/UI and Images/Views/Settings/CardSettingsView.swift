@@ -39,7 +39,7 @@ struct CardSettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                FormTextField("Name", text: $newName)
+                FormTextField("Title", text: $newName)
                     .focused($editingName, equals: true)
                 let firstLineOfFront = card.front.components(separatedBy: .newlines).first!
                 if (newName == defaultCardName || newName.isEmpty) && !firstLineOfFront.isEmpty {
