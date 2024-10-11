@@ -131,6 +131,8 @@ struct CardView: View {
         let words = front.components(separatedBy: .whitespacesAndNewlines)
         let tags = words.filter { $0.first == "#"}
         card.tags = tags
+        // 5. Stop speech.
+        speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
     }
 
     func selectedCardChanged(oldCard: Card, newCard: Card) {
