@@ -372,6 +372,14 @@ ToolbarItem(placement: .bottomBar) {
                         Button("Show Random Card", systemImage: "questionmark.square") {
                             showRandomCard()
                         }
+                        Menu("Mark All Cards As", systemImage: "checkmark.circle") {
+                            Button("Completed") {
+                                markCardsAs(completed: true)
+                            }
+                            Button("Not Completed") {
+                                markCardsAs(completed: false)
+                            }
+                        }
                     }
                     Divider()
                     Button("Deck Settings…", systemImage: "gear") {
@@ -417,6 +425,14 @@ ToolbarItem(placement: .bottomBar) {
         } else{
             // 3. Otherwise, call this method until a different card is found.
             showRandomCard()
+        }
+    }
+
+    // MARK: - Mark Cards As Completed/Not Completed
+
+    func markCardsAs(completed: Bool) {
+        for card in searchResults {
+            card.isCompleted = completed
         }
     }
 
