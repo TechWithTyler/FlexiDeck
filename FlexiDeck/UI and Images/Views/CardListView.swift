@@ -344,9 +344,16 @@ struct CardListView: View {
                     .menuIndicator(.hidden)
                     .pickerStyle(.menu)
             }
-            ToolbarItem {
-                addCardButton
-            }
+#if os(macOS)
+ToolbarItem {
+    addCardButton
+}
+#else
+ToolbarItem(placement: .bottomBar) {
+    addCardButton
+        .labelStyle(.titleAndIcon)
+}
+#endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
                     Picker("Sort", selection: $cardSortMode) {

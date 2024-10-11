@@ -80,34 +80,16 @@ struct CardView: View {
                 }
             }
             .toolbar {
-                ToolbarItemGroup {
-                    Button {
-                        cardTextSize -= 1
-                    } label: {
-                        Label("Decrease Text Size", systemImage: "textformat.size.smaller")
-                            .frame(width: 30)
-                    }
-                    .disabled(cardTextSize == SATextViewMinFontSize)
-                    Button {
-                        cardTextSize += 1
-                    } label: {
-                        Label("Increase Text Size", systemImage: "textformat.size.larger")
-                            .frame(width: 30)
-                    }
-                    .disabled(cardTextSize == SATextViewMaxFontSize)
-                } label: {
-                    Text("Text Size")
-                }
-                ToolbarItem {
-                    Spacer()
-                }
-                ToolbarItem {
-                    OptionsMenu(title: .menu) {
-                        if (selectedCard.is2Sided)! {
+                    if (selectedCard.is2Sided)! {
+                        ToolbarItem {
                             Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
                                 isFlipped.toggle()
                             }
+                            .keyboardShortcut(.return, modifiers: .command)
                         }
+                    }
+                ToolbarItem {
+                    OptionsMenu(title: .menu) {
                         if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
                             SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
                         }

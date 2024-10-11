@@ -124,11 +124,16 @@ struct ContentView: View {
             }
         }
         .toolbar {
+            #if os(macOS)
             ToolbarItem {
-                Button(action: addItem) {
-                    Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
-                }
+                newDeckButton
             }
+            #else
+            ToolbarItem(placement: .bottomBar) {
+                newDeckButton
+                    .labelStyle(.titleAndIcon)
+            }
+            #endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
                     Button(role: .destructive) {
@@ -144,6 +149,13 @@ struct ContentView: View {
                     #endif
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    var newDeckButton: some View {
+        Button(action: addItem) {
+            Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
         }
     }
 
