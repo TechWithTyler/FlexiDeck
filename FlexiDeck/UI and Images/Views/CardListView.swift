@@ -24,7 +24,7 @@ struct CardListView: View {
 
     @State var searchText: String = String()
 
-    @State var cardFilterTags: String = "none"
+    @State var cardFilterTags: String = "off"
 
     var allTags: [String] {
         guard let cards = deck.cards else {
@@ -57,7 +57,6 @@ struct CardListView: View {
     @Bindable var deck: Deck
 
     @Binding var selectedCard: Card?
-
 
     var sortedCards: [Card] {
         guard let cards = deck.cards else {
@@ -109,7 +108,8 @@ struct CardListView: View {
 
     var tagsFilteredCards: [Card] {
         switch cardFilterTags {
-        case "none": return sidesFilteredCards
+        case "off": return sidesFilteredCards
+        case "none": return sidesFilteredCards.filter { $0.tags.isEmpty }
         default: return sidesFilteredCards.filter { $0.tags.contains(cardFilterTags) }
         }
     }
@@ -161,7 +161,7 @@ struct CardListView: View {
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = false
 
     var cardFilterEnabled: Bool {
-        return cardFilterTags != "none" || cardFilterSides != 0 || cardFilterRating != 0 || cardFilterComplete != 0
+        return cardFilterTags != "off" || cardFilterSides != 0 || cardFilterRating != 0 || cardFilterComplete != 0
     }
 
     var shouldCreate2SidedCards: Bool {
@@ -213,7 +213,7 @@ struct CardListView: View {
                         }
                         .onChange(of: card.tags) { oldValue, newValue in
                             if !newValue.contains(cardFilterTags) {
-                                cardFilterTags = "none"
+                                cardFilterTags = "off"
                             }
                         }
                     }
@@ -256,7 +256,7 @@ struct CardListView: View {
         }
         .onChange(of: allTags) { oldValue, newValue in
             if !allTags.contains(cardFilterTags) {
-                cardFilterTags = "none"
+                cardFilterTags = "off"
             }
         }
         .onChange(of: cardFilterSides) { oldValue, newValue in
@@ -320,10 +320,11 @@ struct CardListView: View {
                         Text("1-Sided Cards").tag(1)
                         Text("2-Sided Cards").tag(2)
                     }
-                Picker("Tags (\(cardFilterTags == "none" ? "off" : "on"))", selection: $cardFilterTags) {
-                        // All tags are prefixed with #, so there can't be any confusion between "Off" and a tag "#none".
-                        Text("Off").tag("none")
+                Picker("Tags (\(cardFilterTags == "off" ? "off" : "on"))", selection: $cardFilterTags) {
+                        // All tags are prefixed with #, so there can't be any confusion between "Off"/"No Tags" and a tag "#off"/"#none".
+                    Text("Off").tag("off")
                     Divider()
+                    Text("No Tags").tag("none")
                     ForEach(allTags, id: \.self) { tag in
                             Text(tag).tag(tag)
                         }
@@ -452,7 +453,7 @@ addCardButton
     // MARK: - Reset Card Filter
 
     func resetCardFilter() {
-        cardFilterTags = "none"
+        cardFilterTags = "off"
         cardFilterSides = 0
         cardFilterComplete = 0
         cardFilterRating = 0
@@ -470,7 +471,7 @@ addCardButton
             }
             cardFilterRating = 0
             cardFilterComplete = 0
-            cardFilterTags = "none"
+            cardFilterTags = "off"
         }
     }
 
