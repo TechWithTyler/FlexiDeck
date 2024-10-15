@@ -315,56 +315,60 @@ struct CardListView: View {
         ToolbarItem {
             Menu {
                 Picker("Sides (\(cardFilterSides == 0 ? "off" : "on"))", selection: $cardFilterSides) {
-                        Text("Off").tag(0)
+                    Text("Off").tag(0)
                     Divider()
-                        Text("1-Sided Cards").tag(1)
-                        Text("2-Sided Cards").tag(2)
-                    }
-                Picker("Tags (\(cardFilterTags == "off" ? "off" : "on"))", selection: $cardFilterTags) {
-                        // All tags are prefixed with #, so there can't be any confusion between "Off"/"No Tags" and a tag "#off"/"#none".
-                    Text("Off").tag("off")
-                    Divider()
-                    Text("No Tags").tag("none")
-                    ForEach(allTags, id: \.self) { tag in
+                    Text("1-Sided Cards").tag(1)
+                    Text("2-Sided Cards").tag(2)
+                }
+                if !allTags.isEmpty {
+                    Picker("Tags (\(cardFilterTags == "off" ? "off" : "on"))", selection: $cardFilterTags) {
+                        // All tags are prefixed with #, so there can't be any confusion between "Off"/"Without Tags" and a tag "#off"/"#none".
+                        Text("Off").tag("off")
+                        Divider()
+                        Text("Without Tags").tag("none")
+                        Divider()
+                        ForEach(allTags, id: \.self) { tag in
                             Text(tag).tag(tag)
                         }
                     }
+                }
                 Picker("Completed Status (\(cardFilterComplete == 0 ? "off" : "on"))", selection: $cardFilterComplete) {
-                        Text("Off").tag(0)
+                    Text("Off").tag(0)
                     Divider()
-                        Text("Not Completed").tag(1)
-                        Text("Completed").tag(2)
-                    }
+                    Text("Not Completed").tag(1)
+                    Text("Completed").tag(2)
+                }
                 Picker("Star Rating (\(cardFilterRating == 0 ? "off" : "on"))", selection: $cardFilterRating) {
-                        Text("Off").tag(0)
+                    Text("Off").tag(0)
                     Divider()
-                        Text("No Rating").tag(-1)
-                        Text("1 Star").tag(1)
-                        Text("2 Stars").tag(2)
-                        Text("3 Stars").tag(3)
-                        Text("4 Stars").tag(4)
-                        Text("5 Stars").tag(5)
-                    }
+                    Text("Without Rating").tag(-1)
+                    Divider()
+                    Text("1 Star").tag(1)
+                    Text("2 Stars").tag(2)
+                    Text("3 Stars").tag(3)
+                    Text("4 Stars").tag(4)
+                    Text("5 Stars").tag(5)
+                }
                 Divider()
                 Button("Reset") {
                     resetCardFilter()
                 }
-                } label: {
-                    Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                }
-                .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
-                .menuIndicator(.hidden)
-                .pickerStyle(.menu)
+            } label: {
+                Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+            }
+            .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
+            .menuIndicator(.hidden)
+            .pickerStyle(.menu)
         }
 #if os(macOS)
-ToolbarItem {
-addCardButton
-}
+        ToolbarItem {
+            addCardButton
+        }
 #else
-ToolbarItem(placement: .bottomBar) {
-addCardButton
-    .labelStyle(.titleAndIcon)
-}
+        ToolbarItem(placement: .bottomBar) {
+            addCardButton
+                .labelStyle(.titleAndIcon)
+        }
 #endif
         ToolbarItem {
             OptionsMenu(title: .menu) {
