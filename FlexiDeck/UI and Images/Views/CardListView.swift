@@ -259,21 +259,10 @@ struct CardListView: View {
                 cardFilterTags = "off"
             }
         }
-        .onChange(of: cardFilterSides) { oldValue, newValue in
-            selectedCard = nil
-        }
-        .onChange(of: cardFilterTags) { oldValue, newValue in
-            selectedCard = nil
-        }
-        .onChange(of: cardFilterComplete) { oldValue, newValue in
-            selectedCard = nil
-        }
-        .onChange(of: cardFilterRating) { oldValue, newValue in
-            selectedCard = nil
-        }
-        .onChange(of: searchText) {
-            oldValue, newValue in
-            selectedCard = nil
+        .onChange(of: searchResults) { oldValue, newValue in
+            if let card = selectedCard, !newValue.contains(card) {
+                    selectedCard = nil
+                }
         }
         .animation(.default, value: searchResults)
         .searchable(text: $searchText, placement: .automatic, prompt: Text("Search \((deck.name)!)"))
