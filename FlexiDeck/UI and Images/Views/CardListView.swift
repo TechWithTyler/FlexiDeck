@@ -24,23 +24,7 @@ struct CardListView: View {
 
     @State var searchText: String = String()
 
-    // MARK: - Properties - Integers
-
-    @State var cardFilterSides: Int = 0
-
     @State var cardFilterTags: String = "none"
-
-    @State var cardFilterComplete: Int = 0
-
-    @State var cardFilterRating: Int = 0
-
-    @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
-
-    // MARK: - Properties - Decks and Cards
-
-    @Bindable var deck: Deck
-
-    @Binding var selectedCard: Card?
 
     var allTags: [String] {
         guard let cards = deck.cards else {
@@ -55,6 +39,25 @@ struct CardListView: View {
         tags.removeDuplicates()
         return tags.sorted(by: <)
     }
+
+    // MARK: - Properties - Integers
+
+    @State var cardFilterSides: Int = 0
+
+    @State var cardFilterComplete: Int = 0
+
+    @State var cardFilterRating: Int = 0
+
+    // MARK: - Properties - Card Sort Mode
+
+    @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
+
+    // MARK: - Properties - Decks and Cards
+
+    @Bindable var deck: Deck
+
+    @Binding var selectedCard: Card?
+
 
     var sortedCards: [Card] {
         guard let cards = deck.cards else {
@@ -301,103 +304,113 @@ struct CardListView: View {
             }
         }
         .toolbar {
-            ToolbarItem {
-                Menu {
-                    Picker("Sides (\(cardFilterSides == 0 ? "off" : "on"))", selection: $cardFilterSides) {
-                            Text("Off").tag(0)
-                        Divider()
-                            Text("1-Sided Cards").tag(1)
-                            Text("2-Sided Cards").tag(2)
-                        }
-                    Picker("Tags (\(cardFilterTags == "none" ? "off" : "on"))", selection: $cardFilterTags) {
-                            // All tags are prefixed with #, so there can't be any confusion between "Off" and a tag "#none".
-                            Text("Off").tag("none")
-                        Divider()
-                        ForEach(allTags, id: \.self) { tag in
-                                Text(tag).tag(tag)
-                            }
-                        }
-                    Picker("Completed Status (\(cardFilterComplete == 0 ? "off" : "on"))", selection: $cardFilterComplete) {
-                            Text("Off").tag(0)
-                        Divider()
-                            Text("Not Completed").tag(1)
-                            Text("Completed").tag(2)
-                        }
-                    Picker("Star Rating (\(cardFilterRating == 0 ? "off" : "on"))", selection: $cardFilterRating) {
-                            Text("Off").tag(0)
-                        Divider()
-                            Text("No Rating").tag(-1)
-                            Text("1 Star").tag(1)
-                            Text("2 Stars").tag(2)
-                            Text("3 Stars").tag(3)
-                            Text("4 Stars").tag(4)
-                            Text("5 Stars").tag(5)
-                        }
+            toolbarContent
+        }
+    }
+
+    // MARK: - Toolbar
+
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem {
+            Menu {
+                Picker("Sides (\(cardFilterSides == 0 ? "off" : "on"))", selection: $cardFilterSides) {
+                        Text("Off").tag(0)
                     Divider()
-                    Button("Reset") {
-                        resetCardFilter()
+                        Text("1-Sided Cards").tag(1)
+                        Text("2-Sided Cards").tag(2)
                     }
-                    } label: {
-                        Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                Picker("Tags (\(cardFilterTags == "none" ? "off" : "on"))", selection: $cardFilterTags) {
+                        // All tags are prefixed with #, so there can't be any confusion between "Off" and a tag "#none".
+                        Text("Off").tag("none")
+                    Divider()
+                    ForEach(allTags, id: \.self) { tag in
+                            Text(tag).tag(tag)
+                        }
                     }
-                    .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
-                    .menuIndicator(.hidden)
-                    .pickerStyle(.menu)
-            }
+                Picker("Completed Status (\(cardFilterComplete == 0 ? "off" : "on"))", selection: $cardFilterComplete) {
+                        Text("Off").tag(0)
+                    Divider()
+                        Text("Not Completed").tag(1)
+                        Text("Completed").tag(2)
+                    }
+                Picker("Star Rating (\(cardFilterRating == 0 ? "off" : "on"))", selection: $cardFilterRating) {
+                        Text("Off").tag(0)
+                    Divider()
+                        Text("No Rating").tag(-1)
+                        Text("1 Star").tag(1)
+                        Text("2 Stars").tag(2)
+                        Text("3 Stars").tag(3)
+                        Text("4 Stars").tag(4)
+                        Text("5 Stars").tag(5)
+                    }
+                Divider()
+                Button("Reset") {
+                    resetCardFilter()
+                }
+                } label: {
+                    Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                }
+                .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
+                .menuIndicator(.hidden)
+                .pickerStyle(.menu)
+        }
 #if os(macOS)
 ToolbarItem {
-    addCardButton
+addCardButton
 }
 #else
 ToolbarItem(placement: .bottomBar) {
-    addCardButton
-        .labelStyle(.titleAndIcon)
+addCardButton
+    .labelStyle(.titleAndIcon)
 }
 #endif
-            ToolbarItem {
-                OptionsMenu(title: .menu) {
-                    Picker("Sort", selection: $cardSortMode) {
-                        Text("Title (ascending)").tag(Card.SortMode.titleAscending)
-                        Text("Title (descending)").tag(Card.SortMode.titleDescending)
-                        Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
-                        Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
-                        Text("Modified Date (ascending)").tag(Card.SortMode.modifiedDateAscending)
-                        Text("Modified Date (descending)").tag(Card.SortMode.modifiedDateDescending)
-                        Text("Star Rating (ascending)").tag(Card.SortMode.starRatingAscending)
-                        Text("Star Rating (descending)").tag(Card.SortMode.starRatingDescending)
-                    }
-                    .pickerStyle(.menu)
+        ToolbarItem {
+            OptionsMenu(title: .menu) {
+                Picker("Sort", selection: $cardSortMode) {
+                    Text("Title (ascending)").tag(Card.SortMode.titleAscending)
+                    Text("Title (descending)").tag(Card.SortMode.titleDescending)
                     Divider()
-                    if searchResults.count > 1 {
-                        Button("Show Random Card", systemImage: "questionmark.square") {
-                            showRandomCard()
+                    Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
+                    Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
+                    Divider()
+                    Text("Modified Date (ascending)").tag(Card.SortMode.modifiedDateAscending)
+                    Text("Modified Date (descending)").tag(Card.SortMode.modifiedDateDescending)
+                    Divider()
+                    Text("Star Rating (ascending)").tag(Card.SortMode.starRatingAscending)
+                    Text("Star Rating (descending)").tag(Card.SortMode.starRatingDescending)
+                }
+                .pickerStyle(.menu)
+                Divider()
+                if searchResults.count > 1 {
+                    Button("Show Random Card", systemImage: "questionmark.square") {
+                        showRandomCard()
+                    }
+                    Menu("Mark All Cards As", systemImage: "checkmark.circle") {
+                        Button("Completed") {
+                            markCardsAs(completed: true)
                         }
-                        Menu("Mark All Cards As", systemImage: "checkmark.circle") {
-                            Button("Completed") {
-                                markCardsAs(completed: true)
-                            }
-                            Button("Not Completed") {
-                                markCardsAs(completed: false)
-                            }
+                        Button("Not Completed") {
+                            markCardsAs(completed: false)
                         }
                     }
-                    Divider()
-                    Button("Deck Settings…", systemImage: "gear") {
-                        dialogManager.deckToShowSettings = deck
-                    }
-                    Divider()
-                    Button(role: .destructive) {
-                        dialogManager.showingDeleteAllCards = true
-                    } label: {
-                        Label("Delete All Cards…", systemImage: "trash.fill")
-                            .foregroundStyle(.red)
-                    }
-                    Button(role: .destructive) {
-                        dialogManager.deckToDelete = deck
-                        dialogManager.showingDeleteDeck = true
-                    } label: {
-                        Label("Delete Deck…", systemImage: "trash")
-                    }
+                }
+                Divider()
+                Button("Deck Settings…", systemImage: "gear") {
+                    dialogManager.deckToShowSettings = deck
+                }
+                Divider()
+                Button(role: .destructive) {
+                    dialogManager.showingDeleteAllCards = true
+                } label: {
+                    Label("Delete All Cards…", systemImage: "trash.fill")
+                        .foregroundStyle(.red)
+                }
+                Button(role: .destructive) {
+                    dialogManager.deckToDelete = deck
+                    dialogManager.showingDeleteDeck = true
+                } label: {
+                    Label("Delete Deck…", systemImage: "trash")
                 }
             }
         }

@@ -154,7 +154,7 @@ struct ContentView: View {
 
     @ViewBuilder
     var newDeckButton: some View {
-        Button(action: addItem) {
+        Button(action: addDeck) {
             Label("Add Deck", systemImage: "rectangle.stack.badge.plus")
         }
     }
@@ -199,7 +199,7 @@ struct ContentView: View {
 
     // MARK: - Data Management
 
-    private func addItem() {
+    private func addDeck() {
         withAnimation {
             let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             modelContext.insert(newItem)

@@ -21,8 +21,10 @@ struct FlexiDeckApp: App {
 
     // MARK: - Properties - Objects
 
+    // Handles the display of dialogs in the app.
     @ObservedObject var dialogManager = DialogManager()
 
+    // Handles speech in the app.
     @ObservedObject var speechManager = SpeechManager()
 
     // MARK: - Properties - Model Container
