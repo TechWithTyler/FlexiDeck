@@ -29,6 +29,7 @@ struct FlexiDeckCommands: Commands {
             }
             .keyboardShortcut("+", modifiers: .command)
         }
+        SidebarCommands()
     }
 
 }
