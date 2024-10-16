@@ -27,16 +27,22 @@ struct CardListView: View {
     @State var cardFilterTags: String = "off"
 
     var allTags: [String] {
+        // 1. Try to get all cards in the selected deck.
         guard let cards = deck.cards else {
             fatalError("Couldn't get tags")
         }
+        // 2. Create an array to hold the tags.
         var tags: [String] = []
+        // 3. Loop through each card in the deck.
         for card in cards {
+            // 4. Loop through each tag in the card's tags array and add it to the tags array.
             for tag in card.tags {
                 tags.append(tag)
             }
         }
+        // 5. Remove duplicate tags.
         tags.removeDuplicates()
+        // 6. Return the tags array.
         return tags.sorted(by: <)
     }
 
@@ -59,9 +65,11 @@ struct CardListView: View {
     @Binding var selectedCard: Card?
 
     var sortedCards: [Card] {
+        // 1. Try to get all cards in the selected deck.
         guard let cards = deck.cards else {
             fatalError("Couldn't sort cards")
         }
+        // 2. Choose how to sort the cards based on the selected card sort mode.
         switch cardSortMode {
         case .titleAscending:
             return cards.sorted { cardA, cardB in
@@ -100,36 +108,45 @@ struct CardListView: View {
 
     var sidesFilteredCards: [Card] {
         switch cardFilterSides {
+            // 1. If cardFilterSides is 1, return only 1-sided cards.
         case 1: return sortedCards.filter { !$0.is2Sided! }
+            // 2. If cardFilterSides is 2, return only 2-sided cards.
         case 2: return sortedCards.filter { $0.is2Sided! }
+            // 3. If cardFilterSides isn't 1 or 2, return all cards.
         default: return sortedCards
         }
     }
 
     var tagsFilteredCards: [Card] {
         switch cardFilterTags {
+            // 1. If the tags filter is turned off, return all cards returned by sidesFilteredCards.
         case "off": return sidesFilteredCards
+            // 2. If the tags filter is set to "No Filter", return only cards without tags.
         case "none": return sidesFilteredCards.filter { $0.tags.isEmpty }
+            // 3. If the tags filter is set to a tag, return only cards that contain that tag.
         default: return sidesFilteredCards.filter { $0.tags.contains(cardFilterTags) }
         }
     }
 
     var completeFilteredCards: [Card] {
         switch cardFilterComplete {
+            // 1. If cardFilterComplete is 1, return only non-completed cards.
         case 1: return tagsFilteredCards.filter { !$0.isCompleted }
+            // 2. If cardFilterComplete is 2, return only completed cards.
         case 2: return tagsFilteredCards.filter { $0.isCompleted }
+            // 3. IF cardFilterComplete isn't 1 or 2, return all cards returned by tagsFilteredCards.
         default: return tagsFilteredCards
         }
     }
 
     var ratingFilteredCards: [Card] {
         switch cardFilterRating {
-        case -1:
-            return completeFilteredCards.filter { $0.starRating == 0 }
-        case 0:
-            return completeFilteredCards
-        default:
-            return completeFilteredCards.filter { $0.starRating == cardFilterRating }
+            // 1. If cardFilterRating is -1, return only cards without a star rating.
+        case -1: return completeFilteredCards.filter { $0.starRating == 0 }
+            // 2. If cardFilterRating is 0, return all cards returned by completeFilteredCards.
+        case 0: return completeFilteredCards
+            // 3. If cardFilterRating is 1-5, return only cards with that star rating.
+        default: return completeFilteredCards.filter { $0.starRating == cardFilterRating }
         }
     }
 
@@ -139,13 +156,13 @@ struct CardListView: View {
     }
 
     var searchResults: [Card] {
-        // Define the content being searched.
+        // 1. Define the content being searched.
         let content = filteredCards
-        // If searchText is empty, return all cards.
+        // 2. If searchText is empty, return all cards.
         if searchText.isEmpty {
             return content
         } else {
-            // Return cards with titles or text that contain all or part of the search text.
+            // 3. Return cards with titles or text that contain all or part of the search text.
             return content.filter { card in
                 let titleRange = card.title?.range(of: searchText, options: .caseInsensitive)
                 let frontRange = card.front.range(of: searchText, options: .caseInsensitive)
@@ -344,6 +361,7 @@ struct CardListView: View {
                 }
             } label: {
                 Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    .animatedSymbolReplacement()
             }
             .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
             .menuIndicator(.hidden)
@@ -375,7 +393,6 @@ struct CardListView: View {
                     Text("Star Rating (descending)").tag(Card.SortMode.starRatingDescending)
                 }
                 .pickerStyle(.menu)
-                Divider()
                 if searchResults.count > 1 {
                     Button("Show Random Card", systemImage: "questionmark.square") {
                         showRandomCard()
@@ -389,16 +406,15 @@ struct CardListView: View {
                         }
                     }
                 }
-                Divider()
-                Button("Deck Settings…", systemImage: "gear") {
-                    dialogManager.deckToShowSettings = deck
-                }
-                Divider()
                 Button(role: .destructive) {
                     dialogManager.showingDeleteAllCards = true
                 } label: {
                     Label("Delete All Cards…", systemImage: "trash.fill")
                         .foregroundStyle(.red)
+                }
+                Divider()
+                Button("Deck Settings…", systemImage: "gear") {
+                    dialogManager.deckToShowSettings = deck
                 }
                 Button(role: .destructive) {
                     dialogManager.deckToDelete = deck
