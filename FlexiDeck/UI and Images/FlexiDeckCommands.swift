@@ -18,6 +18,7 @@ struct FlexiDeckCommands: Commands {
     // MARK: - Menu Commands
 
     var body: some Commands {
+        TextEditingCommands()
         CommandMenu("Format") {
             Button("Decrease Text Size", systemImage: "textformat.size.smaller") {
                 cardTextSize -= 1
