@@ -14,7 +14,7 @@ struct DecksCardsSettingsPageView: View {
 
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
-    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = false
+    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
     var body: some View {
         Form {
@@ -27,9 +27,11 @@ struct DecksCardsSettingsPageView: View {
                 Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting determines the default number of sides for new decks.")
             }
             Section {
-                Toggle("Show Deck/Card Settings When Creating", isOn: $showSettingsWhenCreating)
-            } footer: {
-                Text("Turn this on to show the deck/card settings when creating a new deck/card.")
+                Picker("Show Settings When Creating", selection: $showSettingsWhenCreating) {
+                    Text("Off").tag(0)
+                    Text("Decks Only").tag(1)
+                    Text("Decks and Cards").tag(2)
+                }
             }
         }
     }

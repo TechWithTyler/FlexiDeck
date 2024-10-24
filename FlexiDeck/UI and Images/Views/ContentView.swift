@@ -20,7 +20,7 @@ struct ContentView: View {
 
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
-    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = true
+    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
     // MARK: - Properties - Decks and Cards
 
@@ -76,7 +76,6 @@ struct ContentView: View {
                                         .foregroundStyle(.red)
                                 }
                             }
-
                     }
                     .onDelete(perform: deleteItems)
                 }
@@ -204,7 +203,7 @@ struct ContentView: View {
             let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             modelContext.insert(newItem)
             selectedDeck = newItem
-            if showSettingsWhenCreating {
+            if showSettingsWhenCreating >= 1 {
                 dialogManager.deckToShowSettings = newItem
             }
         }

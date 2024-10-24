@@ -175,7 +175,7 @@ struct CardListView: View {
 
     // MARK: - Properties - Booleans
 
-    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Bool = false
+    @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
     var cardFilterEnabled: Bool {
         return cardFilterTags != "off" || cardFilterSides != 0 || cardFilterRating != 0 || cardFilterComplete != 0
@@ -475,7 +475,7 @@ struct CardListView: View {
             let newItem = Card(title: defaultCardName, is2Sided: is2Sided)
             deck.cards?.append(newItem)
             selectedCard = newItem
-            if showSettingsWhenCreating {
+            if showSettingsWhenCreating == 2 {
                 dialogManager.cardToShowSettings = newItem
             }
             cardFilterRating = 0
