@@ -25,7 +25,7 @@ struct SettingsView: View {
 
     var body: some View {
 #if os(macOS)
-            // macOS settings window
+        // macOS settings window
         SAMVisualEffectViewSwiftUIRepresentable {
             TabView(selection: $dialogManager.selectedSettingsPage) {
                 SAMVisualEffectViewSwiftUIRepresentable {
@@ -58,42 +58,49 @@ struct SettingsView: View {
             }
         }
 #else
-            // iOS/visionOS settings page
-            NavigationStack {
-                Form {
-                    Section {
-                        NavigationLink {
-                            DisplaySettingsPageView()
-                                .navigationTitle(SettingsPage.display.rawValue.capitalized)
-                        } label: {
-                            Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
-                        }
-                        NavigationLink {
-                            SpeechSettingsPageView()
-                                .navigationTitle(SettingsPage.speech.rawValue.capitalized)
-                        } label: {
-                            Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
-                        }
-                        NavigationLink {
-                            DecksCardsSettingsPageView()
-                                .navigationTitle(SettingsPage.decksCards.rawValue.capitalized)
-                        } label: {
-                            Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)
-                        }
+        // iOS/visionOS settings page
+        NavigationStack {
+            Form {
+                Section {
+                    NavigationLink {
+                        DisplaySettingsPageView()
+                            .navigationTitle(SettingsPage.display.rawValue.capitalized)
+                    } label: {
+                        Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
+                    }
+                    NavigationLink {
+                        SpeechSettingsPageView()
+                            .navigationTitle(SettingsPage.speech.rawValue.capitalized)
+                    } label: {
+                        Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
+                    }
+                    NavigationLink {
+                        DecksCardsSettingsPageView()
+                            .navigationTitle(SettingsPage.decksCards.rawValue.capitalized)
+                    } label: {
+                        Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)
                     }
                 }
-                .navigationTitle("Settings")
-                .navigationBarTitleDisplayMode(.automatic)
-                .formStyle(.grouped)
-                .toolbar {
-                    ToolbarItem {
-                        Button("Done") {
-                            dismiss()
-                        }
+#if !os(macOS)
+                Section {
+                    Button("Help…", systemImage: "questionmark.circle") {
+                        showHelp()
+                    }
+                }
+#endif
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.automatic)
+            .formStyle(.grouped)
+            .toolbar {
+                ToolbarItem {
+                    Button("Done") {
+                        dismiss()
                     }
                 }
             }
-            .pickerStyle(.navigationLink)
+        }
+        .pickerStyle(.navigationLink)
 #endif
     }
 
