@@ -30,6 +30,12 @@ struct FlexiDeckCommands: Commands {
             .keyboardShortcut("+", modifiers: .command)
         }
         SidebarCommands()
+        CommandGroup(replacing: .help) {
+            Button("\(appName!) Help") {
+                showHelp()
+            }
+                .keyboardShortcut("?", modifiers: .command)
+        }
     }
 
 }

@@ -6,9 +6,23 @@
 //  Copyright © 2024 SheftApps. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
+
+// MARK: - Functions
+
+func showHelp() {
+    let helpURL = URL(string: "https://techwithtyler20.weebly.com/\((appName?.lowercased())!)help")!
+    #if os(macOS)
+    NSWorkspace.shared.open(helpURL)
+    #else
+    UIApplication.shared.open(helpURL)
+    #endif
+}
 
 // MARK: - Properties - Strings
+
+// The application name.
+let appName: String? = (Bundle.main.infoDictionary?[String(kCFBundleNameKey)] as? String)!
 
 // The default name for new decks.
 let defaultDeckName = "New Deck"
