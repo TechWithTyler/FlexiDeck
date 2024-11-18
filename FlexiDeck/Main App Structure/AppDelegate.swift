@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 10/10/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 #if os(macOS)
