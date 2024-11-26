@@ -31,18 +31,16 @@ struct CardListView: View {
         guard let cards = deck.cards else {
             fatalError("Couldn't get tags")
         }
-        // 2. Create an array to hold the tags.
-        var tags: [String] = []
+        // 2. Create a set to hold the tags. A Set is similar to an Array but can only hold one instance of an item. For example, the word "cat" can only appear once in a String Set.
+        var tags: Set<String> = []
         // 3. Loop through each card in the deck.
         for card in cards {
-            // 4. Loop through each tag in the card's tags array and add it to the tags array.
+            // 4. Loop through each tag in the card's tags array and add it to the tags set.
             for tag in card.tags {
-                tags.append(tag)
+                tags.insert(tag)
             }
         }
-        // 5. Remove duplicate tags.
-        tags.removeDuplicates()
-        // 6. Return the tags array.
+        // 5. Return the tags set as a sorted array.
         return tags.sorted(by: <)
     }
 
@@ -224,7 +222,7 @@ struct CardListView: View {
                             selectedCard = nil
                         }
                         .onChange(of: card.starRating) { oldValue, newValue in
-                            if !ratingFilteredCards.contains(selectedCard!) {
+                            if let card = selectedCard, !ratingFilteredCards.contains(card) {
                                 selectedCard = nil
                             }
                         }
