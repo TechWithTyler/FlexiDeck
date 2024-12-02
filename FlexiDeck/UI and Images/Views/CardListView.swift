@@ -31,7 +31,7 @@ struct CardListView: View {
         guard let cards = deck.cards else {
             fatalError("Couldn't get tags")
         }
-        // 2. Create a set to hold the tags. A Set is similar to an Array but can only hold one instance of an item. For example, the word "cat" can only appear once in a String Set.
+        // 2. Create a set to hold the tags.
         var tags: Set<String> = []
         // 3. Loop through each card in the deck.
         for card in cards {
