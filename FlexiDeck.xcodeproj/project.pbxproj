@@ -29,6 +29,7 @@
 		8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621B2C5D734D0057E7DC /* CardListView.swift */; };
 		8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */; };
 		8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */; };
+		8DC964E42D0B877B00984466 /* CardListDetailOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC964E32D0B877B00984466 /* CardListDetailOptions.swift */; };
 		8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */; };
 		8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCB0A612C6409AD00EB82DC /* DialogManager.swift */; };
 		8DDE5FEC2CB86B4900697F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDE5FEB2CB86B4900697F70 /* AppDelegate.swift */; };
@@ -79,6 +80,7 @@
 		8DB0621B2C5D734D0057E7DC /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
 		8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsView.swift; sourceTree = "<group>"; };
 		8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSettingsView.swift; sourceTree = "<group>"; };
+		8DC964E32D0B877B00984466 /* CardListDetailOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListDetailOptions.swift; sourceTree = "<group>"; };
 		8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8DCB0A612C6409AD00EB82DC /* DialogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogManager.swift; sourceTree = "<group>"; };
 		8DDE5FEB2CB86B4900697F70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				8D8555112C94D6FD006A14E3 /* StarRatingView.swift */,
 				8D02F07E2C655E3C00E6A48A /* Settings */,
 				8D38ED612CAC98AC00CCC422 /* Controls */,
+				8DC964E32D0B877B00984466 /* CardListDetailOptions.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				8D38ED602CAC906D00CCC422 /* SettingsPage.swift in Sources */,
 				8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */,
 				8D38ED5E2CAC902E00CCC422 /* DecksCardsSettingsPageView.swift in Sources */,
+				8DC964E42D0B877B00984466 /* CardListDetailOptions.swift in Sources */,
 				8D38ED5A2CAC8EC500CCC422 /* DisplaySettingsPageView.swift in Sources */,
 				8DE403B52C66B62600D61D6E /* UserDefaultsKeyNames.swift in Sources */,
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
@@ -521,7 +525,6 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
@@ -565,7 +568,6 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};

@@ -31,7 +31,7 @@ struct SettingsView: View {
                 SAMVisualEffectViewSwiftUIRepresentable {
                     DisplaySettingsPageView()
                 }
-                .frame(width: 400, height: 320)
+                .frame(width: 400, height: 360)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
