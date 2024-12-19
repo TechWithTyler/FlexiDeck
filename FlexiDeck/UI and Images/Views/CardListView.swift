@@ -68,37 +68,23 @@ struct CardListView: View {
             fatalError("Couldn't sort cards")
         }
         // 2. Choose how to sort the cards based on the selected card sort mode.
-        switch cardSortMode {
-        case .titleAscending:
-            return cards.sorted { cardA, cardB in
+        return cards.sorted { cardA, cardB in
+            switch cardSortMode {
+            case .titleAscending:
                 return cardA.title! < cardB.title!
-            }
-        case .titleDescending:
-            return cards.sorted { cardA, cardB in
+            case .titleDescending:
                 return cardA.title! > cardB.title!
-            }
-        case .starRatingAscending:
-            return cards.sorted { cardA, cardB in
+            case .starRatingAscending:
                 return cardA.starRating < cardB.starRating
-            }
-        case .starRatingDescending:
-            return cards.sorted { cardA, cardB in
+            case .starRatingDescending:
                 return cardA.starRating > cardB.starRating
-            }
-        case .creationDateAscending:
-            return cards.sorted { cardA, cardB in
+            case .creationDateAscending:
                 return cardA.creationDate < cardB.creationDate
-            }
-        case .creationDateDescending:
-            return cards.sorted { cardA, cardB in
+            case .creationDateDescending:
                 return cardA.creationDate > cardB.creationDate
-            }
-        case .modifiedDateAscending:
-            return cards.sorted { cardA, cardB in
+            case .modifiedDateAscending:
                 return cardA.modifiedDate < cardB.modifiedDate
-            }
-        default:
-            return cards.sorted { cardA, cardB in
+            default:
                 return cardA.modifiedDate > cardB.modifiedDate
             }
         }
@@ -279,8 +265,8 @@ struct CardListView: View {
         }
         .onChange(of: searchResults) { oldValue, newValue in
             if let card = selectedCard, !newValue.contains(card) {
-                    selectedCard = nil
-                }
+                selectedCard = nil
+            }
         }
         .animation(.default, value: searchResults)
         .searchable(text: $searchText, placement: .automatic, prompt: Text("Search \((deck.name)!)"))
