@@ -3,6 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 12/12/24.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI

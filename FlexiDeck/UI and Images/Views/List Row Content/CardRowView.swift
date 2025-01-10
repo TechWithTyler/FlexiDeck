@@ -40,6 +40,7 @@ struct CardRowView: View {
                 Text("Completed")
             }
             .toggleStyle(.circleCheckbox)
+            .labelsHidden()
             .padding(.trailing, 5)
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
