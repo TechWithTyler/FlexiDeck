@@ -63,11 +63,9 @@ struct FlexiDeckApp: App {
         }
         #if os(macOS)
         Settings {
-            SAMVisualEffectViewSwiftUIRepresentable {
                 SettingsView()
                     .environmentObject(dialogManager)
                     .environmentObject(speechManager)
-            }
         }
         #endif
     }
