@@ -77,7 +77,7 @@ struct ContentView: View {
                                 }
                             }
                     }
-                    .onDelete(perform: deleteItems)
+                    .onDelete(perform: deleteDecks)
                 }
             } else {
                 Text("No decks")
@@ -209,12 +209,11 @@ struct ContentView: View {
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    private func deleteDecks(at offsets: IndexSet) {
+        guard let index = offsets.first else { return }
         withAnimation {
-            for index in offsets {
-                dialogManager.deckToDelete = decks[index]
-                dialogManager.showingDeleteDeck = true
-            }
+            dialogManager.deckToDelete = decks[index]
+            dialogManager.showingDeleteDeck = true
         }
     }
 

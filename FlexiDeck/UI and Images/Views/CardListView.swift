@@ -218,7 +218,7 @@ struct CardListView: View {
                             }
                         }
                     }
-                    .onDelete(perform: deleteItems)
+                    .onDelete(perform: deleteCards)
                 }
 #if !os(macOS)
                 .listStyle(.insetGrouped)
@@ -483,12 +483,11 @@ struct CardListView: View {
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    private func deleteCards(at offsets: IndexSet) {
+        guard let index = offsets.first else { return }
         withAnimation {
-            for index in offsets {
-                dialogManager.cardToDelete = searchResults[index]
-                dialogManager.showingDeleteCard = true
-            }
+            dialogManager.cardToDelete = searchResults[index]
+            dialogManager.showingDeleteCard = true
         }
     }
 
