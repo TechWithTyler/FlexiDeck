@@ -327,17 +327,17 @@ struct CardListView: View {
         ToolbarItem {
             OptionsMenu(title: .menu) {
                 Picker("Sort", selection: $cardSortMode) {
-                    Text("Title (ascending)").tag(Card.SortMode.titleAscending)
-                    Text("Title (descending)").tag(Card.SortMode.titleDescending)
+                    Text("Title (Ascending)").tag(Card.SortMode.titleAscending)
+                    Text("Title (Descending)").tag(Card.SortMode.titleDescending)
                     Divider()
-                    Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
-                    Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
+                    Text("Creation Date (Ascending)").tag(Card.SortMode.creationDateAscending)
+                    Text("Creation Date (Descending)").tag(Card.SortMode.creationDateDescending)
                     Divider()
-                    Text("Modified Date (ascending)").tag(Card.SortMode.modifiedDateAscending)
-                    Text("Modified Date (descending)").tag(Card.SortMode.modifiedDateDescending)
+                    Text("Modified Date (Ascending)").tag(Card.SortMode.modifiedDateAscending)
+                    Text("Modified Date (Descending)").tag(Card.SortMode.modifiedDateDescending)
                     Divider()
-                    Text("Star Rating (ascending)").tag(Card.SortMode.starRatingAscending)
-                    Text("Star Rating (descending)").tag(Card.SortMode.starRatingDescending)
+                    Text("Star Rating (Ascending)").tag(Card.SortMode.starRatingAscending)
+                    Text("Star Rating (Descending)").tag(Card.SortMode.starRatingDescending)
                 }
                 .pickerStyle(.menu)
                 if searchResults.count > 1 {
@@ -376,14 +376,14 @@ struct CardListView: View {
     @ViewBuilder
     var filterToolbarItem: some View {
         Menu {
-            Picker("Sides (\(cardFilterSides == 0 ? "off" : "on"))", selection: $cardFilterSides) {
+            Picker("Sides (\(cardFilterSides == 0 ? "Off" : "On"))", selection: $cardFilterSides) {
                 Text("Off").tag(0)
                 Divider()
                 Text("1-Sided Cards").tag(1)
                 Text("2-Sided Cards").tag(2)
             }
             if !allTags.isEmpty {
-                Picker("Tags (\(cardFilterTags == "off" ? "off" : "on"))", selection: $cardFilterTags) {
+                Picker("Tags (\(cardFilterTags == "off" ? "Off" : "On"))", selection: $cardFilterTags) {
                     // All tags are prefixed with #, so there can't be any confusion between "Off"/"Without Tags" and a tag "#off"/"#none".
                     Text("Off").tag("off")
                     Divider()
@@ -394,7 +394,7 @@ struct CardListView: View {
                     }
                 }
             }
-            Picker("Completed Status (\(cardFilterComplete == 0 ? "off" : "on"))", selection: $cardFilterComplete) {
+            Picker("Completed Status (\(cardFilterComplete == 0 ? "Off" : "On"))", selection: $cardFilterComplete) {
                 Text("Off").tag(0)
                 Divider()
                 Text("Not Completed").tag(1)
@@ -419,7 +419,7 @@ struct CardListView: View {
             Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                 .animatedSymbolReplacement()
         }
-        .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
+        .accessibilityLabel("Filter (\(cardFilterEnabled ? "On" : "Off"))")
         .menuIndicator(.hidden)
         .pickerStyle(.menu)
 
@@ -439,13 +439,13 @@ struct CardListView: View {
     // MARK: - Show Random Card
 
     func showRandomCard() {
-        // 2. Get a random card.
+        // 1. Get a random card.
         let randomCard = searchResults.randomElement()!
-        // 3. If the random card is different than the selected card, show it.
+        // 2. If the random card is different than the selected card, show it.
         if randomCard != selectedCard {
             selectedCard = randomCard
         } else{
-            // 4. Otherwise, call this method until a different card is found.
+            // 3. Otherwise, call this method until a different card is found.
             showRandomCard()
         }
     }
