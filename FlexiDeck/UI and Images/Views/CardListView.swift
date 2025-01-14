@@ -439,18 +439,18 @@ struct CardListView: View {
     // MARK: - Show Random Card
 
     func showRandomCard() {
-        // 1. Get a random card.
-        let randomCard = deck.cards?.randomElement()!
-        // 2. If the random card is different than the selected card, show it.
+        // 2. Get a random card.
+        let randomCard = searchResults.randomElement()!
+        // 3. If the random card is different than the selected card, show it.
         if randomCard != selectedCard {
             selectedCard = randomCard
         } else{
-            // 3. Otherwise, call this method until a different card is found.
+            // 4. Otherwise, call this method until a different card is found.
             showRandomCard()
         }
     }
 
-    // MARK: - Mark Cards As Completed/Not Completed
+    // MARK: - Mark All Cards As Completed/Not Completed
 
     func markCardsAs(completed: Bool) {
         for card in searchResults {
