@@ -326,6 +326,12 @@ struct CardListView: View {
 #endif
         ToolbarItem {
             OptionsMenu(title: .menu) {
+                Menu("Card List Detail") {
+                    CardListDetailOptions()
+                }
+                .pickerStyle(.menu)
+                .toggleStyle(.automatic)
+                Divider()
                 Picker("Sort", selection: $cardSortMode) {
                     Text("Title (Ascending)").tag(Card.SortMode.titleAscending)
                     Text("Title (Descending)").tag(Card.SortMode.titleDescending)
@@ -340,6 +346,7 @@ struct CardListView: View {
                     Text("Star Rating (Descending)").tag(Card.SortMode.starRatingDescending)
                 }
                 .pickerStyle(.menu)
+                Divider()
                 if searchResults.count > 1 {
                     Button("Show Random Card", systemImage: "questionmark.square") {
                         showRandomCard()
