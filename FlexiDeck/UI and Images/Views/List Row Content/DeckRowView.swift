@@ -21,9 +21,7 @@ struct DeckRowView: View {
     var body: some View {
         HStack {
             Text(deck.name ?? String())
-            Spacer()
-            Text(cardCountText)
-                .foregroundStyle(.secondary)
+                .badge(cardCountText)
         }
     }
 }
