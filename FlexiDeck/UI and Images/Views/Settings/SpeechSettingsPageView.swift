@@ -19,7 +19,14 @@ struct SpeechSettingsPageView: View {
         Form {
             Section {
                 VoicePicker(selectedVoiceID: speechManager.$selectedVoiceID, voices: speechManager.voices) { voiceID in
-                    speechManager.speak(text: SATextSettingsPreviewString)
+                    speechManager.speak(text: SATextSettingsPreviewString, forSettingsPreview: true)
+                }
+                PlayButton(noun: "Sample Text", isPlaying: speechManager.textBeingSpoken == SATextSettingsPreviewString) {
+                    if speechManager.textBeingSpoken == SATextSettingsPreviewString {
+                        speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+                    } else {
+                        speechManager.speak(text: SATextSettingsPreviewString, forSettingsPreview: true)
+                    }
                 }
             }
             Section {
