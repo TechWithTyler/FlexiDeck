@@ -41,71 +41,86 @@ struct CardView: View {
 
     var body: some View {
         TranslucentFooterVStack {
-            TextEditor(text: isFlipped ? $back : $front)
-                .font(.system(size: CGFloat(cardTextSize)))
-                .scrollContentBackground(.hidden)
-                .scrollClipDisabled(true)
-                .focused($editingText)
-            } translucentFooterContent: {
+            ZStack {
+                TextEditor(text: $front)
+                    .rotation3DEffect(.degrees(isFlipped ? 90 : 0), axis: (x: 0, y: 1, z: 0))
+                    .animation(isFlipped ? .linear : .linear.delay(0.35), value: isFlipped)
+                    .font(.system(size: CGFloat(cardTextSize)))
+                    .scrollContentBackground(.hidden)
+                    .scrollClipDisabled(true)
+                    .disabled(isFlipped)
+                    .focused($editingText)
+                    .zIndex(isFlipped ? 0 : 1)
+                TextEditor(text: $back)
+                    .rotation3DEffect(.degrees(isFlipped ? 0 : -90), axis: (x: 0, y: 1, z: 0))
+                    .animation(isFlipped ? .linear.delay(0.35) : .linear, value: isFlipped)
+                    .font(.system(size: CGFloat(cardTextSize)))
+                    .scrollContentBackground(.hidden)
+                    .scrollClipDisabled(true)
+                    .disabled(!isFlipped)
+                    .focused($editingText)
+                    .zIndex(isFlipped ? 1 : 0)
+            }
+        } translucentFooterContent: {
             Divider()
             Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
                 .foregroundStyle(.secondary)
-                StarRatingView(card: selectedCard)
+            StarRatingView(card: selectedCard)
         }
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
-                .onAppear {
-                    loadCard(card: selectedCard)
-                    if speechManager.speakOnSelectionOrFlip {
-                        speechManager.speak(text: front)
-                    }
-                    editingText = true
-                }
-                .onDisappear {
-                    saveCard(card: selectedCard)
-                }
-            .onChange(of: front, { oldValue, newValue in
-                saveCard(card: selectedCard)
-            })
-            .onChange(of: back, { oldValue, newValue in
-                saveCard(card: selectedCard)
-            })
-            .onChange(of: selectedCard) { oldCard, newCard in
-                selectedCardChanged(oldCard: oldCard, newCard: newCard)
+        .onAppear {
+            loadCard(card: selectedCard)
+            if speechManager.speakOnSelectionOrFlip {
+                speechManager.speak(text: front)
             }
-            .onChange(of: isFlipped) { oldValue, newValue in
-                editingText = true
-                speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
-                if speechManager.speakOnSelectionOrFlip {
-                    speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
-                }
+            editingText = true
+        }
+        .onDisappear {
+            saveCard(card: selectedCard)
+        }
+        .onChange(of: front, { oldValue, newValue in
+            saveCard(card: selectedCard)
+        })
+        .onChange(of: back, { oldValue, newValue in
+            saveCard(card: selectedCard)
+        })
+        .onChange(of: selectedCard) { oldCard, newCard in
+            selectedCardChanged(oldCard: oldCard, newCard: newCard)
+        }
+        .onChange(of: isFlipped) { oldValue, newValue in
+            editingText = true
+            speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+            if speechManager.speakOnSelectionOrFlip {
+                speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
             }
-            .toolbar {
-                    if (selectedCard.is2Sided)! {
-                        ToolbarItem {
-                            Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
-                                isFlipped.toggle()
-                            }
-                            .keyboardShortcut(.return, modifiers: .command)
-                        }
-                    }
+        }
+        .toolbar {
+            if (selectedCard.is2Sided)! {
                 ToolbarItem {
-                    OptionsMenu(title: .menu) {
-                        if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
-                            SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
-                        }
-                        Button("Card Settings…", systemImage: "gear") {
-                            dialogManager.cardToShowSettings = selectedCard
-                        }
-                        Divider()
-                        Button(role: .destructive) {
-                            dialogManager.cardToDelete = selectedCard
-                            dialogManager.showingDeleteCard = true
-                        } label: {
-                            Label("Delete…", systemImage: "trash")
-                        }
+                    Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
+                        isFlipped.toggle()
+                    }
+                    .keyboardShortcut(.return, modifiers: .command)
+                }
+            }
+            ToolbarItem {
+                OptionsMenu(title: .menu) {
+                    if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
+                        SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
+                    }
+                    Button("Card Settings…", systemImage: "gear") {
+                        dialogManager.cardToShowSettings = selectedCard
+                    }
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.cardToDelete = selectedCard
+                        dialogManager.showingDeleteCard = true
+                    } label: {
+                        Label("Delete…", systemImage: "trash")
                     }
                 }
             }
+        }
     }
 
     // MARK: - Data Management
