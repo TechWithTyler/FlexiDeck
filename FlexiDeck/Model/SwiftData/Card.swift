@@ -12,6 +12,8 @@ import SwiftData
 @Model
 final class Card {
 
+    // MARK: - Sort Mode Enum
+
     enum SortMode: Int {
 
         case titleAscending = 0

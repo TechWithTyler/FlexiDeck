@@ -31,7 +31,9 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
-    @FocusState var editingText: Bool
+    @FocusState var frontFocused: Bool
+
+    @FocusState var backFocused: Bool
 
     // MARK: - Properties - Dialog Manager
 
@@ -49,7 +51,7 @@ struct CardView: View {
                     .scrollContentBackground(.hidden)
                     .scrollClipDisabled(true)
                     .disabled(isFlipped)
-                    .focused($editingText)
+                    .focused($frontFocused)
                     .zIndex(isFlipped ? 0 : 1)
                 TextEditor(text: $back)
                     .rotation3DEffect(.degrees(isFlipped ? 0 : -90), axis: (x: 0, y: 1, z: 0))
@@ -58,7 +60,7 @@ struct CardView: View {
                     .scrollContentBackground(.hidden)
                     .scrollClipDisabled(true)
                     .disabled(!isFlipped)
-                    .focused($editingText)
+                    .focused($backFocused)
                     .zIndex(isFlipped ? 1 : 0)
             }
         } translucentFooterContent: {
@@ -73,7 +75,8 @@ struct CardView: View {
             if speechManager.speakOnSelectionOrFlip {
                 speechManager.speak(text: front)
             }
-            editingText = true
+            frontFocused = true
+            backFocused = false
         }
         .onDisappear {
             saveCard(card: selectedCard)
@@ -88,7 +91,15 @@ struct CardView: View {
             selectedCardChanged(oldCard: oldCard, newCard: newCard)
         }
         .onChange(of: isFlipped) { oldValue, newValue in
-            editingText = true
+            frontFocused = false
+            backFocused = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                if isFlipped {
+                    backFocused = true
+                } else {
+                    frontFocused = true
+                }
+            }
             speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
             if speechManager.speakOnSelectionOrFlip {
                 speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
@@ -144,7 +155,7 @@ struct CardView: View {
         card.back = back
         // 4. Create the list of tags for the card by finding any words that begin with a hashtag (#), and set the card's tags to that list.
         let words = front.components(separatedBy: .whitespacesAndNewlines)
-        let tags = words.filter { $0.first == "#"}
+        let tags = words.filter { $0.first == "#" }
         card.tags = tags
         // 5. Stop speech.
         speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
@@ -156,14 +167,17 @@ struct CardView: View {
         // 2. Save the previously-selected card.
         saveCard(card: oldCard)
         // 3. Load the newly-selected card.
-        loadCard(card: newCard)
+        if newCard != oldCard {
+            loadCard(card: newCard)
+        }
         // 4. Stop speech.
         speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
         // 5. If the option to speak card text on selection or flip is enabled, speak the newly-selected card's front side.
         if speechManager.speakOnSelectionOrFlip {
             speechManager.speak(text: selectedCard.front)
         }
-        editingText = true
+        backFocused = false
+        frontFocused = true
     }
 
 }

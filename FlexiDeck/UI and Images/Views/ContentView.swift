@@ -188,6 +188,7 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
+                        .focusable(false)
                 }
             }
         }
