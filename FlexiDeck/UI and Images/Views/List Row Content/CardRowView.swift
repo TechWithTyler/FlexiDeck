@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/8/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -40,6 +40,7 @@ struct CardRowView: View {
                 Text("Completed")
             }
             .toggleStyle(.circleCheckbox)
+            .labelsHidden()
             .padding(.trailing, 5)
             VStack(alignment: .leading) {
                 Text(cardWithColoredMatchingTerms(card.title ?? String(), searchText: searchText))
@@ -69,7 +70,7 @@ struct CardRowView: View {
         var attributedString = AttributedString(title)
         // 2. Check to see if the fact text contains the entered search text, case insensitive. If so, change the color of the matching part.
         if let range = attributedString.range(of: searchText, options: .caseInsensitive) {
-            attributedString[range].backgroundColor = .accentColor
+            attributedString[range].backgroundColor = .accentColor.opacity(0.5)
         }
         // 3. Return the attributed string.
         return attributedString

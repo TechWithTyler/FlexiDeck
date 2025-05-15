@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/29/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -31,7 +31,9 @@ struct CardView: View {
 
     @State var isFlipped: Bool = false
 
-    @FocusState var editingText: Bool
+    @FocusState var frontFocused: Bool
+
+    @FocusState var backFocused: Bool
 
     // MARK: - Properties - Dialog Manager
 
@@ -41,71 +43,95 @@ struct CardView: View {
 
     var body: some View {
         TranslucentFooterVStack {
-            TextEditor(text: isFlipped ? $back : $front)
-                .font(.system(size: CGFloat(cardTextSize)))
-                .scrollContentBackground(.hidden)
-                .scrollClipDisabled(true)
-                .focused($editingText)
-            } translucentFooterContent: {
+            ZStack {
+                TextEditor(text: $front)
+                    .rotation3DEffect(.degrees(isFlipped ? 90 : 0), axis: (x: 0, y: 1, z: 0))
+                    .animation(isFlipped ? .linear : .linear.delay(0.35), value: isFlipped)
+                    .font(.system(size: CGFloat(cardTextSize)))
+                    .scrollContentBackground(.hidden)
+                    .scrollClipDisabled(true)
+                    .disabled(isFlipped)
+                    .focused($frontFocused)
+                    .zIndex(isFlipped ? 0 : 1)
+                TextEditor(text: $back)
+                    .rotation3DEffect(.degrees(isFlipped ? 0 : -90), axis: (x: 0, y: 1, z: 0))
+                    .animation(isFlipped ? .linear.delay(0.35) : .linear, value: isFlipped)
+                    .font(.system(size: CGFloat(cardTextSize)))
+                    .scrollContentBackground(.hidden)
+                    .scrollClipDisabled(true)
+                    .disabled(!isFlipped)
+                    .focused($backFocused)
+                    .zIndex(isFlipped ? 1 : 0)
+            }
+        } translucentFooterContent: {
             Divider()
             Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
                 .foregroundStyle(.secondary)
-                StarRatingView(card: selectedCard)
+            StarRatingView(card: selectedCard)
         }
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
-                .onAppear {
-                    loadCard(card: selectedCard)
-                    if speechManager.speakOnSelectionOrFlip {
-                        speechManager.speak(text: front)
-                    }
-                    editingText = true
-                }
-                .onDisappear {
-                    saveCard(card: selectedCard)
-                }
-            .onChange(of: front, { oldValue, newValue in
-                saveCard(card: selectedCard)
-            })
-            .onChange(of: back, { oldValue, newValue in
-                saveCard(card: selectedCard)
-            })
-            .onChange(of: selectedCard) { oldCard, newCard in
-                selectedCardChanged(oldCard: oldCard, newCard: newCard)
+        .onAppear {
+            loadCard(card: selectedCard)
+            if speechManager.speakOnSelectionOrFlip {
+                speechManager.speak(text: front)
             }
-            .onChange(of: isFlipped) { oldValue, newValue in
-                editingText = true
-                speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
-                if speechManager.speakOnSelectionOrFlip {
-                    speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
+            frontFocused = true
+            backFocused = false
+        }
+        .onDisappear {
+            saveCard(card: selectedCard)
+        }
+        .onChange(of: front, { oldValue, newValue in
+            saveCard(card: selectedCard)
+        })
+        .onChange(of: back, { oldValue, newValue in
+            saveCard(card: selectedCard)
+        })
+        .onChange(of: selectedCard) { oldCard, newCard in
+            selectedCardChanged(oldCard: oldCard, newCard: newCard)
+        }
+        .onChange(of: isFlipped) { oldValue, newValue in
+            frontFocused = false
+            backFocused = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                if isFlipped {
+                    backFocused = true
+                } else {
+                    frontFocused = true
                 }
             }
-            .toolbar {
-                    if (selectedCard.is2Sided)! {
-                        ToolbarItem {
-                            Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
-                                isFlipped.toggle()
-                            }
-                            .keyboardShortcut(.return, modifiers: .command)
-                        }
-                    }
+            speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+            if speechManager.speakOnSelectionOrFlip {
+                speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
+            }
+        }
+        .toolbar {
+            if (selectedCard.is2Sided)! {
                 ToolbarItem {
-                    OptionsMenu(title: .menu) {
-                        if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
-                            SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
-                        }
-                        Button("Card Settings…", systemImage: "gear") {
-                            dialogManager.cardToShowSettings = selectedCard
-                        }
-                        Divider()
-                        Button(role: .destructive) {
-                            dialogManager.cardToDelete = selectedCard
-                            dialogManager.showingDeleteCard = true
-                        } label: {
-                            Label("Delete…", systemImage: "trash")
-                        }
+                    Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
+                        isFlipped.toggle()
+                    }
+                    .keyboardShortcut(.return, modifiers: .command)
+                }
+            }
+            ToolbarItem {
+                OptionsMenu(title: .menu) {
+                    if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
+                        SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
+                    }
+                    Button("Card Settings…", systemImage: "gear") {
+                        dialogManager.cardToShowSettings = selectedCard
+                    }
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.cardToDelete = selectedCard
+                        dialogManager.showingDeleteCard = true
+                    } label: {
+                        Label("Delete…", systemImage: "trash")
                     }
                 }
             }
+        }
     }
 
     // MARK: - Data Management
@@ -129,7 +155,7 @@ struct CardView: View {
         card.back = back
         // 4. Create the list of tags for the card by finding any words that begin with a hashtag (#), and set the card's tags to that list.
         let words = front.components(separatedBy: .whitespacesAndNewlines)
-        let tags = words.filter { $0.first == "#"}
+        let tags = words.filter { $0.first == "#" }
         card.tags = tags
         // 5. Stop speech.
         speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
@@ -141,14 +167,17 @@ struct CardView: View {
         // 2. Save the previously-selected card.
         saveCard(card: oldCard)
         // 3. Load the newly-selected card.
-        loadCard(card: newCard)
+        if newCard != oldCard {
+            loadCard(card: newCard)
+        }
         // 4. Stop speech.
         speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
         // 5. If the option to speak card text on selection or flip is enabled, speak the newly-selected card's front side.
         if speechManager.speakOnSelectionOrFlip {
             speechManager.speak(text: selectedCard.front)
         }
-        editingText = true
+        backFocused = false
+        frontFocused = true
     }
 
 }

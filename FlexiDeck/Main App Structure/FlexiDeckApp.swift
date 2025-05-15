@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/26/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -63,11 +63,9 @@ struct FlexiDeckApp: App {
         }
         #if os(macOS)
         Settings {
-            SAMVisualEffectViewSwiftUIRepresentable {
                 SettingsView()
                     .environmentObject(dialogManager)
                     .environmentObject(speechManager)
-            }
         }
         #endif
     }

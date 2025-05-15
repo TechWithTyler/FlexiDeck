@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/6/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -31,7 +31,7 @@ struct SettingsView: View {
                 SAMVisualEffectViewSwiftUIRepresentable {
                     DisplaySettingsPageView()
                 }
-                .frame(width: 400, height: 320)
+                .frame(width: 400, height: 360)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
@@ -40,7 +40,7 @@ struct SettingsView: View {
                 SAMVisualEffectViewSwiftUIRepresentable {
                     SpeechSettingsPageView()
                 }
-                .frame(width: 400, height: 185)
+                .frame(width: 400, height: 220)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)

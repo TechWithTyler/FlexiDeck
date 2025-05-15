@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/26/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -77,7 +77,7 @@ struct ContentView: View {
                                 }
                             }
                     }
-                    .onDelete(perform: deleteItems)
+                    .onDelete(perform: deleteDecks)
                 }
             } else {
                 Text("No decks")
@@ -188,6 +188,7 @@ struct ContentView: View {
                         .font(.largeTitle)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
+                        .focusable(false)
                 }
             }
         }
@@ -209,12 +210,11 @@ struct ContentView: View {
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    private func deleteDecks(at offsets: IndexSet) {
+        guard let index = offsets.first else { return }
         withAnimation {
-            for index in offsets {
-                dialogManager.deckToDelete = decks[index]
-                dialogManager.showingDeleteDeck = true
-            }
+            dialogManager.deckToDelete = decks[index]
+            dialogManager.showingDeleteDeck = true
         }
     }
 

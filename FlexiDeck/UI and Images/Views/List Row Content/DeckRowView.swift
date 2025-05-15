@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/20/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -21,9 +21,7 @@ struct DeckRowView: View {
     var body: some View {
         HStack {
             Text(deck.name ?? String())
-            Spacer()
-            Text(cardCountText)
-                .foregroundStyle(.secondary)
+                .badge(cardCountText)
         }
     }
 }

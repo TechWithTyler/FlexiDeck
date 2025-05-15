@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/22/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -47,12 +47,12 @@ class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
 
     // MARK: - Speak Text
 
-    func speak(text: String) {
+    func speak(text: String, forSettingsPreview: Bool = false) {
         DispatchQueue.main.async { [self] in
             // 1. Stop any in-progress speech.
             speechSynthesizer.stopSpeaking(at: .immediate)
             // 2. If the text to be spoken is the text currently being spoken, speech is stopped and we don't continue. The exception is the sample text which is spoken when choosing a voice--the sample text is spoken each time the voice is changed regardless of whether it's currently being spoken.
-            if textBeingSpoken != text || text == SATextSettingsPreviewString {
+            if textBeingSpoken != text || forSettingsPreview {
                 // 3. If we get here, create an AVSpeechUtterance with the given String (in this case, the text passed into this method).
                 let utterance = AVSpeechUtterance(string: text)
                 // 4. Set the voice for the utterance.

@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 10/1/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -15,27 +15,21 @@ struct DisplaySettingsPageView: View {
 
     @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
 
-    // MARK: - Properties - Booleans
-
-    @AppStorage(UserDefaults.KeyNames.showNumberOfSides) var showNumberOfSides: Bool = false
-
-    @AppStorage(UserDefaults.KeyNames.cardDateTimeDisplay) var cardDateTimeDisplay: Bool = false
+    // MARK: - Body
 
     var body: some View {
         Form {
             Section {
                 TextSizeSlider(labelText: "Card Text Size", textSize: $cardTextSize, previewText: SATextSettingsPreviewString)
             }
-            Section {
-                Picker("Card Date/Time In Card List", selection: $cardDateTimeDisplay) {
-                    Text("Date Only").tag(false)
-                    Text("Date and Time").tag(true)
-                }
-                Toggle("Show Number Of Sides In Card List", isOn: $showNumberOfSides)
+            Section("Card List Detail") {
+                CardListDetailOptions()
             }
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     DisplaySettingsPageView()

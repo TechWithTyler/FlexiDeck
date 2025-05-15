@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/2/24.
-//  Copyright © 2024 SheftApps. All rights reserved.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 import SwiftUI
@@ -31,18 +31,16 @@ struct CardListView: View {
         guard let cards = deck.cards else {
             fatalError("Couldn't get tags")
         }
-        // 2. Create an array to hold the tags.
-        var tags: [String] = []
+        // 2. Create a set to hold the tags.
+        var tags: Set<String> = []
         // 3. Loop through each card in the deck.
         for card in cards {
-            // 4. Loop through each tag in the card's tags array and add it to the tags array.
+            // 4. Loop through each tag in the card's tags array and add it to the tags set.
             for tag in card.tags {
-                tags.append(tag)
+                tags.insert(tag)
             }
         }
-        // 5. Remove duplicate tags.
-        tags.removeDuplicates()
-        // 6. Return the tags array.
+        // 5. Return the tags set as a sorted array.
         return tags.sorted(by: <)
     }
 
@@ -70,37 +68,23 @@ struct CardListView: View {
             fatalError("Couldn't sort cards")
         }
         // 2. Choose how to sort the cards based on the selected card sort mode.
-        switch cardSortMode {
-        case .titleAscending:
-            return cards.sorted { cardA, cardB in
+        return cards.sorted { cardA, cardB in
+            switch cardSortMode {
+            case .titleAscending:
                 return cardA.title! < cardB.title!
-            }
-        case .titleDescending:
-            return cards.sorted { cardA, cardB in
+            case .titleDescending:
                 return cardA.title! > cardB.title!
-            }
-        case .starRatingAscending:
-            return cards.sorted { cardA, cardB in
+            case .starRatingAscending:
                 return cardA.starRating < cardB.starRating
-            }
-        case .starRatingDescending:
-            return cards.sorted { cardA, cardB in
+            case .starRatingDescending:
                 return cardA.starRating > cardB.starRating
-            }
-        case .creationDateAscending:
-            return cards.sorted { cardA, cardB in
+            case .creationDateAscending:
                 return cardA.creationDate < cardB.creationDate
-            }
-        case .creationDateDescending:
-            return cards.sorted { cardA, cardB in
+            case .creationDateDescending:
                 return cardA.creationDate > cardB.creationDate
-            }
-        case .modifiedDateAscending:
-            return cards.sorted { cardA, cardB in
+            case .modifiedDateAscending:
                 return cardA.modifiedDate < cardB.modifiedDate
-            }
-        default:
-            return cards.sorted { cardA, cardB in
+            default:
                 return cardA.modifiedDate > cardB.modifiedDate
             }
         }
@@ -224,7 +208,7 @@ struct CardListView: View {
                             selectedCard = nil
                         }
                         .onChange(of: card.starRating) { oldValue, newValue in
-                            if !ratingFilteredCards.contains(selectedCard!) {
+                            if let card = selectedCard, !ratingFilteredCards.contains(card) {
                                 selectedCard = nil
                             }
                         }
@@ -234,7 +218,7 @@ struct CardListView: View {
                             }
                         }
                     }
-                    .onDelete(perform: deleteItems)
+                    .onDelete(perform: deleteCards)
                 }
 #if !os(macOS)
                 .listStyle(.insetGrouped)
@@ -271,6 +255,9 @@ struct CardListView: View {
                 .padding()
             }
         }
+        .contextMenu {
+            CardListDetailOptions()
+        }
         .onChange(of: allTags) { oldValue, newValue in
             if !allTags.contains(cardFilterTags) {
                 cardFilterTags = "off"
@@ -278,8 +265,8 @@ struct CardListView: View {
         }
         .onChange(of: searchResults) { oldValue, newValue in
             if let card = selectedCard, !newValue.contains(card) {
-                    selectedCard = nil
-                }
+                selectedCard = nil
+            }
         }
         .animation(.default, value: searchResults)
         .searchable(text: $searchText, placement: .automatic, prompt: Text("Search \((deck.name)!)"))
@@ -318,60 +305,20 @@ struct CardListView: View {
 
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem {
-            Menu {
-                Picker("Sides (\(cardFilterSides == 0 ? "off" : "on"))", selection: $cardFilterSides) {
-                    Text("Off").tag(0)
-                    Divider()
-                    Text("1-Sided Cards").tag(1)
-                    Text("2-Sided Cards").tag(2)
-                }
-                if !allTags.isEmpty {
-                    Picker("Tags (\(cardFilterTags == "off" ? "off" : "on"))", selection: $cardFilterTags) {
-                        // All tags are prefixed with #, so there can't be any confusion between "Off"/"Without Tags" and a tag "#off"/"#none".
-                        Text("Off").tag("off")
-                        Divider()
-                        Text("Without Tags").tag("none")
-                        Divider()
-                        ForEach(allTags, id: \.self) { tag in
-                            Text(tag).tag(tag)
-                        }
-                    }
-                }
-                Picker("Completed Status (\(cardFilterComplete == 0 ? "off" : "on"))", selection: $cardFilterComplete) {
-                    Text("Off").tag(0)
-                    Divider()
-                    Text("Not Completed").tag(1)
-                    Text("Completed").tag(2)
-                }
-                Picker("Star Rating (\(cardFilterRating == 0 ? "off" : "on"))", selection: $cardFilterRating) {
-                    Text("Off").tag(0)
-                    Divider()
-                    Text("Without Rating").tag(-1)
-                    Divider()
-                    Text("1 Star").tag(1)
-                    Text("2 Stars").tag(2)
-                    Text("3 Stars").tag(3)
-                    Text("4 Stars").tag(4)
-                    Text("5 Stars").tag(5)
-                }
-                Divider()
-                Button("Reset") {
-                    resetCardFilter()
-                }
-            } label: {
-                Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
-                    .animatedSymbolReplacement()
-            }
-            .accessibilityLabel("Filter (\(cardFilterEnabled ? "on" : "off"))")
-            .menuIndicator(.hidden)
-            .pickerStyle(.menu)
-        }
 #if os(macOS)
+        ToolbarItem {
+            filterToolbarItem
+        }
         ToolbarItem {
             addCardButton
         }
 #else
+        ToolbarItem(placement: .bottomBar) {
+            filterToolbarItem
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Spacer()
+        }
         ToolbarItem(placement: .bottomBar) {
             addCardButton
                 .labelStyle(.titleAndIcon)
@@ -379,20 +326,27 @@ struct CardListView: View {
 #endif
         ToolbarItem {
             OptionsMenu(title: .menu) {
-                Picker("Sort", selection: $cardSortMode) {
-                    Text("Title (ascending)").tag(Card.SortMode.titleAscending)
-                    Text("Title (descending)").tag(Card.SortMode.titleDescending)
-                    Divider()
-                    Text("Creation Date (ascending)").tag(Card.SortMode.creationDateAscending)
-                    Text("Creation Date (descending)").tag(Card.SortMode.creationDateDescending)
-                    Divider()
-                    Text("Modified Date (ascending)").tag(Card.SortMode.modifiedDateAscending)
-                    Text("Modified Date (descending)").tag(Card.SortMode.modifiedDateDescending)
-                    Divider()
-                    Text("Star Rating (ascending)").tag(Card.SortMode.starRatingAscending)
-                    Text("Star Rating (descending)").tag(Card.SortMode.starRatingDescending)
+                Menu("Card List Detail") {
+                    CardListDetailOptions()
                 }
                 .pickerStyle(.menu)
+                .toggleStyle(.automatic)
+                Divider()
+                Picker("Sort", selection: $cardSortMode) {
+                    Text("Title (Ascending)").tag(Card.SortMode.titleAscending)
+                    Text("Title (Descending)").tag(Card.SortMode.titleDescending)
+                    Divider()
+                    Text("Creation Date (Ascending)").tag(Card.SortMode.creationDateAscending)
+                    Text("Creation Date (Descending)").tag(Card.SortMode.creationDateDescending)
+                    Divider()
+                    Text("Modified Date (Ascending)").tag(Card.SortMode.modifiedDateAscending)
+                    Text("Modified Date (Descending)").tag(Card.SortMode.modifiedDateDescending)
+                    Divider()
+                    Text("Star Rating (Ascending)").tag(Card.SortMode.starRatingAscending)
+                    Text("Star Rating (Descending)").tag(Card.SortMode.starRatingDescending)
+                }
+                .pickerStyle(.menu)
+                Divider()
                 if searchResults.count > 1 {
                     Button("Show Random Card", systemImage: "questionmark.square") {
                         showRandomCard()
@@ -426,6 +380,58 @@ struct CardListView: View {
         }
     }
 
+    @ViewBuilder
+    var filterToolbarItem: some View {
+        Menu {
+            Picker("Sides (\(cardFilterSides == 0 ? "Off" : "On"))", selection: $cardFilterSides) {
+                Text("Off").tag(0)
+                Divider()
+                Text("1-Sided Cards").tag(1)
+                Text("2-Sided Cards").tag(2)
+            }
+            if !allTags.isEmpty {
+                Picker("Tags (\(cardFilterTags == "off" ? "Off" : "On"))", selection: $cardFilterTags) {
+                    // All tags are prefixed with #, so there can't be any confusion between "Off"/"Without Tags" and a tag "#off"/"#none".
+                    Text("Off").tag("off")
+                    Divider()
+                    Text("Without Tags").tag("none")
+                    Divider()
+                    ForEach(allTags, id: \.self) { tag in
+                        Text(tag).tag(tag)
+                    }
+                }
+            }
+            Picker("Completed Status (\(cardFilterComplete == 0 ? "Off" : "On"))", selection: $cardFilterComplete) {
+                Text("Off").tag(0)
+                Divider()
+                Text("Not Completed").tag(1)
+                Text("Completed").tag(2)
+            }
+            Picker("Star Rating (\(cardFilterRating == 0 ? "off" : "on"))", selection: $cardFilterRating) {
+                Text("Off").tag(0)
+                Divider()
+                Text("Without Rating").tag(-1)
+                Divider()
+                Text("1 Star").tag(1)
+                Text("2 Stars").tag(2)
+                Text("3 Stars").tag(3)
+                Text("4 Stars").tag(4)
+                Text("5 Stars").tag(5)
+            }
+            Divider()
+            Button("Reset") {
+                resetCardFilter()
+            }
+        } label: {
+            Label("Filter", systemImage: cardFilterEnabled ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                .animatedSymbolReplacement()
+        }
+        .accessibilityLabel("Filter (\(cardFilterEnabled ? "On" : "Off"))")
+        .menuIndicator(.hidden)
+        .pickerStyle(.menu)
+
+    }
+
     // MARK: - Add Card Button
 
     @ViewBuilder
@@ -441,7 +447,7 @@ struct CardListView: View {
 
     func showRandomCard() {
         // 1. Get a random card.
-        let randomCard = deck.cards?.randomElement()!
+        let randomCard = searchResults.randomElement()!
         // 2. If the random card is different than the selected card, show it.
         if randomCard != selectedCard {
             selectedCard = randomCard
@@ -451,7 +457,7 @@ struct CardListView: View {
         }
     }
 
-    // MARK: - Mark Cards As Completed/Not Completed
+    // MARK: - Mark All Cards As Completed/Not Completed
 
     func markCardsAs(completed: Bool) {
         for card in searchResults {
@@ -484,12 +490,11 @@ struct CardListView: View {
         }
     }
 
-    private func deleteItems(offsets: IndexSet) {
+    private func deleteCards(at offsets: IndexSet) {
+        guard let index = offsets.first else { return }
         withAnimation {
-            for index in offsets {
-                dialogManager.cardToDelete = searchResults[index]
-                dialogManager.showingDeleteCard = true
-            }
+            dialogManager.cardToDelete = searchResults[index]
+            dialogManager.showingDeleteCard = true
         }
     }
 
