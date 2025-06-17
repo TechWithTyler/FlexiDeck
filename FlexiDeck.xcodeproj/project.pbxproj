@@ -21,6 +21,7 @@
 		8D5DE3302C582DB400FD0502 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3272C582DB400FD0502 /* Assets.xcassets */; };
 		8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */; };
 		8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3342C582F1200FD0502 /* CardView.swift */; };
+		8D6541E02DFB745F0001914E /* FlexiDeck.icon in Resources */ = {isa = PBXBuildFile; fileRef = 8D6541DF2DFB745F0001914E /* FlexiDeck.icon */; };
 		8D71C81D2CDEBE9800072E50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8D71C81C2CDEBE9800072E50 /* PrivacyInfo.xcprivacy */; };
 		8D8555102C94D696006A14E3 /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550F2C94D696006A14E3 /* StarButton.swift */; };
 		8D8555122C94D6FD006A14E3 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8555112C94D6FD006A14E3 /* StarRatingView.swift */; };
@@ -71,6 +72,7 @@
 		8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlexiDeck.entitlements; sourceTree = "<group>"; };
 		8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckApp.swift; sourceTree = "<group>"; };
 		8D5DE3342C582F1200FD0502 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		8D6541DF2DFB745F0001914E /* FlexiDeck.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = FlexiDeck.icon; sourceTree = "<group>"; };
 		8D71C81C2CDEBE9800072E50 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8D71C81E2CDEC25000072E50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D85550F2C94D696006A14E3 /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */,
 				8DCB0A5A2C62BE5C00EB82DC /* Views */,
 				8D5DE3272C582DB400FD0502 /* Assets.xcassets */,
+				8D6541DF2DFB745F0001914E /* FlexiDeck.icon */,
 				8D5DE3262C582DB400FD0502 /* Preview Content */,
 			);
 			path = "UI and Images";
@@ -292,7 +295,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1640;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					8D0768592C543AED007F6501 = {
 						CreatedOnToolsVersion = 16.0;
@@ -322,6 +325,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D6541E02DFB745F0001914E /* FlexiDeck.icon in Resources */,
 				8D71C81D2CDEBE9800072E50 /* PrivacyInfo.xcprivacy in Resources */,
 				8D5DE3302C582DB400FD0502 /* Assets.xcassets in Resources */,
 				8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */,
@@ -426,6 +430,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -484,6 +489,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 			};
@@ -492,15 +498,17 @@
 		8D07686C2C543AEF007F6501 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = FlexiDeck;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 400;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "FlexiDeck/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
@@ -534,15 +542,17 @@
 		8D07686D2C543AEF007F6501 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = FlexiDeck;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 400;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "FlexiDeck/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
