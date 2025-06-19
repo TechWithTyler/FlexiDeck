@@ -21,7 +21,7 @@
 		8D5DE3302C582DB400FD0502 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3272C582DB400FD0502 /* Assets.xcassets */; };
 		8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */; };
 		8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3342C582F1200FD0502 /* CardView.swift */; };
-		8D6541E02DFB745F0001914E /* FlexiDeck.icon in Resources */ = {isa = PBXBuildFile; fileRef = 8D6541DF2DFB745F0001914E /* FlexiDeck.icon */; };
+		8D6541E02DFB745F0001914E /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 8D6541DF2DFB745F0001914E /* AppIcon.icon */; };
 		8D71C81D2CDEBE9800072E50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8D71C81C2CDEBE9800072E50 /* PrivacyInfo.xcprivacy */; };
 		8D8555102C94D696006A14E3 /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550F2C94D696006A14E3 /* StarButton.swift */; };
 		8D8555122C94D6FD006A14E3 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8555112C94D6FD006A14E3 /* StarRatingView.swift */; };
@@ -72,7 +72,7 @@
 		8D5DE32A2C582DB400FD0502 /* FlexiDeck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlexiDeck.entitlements; sourceTree = "<group>"; };
 		8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckApp.swift; sourceTree = "<group>"; };
 		8D5DE3342C582F1200FD0502 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		8D6541DF2DFB745F0001914E /* FlexiDeck.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = FlexiDeck.icon; sourceTree = "<group>"; };
+		8D6541DF2DFB745F0001914E /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		8D71C81C2CDEBE9800072E50 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8D71C81E2CDEC25000072E50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D85550F2C94D696006A14E3 /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
@@ -216,7 +216,7 @@
 				8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */,
 				8DCB0A5A2C62BE5C00EB82DC /* Views */,
 				8D5DE3272C582DB400FD0502 /* Assets.xcassets */,
-				8D6541DF2DFB745F0001914E /* FlexiDeck.icon */,
+				8D6541DF2DFB745F0001914E /* AppIcon.icon */,
 				8D5DE3262C582DB400FD0502 /* Preview Content */,
 			);
 			path = "UI and Images";
@@ -325,7 +325,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D6541E02DFB745F0001914E /* FlexiDeck.icon in Resources */,
+				8D6541E02DFB745F0001914E /* AppIcon.icon in Resources */,
 				8D71C81D2CDEBE9800072E50 /* PrivacyInfo.xcprivacy in Resources */,
 				8D5DE3302C582DB400FD0502 /* Assets.xcassets in Resources */,
 				8D5DE3312C582DB400FD0502 /* Preview Assets.xcassets in Resources */,
@@ -498,7 +498,7 @@
 		8D07686C2C543AEF007F6501 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = FlexiDeck;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
@@ -542,7 +542,7 @@
 		8D07686D2C543AEF007F6501 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = FlexiDeck;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
