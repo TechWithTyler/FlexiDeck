@@ -90,6 +90,13 @@ struct CardView: View {
         .onChange(of: selectedCard) { oldCard, newCard in
             selectedCardChanged(oldCard: oldCard, newCard: newCard)
         }
+        .onChange(of: selectedCard.is2Sided!, { oldValue, newValue in
+            backFocused = false
+            isFlipped = false
+            if !newValue {
+                back.removeAll()
+            }
+        })
         .onChange(of: isFlipped) { oldValue, newValue in
             frontFocused = false
             backFocused = false
@@ -138,7 +145,13 @@ struct CardView: View {
 
     func loadCard(card: Card) {
         front = card.front
-        back = card.back
+        if card.is2Sided! {
+            back = card.back
+        } else {
+            backFocused = false
+            isFlipped = false
+            back.removeAll()
+        }
     }
 
     func saveCard(card: Card) {
@@ -152,7 +165,13 @@ struct CardView: View {
         }
         // 3. Set the card's front and back text.
         card.front = front
-        card.back = back
+        if card.is2Sided! {
+            card.back = back
+        } else {
+            backFocused = false
+            isFlipped = false
+            card.back.removeAll()
+        }
         // 4. Create the list of tags for the card by finding any words that begin with a hashtag (#), and set the card's tags to that list.
         let words = front.components(separatedBy: .whitespacesAndNewlines)
         let tags = words.filter { $0.first == "#" }
