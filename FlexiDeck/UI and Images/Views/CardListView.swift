@@ -332,7 +332,7 @@ struct CardListView: View {
                 .pickerStyle(.menu)
                 .toggleStyle(.automatic)
                 Divider()
-                Picker("Sort", selection: $cardSortMode) {
+                Picker(selection: $cardSortMode) {
                     Text("Title (Ascending)").tag(Card.SortMode.titleAscending)
                     Text("Title (Descending)").tag(Card.SortMode.titleDescending)
                     Divider()
@@ -344,6 +344,8 @@ struct CardListView: View {
                     Divider()
                     Text("Star Rating (Ascending)").tag(Card.SortMode.starRatingAscending)
                     Text("Star Rating (Descending)").tag(Card.SortMode.starRatingDescending)
+                } label: {
+                    Label("Sort Cards By", systemImage: "arrow.up.arrow.down")
                 }
                 .pickerStyle(.menu)
                 Divider()
