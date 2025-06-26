@@ -64,7 +64,6 @@ struct CardView: View {
                     .zIndex(isFlipped ? 1 : 0)
             }
         } translucentFooterContent: {
-            Divider()
             Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
                 .foregroundStyle(.secondary)
             StarRatingView(card: selectedCard)
