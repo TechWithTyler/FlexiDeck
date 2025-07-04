@@ -9,6 +9,7 @@
 import SwiftUI
 import SwiftData
 import SheftAppsStylishUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
 
@@ -33,6 +34,10 @@ struct ContentView: View {
     // MARK: - Properties - Dialog Manager
 
     @EnvironmentObject var dialogManager: DialogManager
+    
+    // MARK: - Properties - Import/Export Manager
+    
+    @ObservedObject private var importExportManager = ImportExportManager.shared
 
     // MARK: - Body
 
@@ -47,11 +52,50 @@ struct ContentView: View {
         .sheet(item: $dialogManager.deckToShowSettings) { deck in
             DeckSettingsView(deck: deck)
         }
+        .sheet(isPresented: $dialogManager.showingImportPicker) {
+            #if os(iOS)
+            DocumentPicker { url in
+                importExportManager.importDecks(from: url, into: modelContext)
+            }
+            #endif
+        }
+        .sheet(isPresented: $dialogManager.showingExportShare) {
+            if let url = dialogManager.exportFileURL {
+                ShareSheet(items: [url])
+            }
+        }
+        .onChange(of: dialogManager.showingExportShare) { oldValue, newValue in
+            if !newValue && oldValue {
+                // Cleanup temporary files after sharing is dismissed
+                importExportManager.cleanupTemporaryFiles()
+            }
+        }
 #if !os(macOS)
         .sheet(isPresented: $dialogManager.showingSettings) {
             SettingsView()
         }
         #endif
+        .alert("Import Error", isPresented: .constant(importExportManager.importError != nil)) {
+            Button("OK") {
+                importExportManager.importError = nil
+            }
+        } message: {
+            Text(importExportManager.importError ?? "")
+        }
+        .alert("Export Error", isPresented: .constant(importExportManager.exportError != nil)) {
+            Button("OK") {
+                importExportManager.exportError = nil
+            }
+        } message: {
+            Text(importExportManager.exportError ?? "")
+        }
+        .alert("Import Success", isPresented: .constant(importExportManager.importSuccess != nil)) {
+            Button("OK") {
+                importExportManager.importSuccess = nil
+            }
+        } message: {
+            Text(importExportManager.importSuccess ?? "")
+        }
     }
 
     @ViewBuilder
@@ -66,6 +110,16 @@ struct ContentView: View {
                             .contextMenu {
                                 Button("Deck Settings…", systemImage: "gear") {
                                     dialogManager.deckToShowSettings = deck
+                                }
+                                Button("Export Deck…", systemImage: "square.and.arrow.up") {
+                                    if let url = importExportManager.exportDeck(deck) {
+                                        #if os(macOS)
+                                        importExportManager.showExportPanel(for: url)
+                                        #else
+                                        dialogManager.exportFileURL = url
+                                        dialogManager.showingExportShare = true
+                                        #endif
+                                    }
                                 }
                                 Divider()
                                 Button(role: .destructive) {
@@ -135,6 +189,26 @@ struct ContentView: View {
             #endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
+                    Button("Import Deck…", systemImage: "square.and.arrow.down") {
+                        #if os(macOS)
+                        importExportManager.showImportPanel(modelContext: modelContext)
+                        #else
+                        dialogManager.showingImportPicker = true
+                        #endif
+                    }
+                    if !decks.isEmpty {
+                        Button("Export All Decks…", systemImage: "square.and.arrow.up") {
+                            if let url = importExportManager.exportAllDecks(decks) {
+                                #if os(macOS)
+                                importExportManager.showExportPanel(for: url)
+                                #else
+                                dialogManager.exportFileURL = url
+                                dialogManager.showingExportShare = true
+                                #endif
+                            }
+                        }
+                    }
+                    Divider()
                     Button(role: .destructive) {
                         dialogManager.showingDeleteAllDecks = true
                     } label: {

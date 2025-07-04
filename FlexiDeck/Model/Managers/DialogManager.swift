@@ -31,6 +31,15 @@ class DialogManager: ObservableObject {
 
     // Whether the "delete all decks" alert should be/is being displayed.
     @Published var showingDeleteAllDecks: Bool = false
+    
+    // Whether the import document picker should be/is being displayed.
+    @Published var showingImportPicker: Bool = false
+    
+    // Whether the export share sheet should be/is being displayed.
+    @Published var showingExportShare: Bool = false
+    
+    // The URL of the file to be shared for export.
+    @Published var exportFileURL: URL?
 
 #if !os(macOS)
     // Whether the settings sheet should be/is being displayed.

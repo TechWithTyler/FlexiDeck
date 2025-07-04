@@ -8,6 +8,7 @@
 
 import SwiftUI
 import SheftAppsStylishUI
+import UniformTypeIdentifiers
 
 struct DeckSettingsView: View {
 
@@ -30,6 +31,12 @@ struct DeckSettingsView: View {
     // MARK: - Properties - Dismiss Action
 
     @Environment(\.dismiss) var dismiss
+    
+    // MARK: - Properties - Import/Export
+    
+    @ObservedObject private var importExportManager = ImportExportManager.shared
+    @State private var showingExportShare = false
+    @State private var exportFileURL: URL?
 
     var cardsWillLoseBackSide: Bool {
         guard let cards = deck.cards else { return false }
@@ -70,6 +77,11 @@ struct DeckSettingsView: View {
                     }
                     .disabled(newName.isEmpty)
                 }
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Export Deck", systemImage: "square.and.arrow.up") {
+                        exportDeck()
+                    }
+                }
             }
         }
 #if !os(macOS)
@@ -77,6 +89,26 @@ struct DeckSettingsView: View {
 #endif
         .onAppear {
             applyCurrentSettings()
+        }
+        .sheet(isPresented: $showingExportShare) {
+            if let url = exportFileURL {
+                #if os(iOS)
+                ShareSheet(items: [url])
+                #endif
+            }
+        }
+        .onChange(of: showingExportShare) { oldValue, newValue in
+            if !newValue && oldValue {
+                // Cleanup temporary files after sharing is dismissed
+                importExportManager.cleanupTemporaryFiles()
+            }
+        }
+        .alert("Export Error", isPresented: .constant(importExportManager.exportError != nil)) {
+            Button("OK") {
+                importExportManager.exportError = nil
+            }
+        } message: {
+            Text(importExportManager.exportError ?? "")
         }
     }
 
@@ -104,6 +136,19 @@ struct DeckSettingsView: View {
                 }
                 }
             }
+    }
+    
+    // MARK: - Export Deck
+    
+    func exportDeck() {
+        if let url = importExportManager.exportDeck(deck) {
+            #if os(macOS)
+            importExportManager.showExportPanel(for: url)
+            #else
+            exportFileURL = url
+            showingExportShare = true
+            #endif
+        }
     }
 
 }
