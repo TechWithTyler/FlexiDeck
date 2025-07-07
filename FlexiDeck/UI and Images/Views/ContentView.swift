@@ -30,9 +30,11 @@ struct ContentView: View {
 
     @State private var selectedCard: Card? = nil
 
-    // MARK: - Properties - Dialog Manager
+    // MARK: - Properties - Managers
 
     @EnvironmentObject var dialogManager: DialogManager
+
+    @EnvironmentObject var importExportManager: ImportExportManager
 
     // MARK: - Body
 
@@ -51,7 +53,28 @@ struct ContentView: View {
         .sheet(isPresented: $dialogManager.showingSettings) {
             SettingsView()
         }
-        #endif
+#endif
+        .fileImporter(
+            isPresented: $importExportManager.showingImporter,
+            allowedContentTypes: [.json],
+            allowsMultipleSelection: true
+        ) { result in
+            importExportManager.handleFileImport(result: result, modelContext: modelContext)
+        }
+        .fileExporter(
+            isPresented: $importExportManager.showingExporter,
+            document: ExportedDeck(data: importExportManager.deckDataToExport ?? Data()),
+            contentType: .json,
+            defaultFilename: selectedDeck?.name ?? "Deck"
+        ) { result in
+            importExportManager.handleFileExport(result: result)
+        }
+        .alert(isPresented: $importExportManager.showingImportError, error: importExportManager.importError) {
+            Button("OK") {
+                importExportManager.showingImportError = false
+                importExportManager.importError = nil
+            }
+        }
     }
 
     @ViewBuilder
@@ -64,6 +87,8 @@ struct ContentView: View {
                             DeckRowView(deck: deck)
                         }
                             .contextMenu {
+                                ExportButton(deck: deck)
+                                Divider()
                                 Button("Deck Settings…", systemImage: "gear") {
                                     dialogManager.deckToShowSettings = deck
                                 }
@@ -90,9 +115,9 @@ struct ContentView: View {
             selectedCard = nil
         }
         .navigationTitle("FlexiDeck")
-        #if !os(macOS)
+#if !os(macOS)
         .navigationBarTitleDisplayMode(.large)
-        #endif
+#endif
 #if os(macOS)
         .navigationSplitViewColumnWidth(min: 300, ideal: 300)
 #endif
@@ -123,29 +148,36 @@ struct ContentView: View {
             }
         }
         .toolbar {
-            #if os(macOS)
+#if os(macOS)
             ToolbarItem {
                 newDeckButton
             }
-            #else
+#else
             ToolbarItem(placement: .bottomBar) {
                 newDeckButton
                     .labelStyle(.titleAndIcon)
             }
-            #endif
+#endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
+                    Button {
+                        importExportManager.showDeckImport()
+                    } label: {
+                        Label("Import Deck…", systemImage: "square.and.arrow.down")
+                    }
+                    Divider()
                     Button(role: .destructive) {
                         dialogManager.showingDeleteAllDecks = true
                     } label: {
                         Label("Delete All Decks…", systemImage: "trash.fill")
                             .foregroundStyle(.red)
                     }
-                    #if !os(macOS)
+#if !os(macOS)
+                    Divider()
                     Button("Settings…", systemImage: "gear") {
                         dialogManager.showingSettings = true
                     }
-                    #endif
+#endif
                 }
             }
         }
@@ -165,10 +197,10 @@ struct ContentView: View {
                 CardListView(deck: deck, selectedCard: $selectedCard)
             } else {
                 if !decks.isEmpty {
-                Text("Select a deck")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
+                    Text("Select a deck")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
                 }
             }
         }

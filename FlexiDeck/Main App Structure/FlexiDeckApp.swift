@@ -24,6 +24,9 @@ struct FlexiDeckApp: App {
     // Handles the display of dialogs in the app.
     @ObservedObject var dialogManager = DialogManager()
 
+    // Handles import/export of decks.
+    @ObservedObject var importExportManager = ImportExportManager()
+
     // Handles speech in the app.
     @ObservedObject var speechManager = SpeechManager()
 
@@ -54,6 +57,7 @@ struct FlexiDeckApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(dialogManager)
+                .environmentObject(importExportManager)
                 .environmentObject(speechManager)
                 .ignoresSafeArea(edges: .all)
         }

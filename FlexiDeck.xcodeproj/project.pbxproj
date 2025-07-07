@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D12ADD82E1871C500A59606 /* DeckImportError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADD72E1871C500A59606 /* DeckImportError.swift */; };
+		8D12ADDB2E18732D00A59606 /* ExportedDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */; };
+		8D12ADDD2E1C6A8000A59606 /* ExportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */; };
+		8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */; };
 		8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */; };
 		8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D26277E2C77D81000D11F80 /* SpeechManager.swift */; };
 		8D2627812C77D87A00D11F80 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2627802C77D87A00D11F80 /* Globals.swift */; };
@@ -57,6 +61,10 @@
 
 /* Begin PBXFileReference section */
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D12ADD72E1871C500A59606 /* DeckImportError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckImportError.swift; sourceTree = "<group>"; };
+		8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportedDeck.swift; sourceTree = "<group>"; };
+		8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportButton.swift; sourceTree = "<group>"; };
+		8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportManager.swift; sourceTree = "<group>"; };
 		8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaVersioning.swift; sourceTree = "<group>"; };
 		8D26277E2C77D81000D11F80 /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
 		8D2627802C77D87A00D11F80 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
@@ -134,6 +142,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8D12ADD92E18730100A59606 /* Deck Import and Export */ = {
+			isa = PBXGroup;
+			children = (
+				8D12ADD72E1871C500A59606 /* DeckImportError.swift */,
+				8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */,
+			);
+			path = "Deck Import and Export";
+			sourceTree = "<group>";
+		};
 		8D181A3A2C6FEF8A00E46376 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +167,7 @@
 			children = (
 				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
 				8D26277E2C77D81000D11F80 /* SpeechManager.swift */,
+				8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -159,6 +177,7 @@
 			children = (
 				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
 				8D85550F2C94D696006A14E3 /* StarButton.swift */,
+				8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -203,6 +222,7 @@
 		8DCB0A582C62BE2D00EB82DC /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				8D12ADD92E18730100A59606 /* Deck Import and Export */,
 				8DCB0A632C640B7B00EB82DC /* SwiftData */,
 				8D26277D2C77D80000D11F80 /* Managers */,
 				8D38ED622CAC98E300CCC422 /* Settings */,
@@ -342,12 +362,14 @@
 				8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */,
 				8D8555102C94D696006A14E3 /* StarButton.swift in Sources */,
 				8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */,
+				8D12ADDB2E18732D00A59606 /* ExportedDeck.swift in Sources */,
 				8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */,
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
 				8D2627812C77D87A00D11F80 /* Globals.swift in Sources */,
 				8D38ED5C2CAC8F3E00CCC422 /* SpeechSettingsPageView.swift in Sources */,
 				8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */,
 				8DDE5FEC2CB86B4900697F70 /* AppDelegate.swift in Sources */,
+				8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */,
 				8DA20A152C7547EA001ED42E /* DeckRowView.swift in Sources */,
 				8D38ED602CAC906D00CCC422 /* SettingsPage.swift in Sources */,
 				8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */,
@@ -355,6 +377,7 @@
 				8DC964E42D0B877B00984466 /* CardListDetailOptions.swift in Sources */,
 				8D38ED5A2CAC8EC500CCC422 /* DisplaySettingsPageView.swift in Sources */,
 				8DE403B52C66B62600D61D6E /* UserDefaultsKeyNames.swift in Sources */,
+				8D12ADD82E1871C500A59606 /* DeckImportError.swift in Sources */,
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
 				8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */,
 				8D8555122C94D6FD006A14E3 /* StarRatingView.swift in Sources */,
@@ -363,6 +386,7 @@
 				8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */,
 				8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */,
 				8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */,
+				8D12ADDD2E1C6A8000A59606 /* ExportButton.swift in Sources */,
 				8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */,
 				8DE403B32C66B55100D61D6E /* FlexiDeckCommands.swift in Sources */,
 			);
@@ -507,8 +531,18 @@
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "FlexiDeck/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
@@ -551,8 +585,18 @@
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "FlexiDeck/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
