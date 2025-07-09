@@ -349,6 +349,8 @@ struct CardListView: View {
                 }
                 .pickerStyle(.menu)
                 Divider()
+                ExportButton(deck: deck)
+                Divider()
                 if searchResults.count > 1 {
                     Button("Show Random Card", systemImage: "questionmark.square") {
                         showRandomCard()

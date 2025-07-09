@@ -49,7 +49,7 @@ struct SettingsView: View {
                 SAMVisualEffectViewSwiftUIRepresentable {
                     DecksCardsSettingsPageView()
                 }
-                .frame(width: 400, height: 245)
+                .frame(width: 400, height: 375)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)

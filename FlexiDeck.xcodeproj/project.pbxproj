@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8D12ADD82E1871C500A59606 /* DeckImportError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADD72E1871C500A59606 /* DeckImportError.swift */; };
+		8D12ADD82E1871C500A59606 /* DeckImportExportError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADD72E1871C500A59606 /* DeckImportExportError.swift */; };
 		8D12ADDB2E18732D00A59606 /* ExportedDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */; };
 		8D12ADDD2E1C6A8000A59606 /* ExportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */; };
 		8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */; };
@@ -29,6 +29,7 @@
 		8D71C81D2CDEBE9800072E50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 8D71C81C2CDEBE9800072E50 /* PrivacyInfo.xcprivacy */; };
 		8D8555102C94D696006A14E3 /* StarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D85550F2C94D696006A14E3 /* StarButton.swift */; };
 		8D8555122C94D6FD006A14E3 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8555112C94D6FD006A14E3 /* StarRatingView.swift */; };
+		8D9A2A052E1DC41100BF1797 /* FlexiDeckDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9A2A042E1DC41100BF1797 /* FlexiDeckDeck.swift */; };
 		8DA20A152C7547EA001ED42E /* DeckRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA20A142C7547EA001ED42E /* DeckRowView.swift */; };
 		8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB062192C5D72640057E7DC /* Deck.swift */; };
 		8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621B2C5D734D0057E7DC /* CardListView.swift */; };
@@ -43,6 +44,7 @@
 		8DE403B12C65688700D61D6E /* CardRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B02C65688700D61D6E /* CardRowView.swift */; };
 		8DE403B32C66B55100D61D6E /* FlexiDeckCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */; };
 		8DE403B52C66B62600D61D6E /* UserDefaultsKeyNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */; };
+		8DFFD8CD2E1F115100DC1737 /* ImportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFFD8CC2E1F115100DC1737 /* ImportButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,7 +63,7 @@
 
 /* Begin PBXFileReference section */
 		8D07685A2C543AED007F6501 /* FlexiDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexiDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8D12ADD72E1871C500A59606 /* DeckImportError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckImportError.swift; sourceTree = "<group>"; };
+		8D12ADD72E1871C500A59606 /* DeckImportExportError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckImportExportError.swift; sourceTree = "<group>"; };
 		8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportedDeck.swift; sourceTree = "<group>"; };
 		8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportButton.swift; sourceTree = "<group>"; };
 		8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportManager.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		8D71C81E2CDEC25000072E50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D85550F2C94D696006A14E3 /* StarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarButton.swift; sourceTree = "<group>"; };
 		8D8555112C94D6FD006A14E3 /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
+		8D9A2A042E1DC41100BF1797 /* FlexiDeckDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckDeck.swift; sourceTree = "<group>"; };
 		8DA20A142C7547EA001ED42E /* DeckRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckRowView.swift; sourceTree = "<group>"; };
 		8DB062192C5D72640057E7DC /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		8DB0621B2C5D734D0057E7DC /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
@@ -98,6 +101,7 @@
 		8DE403B02C65688700D61D6E /* CardRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRowView.swift; sourceTree = "<group>"; };
 		8DE403B22C66B55100D61D6E /* FlexiDeckCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexiDeckCommands.swift; sourceTree = "<group>"; };
 		8DE403B42C66B62600D61D6E /* UserDefaultsKeyNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeyNames.swift; sourceTree = "<group>"; };
+		8DFFD8CC2E1F115100DC1737 /* ImportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,8 +149,9 @@
 		8D12ADD92E18730100A59606 /* Deck Import and Export */ = {
 			isa = PBXGroup;
 			children = (
-				8D12ADD72E1871C500A59606 /* DeckImportError.swift */,
+				8D12ADD72E1871C500A59606 /* DeckImportExportError.swift */,
 				8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */,
+				8D9A2A042E1DC41100BF1797 /* FlexiDeckDeck.swift */,
 			);
 			path = "Deck Import and Export";
 			sourceTree = "<group>";
@@ -178,6 +183,7 @@
 				8D2627822C77D9B600D11F80 /* SpeakButton.swift */,
 				8D85550F2C94D696006A14E3 /* StarButton.swift */,
 				8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */,
+				8DFFD8CC2E1F115100DC1737 /* ImportButton.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -359,9 +365,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D9A2A052E1DC41100BF1797 /* FlexiDeckDeck.swift in Sources */,
 				8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */,
 				8D8555102C94D696006A14E3 /* StarButton.swift in Sources */,
 				8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */,
+				8DFFD8CD2E1F115100DC1737 /* ImportButton.swift in Sources */,
 				8D12ADDB2E18732D00A59606 /* ExportedDeck.swift in Sources */,
 				8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */,
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
@@ -377,7 +385,7 @@
 				8DC964E42D0B877B00984466 /* CardListDetailOptions.swift in Sources */,
 				8D38ED5A2CAC8EC500CCC422 /* DisplaySettingsPageView.swift in Sources */,
 				8DE403B52C66B62600D61D6E /* UserDefaultsKeyNames.swift in Sources */,
-				8D12ADD82E1871C500A59606 /* DeckImportError.swift in Sources */,
+				8D12ADD82E1871C500A59606 /* DeckImportExportError.swift in Sources */,
 				8D5DE3352C582F1200FD0502 /* CardView.swift in Sources */,
 				8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */,
 				8D8555122C94D6FD006A14E3 /* StarRatingView.swift in Sources */,

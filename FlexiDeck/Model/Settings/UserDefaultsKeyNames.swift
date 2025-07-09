@@ -30,6 +30,8 @@ extension UserDefaults {
 
         static let speakOnSelectionOrFlip: String = "speakOnSelectionOrFlip"
 
+        static let useFilenameAsImportedDeckName: String = "useFilenameAsImportedDeckName"
+
     }
 
 }

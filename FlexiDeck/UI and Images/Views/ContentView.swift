@@ -56,25 +56,48 @@ struct ContentView: View {
 #endif
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
-            allowedContentTypes: [.json],
+            allowedContentTypes: [.deck],
             allowsMultipleSelection: true
         ) { result in
-            importExportManager.handleFileImport(result: result, modelContext: modelContext)
+            importExportManager.handleDeckImport(result: result, modelContext: modelContext)
         }
         .fileExporter(
             isPresented: $importExportManager.showingExporter,
-            document: ExportedDeck(data: importExportManager.deckDataToExport ?? Data()),
-            contentType: .json,
-            defaultFilename: selectedDeck?.name ?? "Deck"
+            document: ExportedDeck(
+                data: importExportManager.deckDataToExport,
+                deck: importExportManager.deckToExport
+            ),
+            contentType: .deck,
+            defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
         ) { result in
-            importExportManager.handleFileExport(result: result)
+            importExportManager
+                .handleDeckExport(
+                    deck: importExportManager.deckToExport,
+                    result: result
+                )
         }
-        .alert(isPresented: $importExportManager.showingImportError, error: importExportManager.importError) {
+        .alert(isPresented: $importExportManager.showingImportExportError, error: importExportManager.importExportError) {
             Button("OK") {
-                importExportManager.showingImportError = false
-                importExportManager.importError = nil
+                importExportManager.showingImportExportError = false
+                importExportManager.importExportError = nil
             }
         }
+        .alert(
+            importExportManager.importSuccessMessage,
+            isPresented: $importExportManager.showingImportSuccess) {
+                Button("OK") {
+                    importExportManager.showingImportSuccess = false
+                    importExportManager.importSuccessMessage = String()
+                }
+            }
+            .alert(
+                importExportManager.exportSuccessMessage,
+                isPresented: $importExportManager.showingExportSuccess) {
+                    Button("OK") {
+                        importExportManager.showingExportSuccess = false
+                        importExportManager.exportSuccessMessage = String()
+                    }
+                }
     }
 
     @ViewBuilder
@@ -160,11 +183,7 @@ struct ContentView: View {
 #endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
-                    Button {
-                        importExportManager.showDeckImport()
-                    } label: {
-                        Label("Import Deck…", systemImage: "square.and.arrow.down")
-                    }
+                    ImportButton()
                     Divider()
                     Button(role: .destructive) {
                         dialogManager.showingDeleteAllDecks = true

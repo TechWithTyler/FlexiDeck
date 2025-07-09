@@ -14,6 +14,10 @@ struct DecksCardsSettingsPageView: View {
 
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
+    @AppStorage(UserDefaults.KeyNames.useFilenameAsImportedDeckName) var useFilenameAsImportedDeckName: Bool = true
+
+    // MARK: - Properties - Integers
+
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
     var body: some View {
@@ -32,6 +36,11 @@ struct DecksCardsSettingsPageView: View {
                     Text("Decks Only").tag(1)
                     Text("Decks and Cards").tag(2)
                 }
+            }
+            Section {
+                Toggle("Use Filename as Imported Deck Name", isOn: $useFilenameAsImportedDeckName)
+            } footer: {
+                Text("When importing decks, turning this setting on will set the deck's name to the name of the deck file. If turned off, the name of the exported deck itself will be kept.\nFor example, if a deck's name is \"Vocab\", but the filename (excluding the \".flexideck\" extension) is \"Vocab Flashcards\", the filename \"Vocab Flashcards\" will become the deck name upon import if this setting is turned on, or it will remain \"Vocab\" if turned off.")
             }
         }
     }
