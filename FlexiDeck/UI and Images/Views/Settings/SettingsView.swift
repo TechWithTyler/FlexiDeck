@@ -57,6 +57,7 @@ struct SettingsView: View {
                 .tag(SettingsPage.decksCards)
             }
         }
+        .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
 #else
         // iOS/visionOS settings page
         NavigationStack {
@@ -101,6 +102,7 @@ struct SettingsView: View {
             }
         }
         .pickerStyle(.navigationLink)
+        .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
 #endif
     }
 

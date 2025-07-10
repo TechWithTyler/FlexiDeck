@@ -15,7 +15,7 @@ struct ImportButton: View {
         Button {
             importExportManager.showDeckImport()
         } label: {
-            Label("Import Deck…", systemImage: "square.and.arrow.down")
+            Label("Import Decks…", systemImage: "square.and.arrow.down")
         }
     }
 
