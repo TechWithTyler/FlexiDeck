@@ -141,9 +141,7 @@ struct ContentView: View {
 #if !os(macOS)
         .navigationBarTitleDisplayMode(.large)
 #endif
-#if os(macOS)
         .navigationSplitViewColumnWidth(min: 300, ideal: 300)
-#endif
         .alert("Delete this deck?", isPresented: $dialogManager.showingDeleteDeck, presenting: $dialogManager.deckToDelete) { deck in
             Button("Delete", role: .destructive) {
                 deleteDeck(deck.wrappedValue!)
@@ -223,9 +221,7 @@ struct ContentView: View {
                 }
             }
         }
-#if os(macOS)
         .navigationSplitViewColumnWidth(min: 300, ideal: 300)
-#endif
     }
 
     @ViewBuilder
@@ -243,9 +239,7 @@ struct ContentView: View {
                 }
             }
         }
-#if os(macOS)
         .navigationSplitViewColumnWidth(min: 500, ideal: 600)
-#endif
     }
 
     // MARK: - Data Management
