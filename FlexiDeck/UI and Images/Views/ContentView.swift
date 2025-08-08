@@ -32,9 +32,14 @@ struct ContentView: View {
 
     // MARK: - Properties - Managers
 
-    @EnvironmentObject var dialogManager: DialogManager
+    // Handles the display of dialogs in the app.
+    @ObservedObject var dialogManager = DialogManager()
 
-    @EnvironmentObject var importExportManager: ImportExportManager
+    // Handles import/export of decks.
+    @ObservedObject var importExportManager = ImportExportManager()
+
+    // Handles speech in the app.
+    @ObservedObject var speechManager = SpeechManager()
 
     // MARK: - Body
 
@@ -98,6 +103,12 @@ struct ContentView: View {
                         importExportManager.exportSuccessMessage = String()
                     }
                 }
+                .focusedSceneObject(dialogManager)
+                .environmentObject(dialogManager)
+                .focusedSceneObject(speechManager)
+                .environmentObject(speechManager)
+                .focusedSceneObject(importExportManager)
+                .environmentObject(importExportManager)
     }
 
     @ViewBuilder
@@ -109,21 +120,21 @@ struct ContentView: View {
                         NavigationLink(value: deck) {
                             DeckRowView(deck: deck)
                         }
-                            .contextMenu {
-                                ExportButton(deck: deck)
-                                Divider()
-                                Button("Deck Settings…", systemImage: "gear") {
-                                    dialogManager.deckToShowSettings = deck
-                                }
-                                Divider()
-                                Button(role: .destructive) {
-                                    dialogManager.deckToDelete = deck
-                                    dialogManager.showingDeleteDeck = true
-                                } label: {
-                                    Label("Delete…", systemImage: "trash")
-                                        .foregroundStyle(.red)
-                                }
+                        .contextMenu {
+                            ExportButton(deck: deck)
+                            Divider()
+                            Button("Deck Settings…", systemImage: "gear") {
+                                dialogManager.deckToShowSettings = deck
                             }
+                            Divider()
+                            Button(role: .destructive) {
+                                dialogManager.deckToDelete = deck
+                                dialogManager.showingDeleteDeck = true
+                            } label: {
+                                Label("Delete…", systemImage: "trash")
+                                    .foregroundStyle(.red)
+                            }
+                        }
                     }
                     .onDelete(perform: deleteDecks)
                 }
@@ -279,6 +290,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(for: Card.self, inMemory: true)
-        .environmentObject(DialogManager())
-        .environmentObject(SpeechManager())
 }

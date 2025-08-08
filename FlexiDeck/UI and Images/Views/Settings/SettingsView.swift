@@ -13,7 +13,11 @@ struct SettingsView: View {
 
     // MARK: - Properties - Dialog Manager
 
-    @EnvironmentObject var dialogManager: DialogManager
+    // MARK: - Properties - Objects
+
+    @ObservedObject var dialogManager = DialogManager()
+
+    @ObservedObject var speechManager = SpeechManager()
 
     // MARK: - Properties - Dismiss Action
 
@@ -58,6 +62,7 @@ struct SettingsView: View {
             }
         }
         .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
+        .environmentObject(speechManager)
 #else
         // iOS/visionOS settings page
         NavigationStack {
@@ -103,6 +108,7 @@ struct SettingsView: View {
         }
         .pickerStyle(.navigationLink)
         .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
+        .environmentObject(speechManager)
 #endif
     }
 
