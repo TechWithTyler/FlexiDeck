@@ -30,9 +30,8 @@ struct SettingsView: View {
     var body: some View {
 #if os(macOS)
         // macOS settings window
-        SAMVisualEffectViewSwiftUIRepresentable {
             TabView(selection: $dialogManager.selectedSettingsPage) {
-                SAMVisualEffectViewSwiftUIRepresentable {
+                SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     DisplaySettingsPageView()
                 }
                 .frame(width: 400, height: 360)
@@ -41,7 +40,7 @@ struct SettingsView: View {
                     Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
                 }
                 .tag(SettingsPage.display)
-                SAMVisualEffectViewSwiftUIRepresentable {
+                SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     SpeechSettingsPageView()
                 }
                 .frame(width: 400, height: 220)
@@ -50,7 +49,7 @@ struct SettingsView: View {
                     Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
                 }
                 .tag(SettingsPage.speech)
-                SAMVisualEffectViewSwiftUIRepresentable {
+                SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     DecksCardsSettingsPageView()
                 }
                 .frame(width: 400, height: 375)
@@ -60,7 +59,6 @@ struct SettingsView: View {
                 }
                 .tag(SettingsPage.decksCards)
             }
-        }
         .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
         .environmentObject(speechManager)
 #else
