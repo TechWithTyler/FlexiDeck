@@ -62,10 +62,11 @@ struct ContentView: View {
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
             allowedContentTypes: [.deck],
-            allowsMultipleSelection: true
+            allowsMultipleSelection: true,
         ) { result in
             importExportManager.handleDeckImport(result: result, modelContext: modelContext)
         }
+        .fileDialogMessage("Select deck(s) to import")
         .fileExporter(
             isPresented: $importExportManager.showingExporter,
             document: ExportedDeck(
@@ -178,6 +179,8 @@ struct ContentView: View {
             Button("Cancel", role: .cancel) {
                 dialogManager.showingDeleteAllDecks = false
             }
+        } message: {
+            Text("If you have any decks you may want to keep, export them before deletion.")
         }
         .toolbar {
 #if os(macOS)
