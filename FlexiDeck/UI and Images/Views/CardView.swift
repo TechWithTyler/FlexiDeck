@@ -69,6 +69,33 @@ struct CardView: View {
             StarRatingView(card: selectedCard)
         }
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
+        .toolbar {
+            if (selectedCard.is2Sided)! {
+                ToolbarItem {
+                    Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
+                        isFlipped.toggle()
+                    }
+                    .keyboardShortcut(.return, modifiers: .command)
+                }
+            }
+            ToolbarItem {
+                OptionsMenu(title: .menu) {
+                    if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
+                        SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
+                    }
+                    Button("Card Settings…", systemImage: "gear") {
+                        dialogManager.cardToShowSettings = selectedCard
+                    }
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.cardToDelete = selectedCard
+                        dialogManager.showingDeleteCard = true
+                    } label: {
+                        Label("Delete…", systemImage: "trash")
+                    }
+                }
+            }
+        }
         .onAppear {
             loadCard(card: selectedCard)
             if speechManager.speakOnSelectionOrFlip {
@@ -109,33 +136,6 @@ struct CardView: View {
             speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
             if speechManager.speakOnSelectionOrFlip {
                 speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
-            }
-        }
-        .toolbar {
-            if (selectedCard.is2Sided)! {
-                ToolbarItem {
-                    Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
-                        isFlipped.toggle()
-                    }
-                    .keyboardShortcut(.return, modifiers: .command)
-                }
-            }
-            ToolbarItem {
-                OptionsMenu(title: .menu) {
-                    if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
-                        SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
-                    }
-                    Button("Card Settings…", systemImage: "gear") {
-                        dialogManager.cardToShowSettings = selectedCard
-                    }
-                    Divider()
-                    Button(role: .destructive) {
-                        dialogManager.cardToDelete = selectedCard
-                        dialogManager.showingDeleteCard = true
-                    } label: {
-                        Label("Delete…", systemImage: "trash")
-                    }
-                }
             }
         }
     }
