@@ -64,47 +64,11 @@ struct CardView: View {
                     .zIndex(isFlipped ? 1 : 0)
             }
         } translucentFooterContent: {
-            Divider()
             Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
                 .foregroundStyle(.secondary)
             StarRatingView(card: selectedCard)
         }
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
-        .onAppear {
-            loadCard(card: selectedCard)
-            if speechManager.speakOnSelectionOrFlip {
-                speechManager.speak(text: front)
-            }
-            frontFocused = true
-            backFocused = false
-        }
-        .onDisappear {
-            saveCard(card: selectedCard)
-        }
-        .onChange(of: front, { oldValue, newValue in
-            saveCard(card: selectedCard)
-        })
-        .onChange(of: back, { oldValue, newValue in
-            saveCard(card: selectedCard)
-        })
-        .onChange(of: selectedCard) { oldCard, newCard in
-            selectedCardChanged(oldCard: oldCard, newCard: newCard)
-        }
-        .onChange(of: isFlipped) { oldValue, newValue in
-            frontFocused = false
-            backFocused = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                if isFlipped {
-                    backFocused = true
-                } else {
-                    frontFocused = true
-                }
-            }
-            speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
-            if speechManager.speakOnSelectionOrFlip {
-                speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
-            }
-        }
         .toolbar {
             if (selectedCard.is2Sided)! {
                 ToolbarItem {
@@ -132,13 +96,61 @@ struct CardView: View {
                 }
             }
         }
+        .onAppear {
+            loadCard(card: selectedCard)
+            if speechManager.speakOnSelectionOrFlip {
+                speechManager.speak(text: front)
+            }
+            frontFocused = true
+            backFocused = false
+        }
+        .onDisappear {
+            saveCard(card: selectedCard)
+        }
+        .onChange(of: front, { oldValue, newValue in
+            saveCard(card: selectedCard)
+        })
+        .onChange(of: back, { oldValue, newValue in
+            saveCard(card: selectedCard)
+        })
+        .onChange(of: selectedCard) { oldCard, newCard in
+            selectedCardChanged(oldCard: oldCard, newCard: newCard)
+        }
+        .onChange(of: selectedCard.is2Sided!, { oldValue, newValue in
+            backFocused = false
+            isFlipped = false
+            if !newValue {
+                back.removeAll()
+            }
+        })
+        .onChange(of: isFlipped) { oldValue, newValue in
+            frontFocused = false
+            backFocused = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                if isFlipped {
+                    backFocused = true
+                } else {
+                    frontFocused = true
+                }
+            }
+            speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+            if speechManager.speakOnSelectionOrFlip {
+                speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
+            }
+        }
     }
 
     // MARK: - Data Management
 
     func loadCard(card: Card) {
         front = card.front
-        back = card.back
+        if card.is2Sided! {
+            back = card.back
+        } else {
+            backFocused = false
+            isFlipped = false
+            back.removeAll()
+        }
     }
 
     func saveCard(card: Card) {
@@ -152,7 +164,13 @@ struct CardView: View {
         }
         // 3. Set the card's front and back text.
         card.front = front
-        card.back = back
+        if card.is2Sided! {
+            card.back = back
+        } else {
+            backFocused = false
+            isFlipped = false
+            card.back.removeAll()
+        }
         // 4. Create the list of tags for the card by finding any words that begin with a hashtag (#), and set the card's tags to that list.
         let words = front.components(separatedBy: .whitespacesAndNewlines)
         let tags = words.filter { $0.first == "#" }

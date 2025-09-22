@@ -59,7 +59,7 @@ struct CardSettingsView: View {
                     Text("2-Sided").tag(true)
                 }
                 if !is2Sided && (card.is2Sided)! && !card.back.isEmpty {
-                    WarningText("Changing to a 1-sided card will remove its back side.", prefix: .important)
+                    WarningText("Changing to a 1-sided card will remove its back side.", prefix: .warning)
                 }
                 Picker("Deck", selection: $selectedDeck) {
                     ForEach(decks) { deck in
@@ -71,7 +71,7 @@ struct CardSettingsView: View {
                     }
                 }
                 if card.deck != selectedDeck {
-                    InfoText("This card will be moved from \"\((card.deck?.name)!)\" to \"\((selectedDeck.name)!)\".")
+                    InfoText("This card will be moved from \"\((card.deck?.name)!)\" to \"\((selectedDeck.name)!)\" when saving settings.")
                 }
             }
             .formStyle(.grouped)
@@ -117,7 +117,7 @@ struct CardSettingsView: View {
         if !(card.is2Sided)! && !card.back.isEmpty {
             card.back.removeAll()
         }
-        // 3. If the card isn't in the selected deck, move it to that deck.
+        // 3. If the card isn't in the selected deck, move it to that deck by first removing it from its current deck, then adding it to the selected deck.
         if card.deck != selectedDeck {
             card.deck?.cards?.remove(at: (card.deck?.cards?.firstIndex(of: card)!)!)
             selectedDeck.cards?.append(card)

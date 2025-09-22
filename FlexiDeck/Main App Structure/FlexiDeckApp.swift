@@ -19,14 +19,6 @@ struct FlexiDeckApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     #endif
 
-    // MARK: - Properties - Objects
-
-    // Handles the display of dialogs in the app.
-    @ObservedObject var dialogManager = DialogManager()
-
-    // Handles speech in the app.
-    @ObservedObject var speechManager = SpeechManager()
-
     // MARK: - Properties - Model Container
 
     // Returns the shared model container for the application.
@@ -53,8 +45,6 @@ struct FlexiDeckApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(dialogManager)
-                .environmentObject(speechManager)
                 .ignoresSafeArea(edges: .all)
         }
         .modelContainer(sharedModelContainer)
@@ -64,8 +54,6 @@ struct FlexiDeckApp: App {
         #if os(macOS)
         Settings {
                 SettingsView()
-                    .environmentObject(dialogManager)
-                    .environmentObject(speechManager)
         }
         #endif
     }

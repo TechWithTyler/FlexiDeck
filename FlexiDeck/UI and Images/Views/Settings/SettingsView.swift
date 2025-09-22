@@ -13,7 +13,11 @@ struct SettingsView: View {
 
     // MARK: - Properties - Dialog Manager
 
-    @EnvironmentObject var dialogManager: DialogManager
+    // MARK: - Properties - Objects
+
+    @ObservedObject var dialogManager = DialogManager()
+
+    @ObservedObject var speechManager = SpeechManager()
 
     // MARK: - Properties - Dismiss Action
 
@@ -26,9 +30,8 @@ struct SettingsView: View {
     var body: some View {
 #if os(macOS)
         // macOS settings window
-        SAMVisualEffectViewSwiftUIRepresentable {
             TabView(selection: $dialogManager.selectedSettingsPage) {
-                SAMVisualEffectViewSwiftUIRepresentable {
+                SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     DisplaySettingsPageView()
                 }
                 .frame(width: 400, height: 360)
@@ -37,7 +40,7 @@ struct SettingsView: View {
                     Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
                 }
                 .tag(SettingsPage.display)
-                SAMVisualEffectViewSwiftUIRepresentable {
+                SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     SpeechSettingsPageView()
                 }
                 .frame(width: 400, height: 220)
@@ -46,17 +49,18 @@ struct SettingsView: View {
                     Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
                 }
                 .tag(SettingsPage.speech)
-                SAMVisualEffectViewSwiftUIRepresentable {
+                SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     DecksCardsSettingsPageView()
                 }
-                .frame(width: 400, height: 245)
+                .frame(width: 400, height: 375)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)
                 }
                 .tag(SettingsPage.decksCards)
             }
-        }
+        .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
+        .environmentObject(speechManager)
 #else
         // iOS/visionOS settings page
         NavigationStack {
@@ -101,6 +105,8 @@ struct SettingsView: View {
             }
         }
         .pickerStyle(.navigationLink)
+        .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
+        .environmentObject(speechManager)
 #endif
     }
 

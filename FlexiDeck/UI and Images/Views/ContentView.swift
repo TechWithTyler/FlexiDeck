@@ -30,9 +30,16 @@ struct ContentView: View {
 
     @State private var selectedCard: Card? = nil
 
-    // MARK: - Properties - Dialog Manager
+    // MARK: - Properties - Managers
 
-    @EnvironmentObject var dialogManager: DialogManager
+    // Handles the display of dialogs in the app.
+    @ObservedObject var dialogManager = DialogManager()
+
+    // Handles import/export of decks.
+    @ObservedObject var importExportManager = ImportExportManager()
+
+    // Handles speech in the app.
+    @ObservedObject var speechManager = SpeechManager()
 
     // MARK: - Body
 
@@ -51,7 +58,58 @@ struct ContentView: View {
         .sheet(isPresented: $dialogManager.showingSettings) {
             SettingsView()
         }
-        #endif
+#endif
+        .fileImporter(
+            isPresented: $importExportManager.showingImporter,
+            allowedContentTypes: [.deck],
+            allowsMultipleSelection: true,
+        ) { result in
+            importExportManager.handleDeckImport(result: result, modelContext: modelContext)
+        }
+        .fileDialogMessage("Select deck(s) to import")
+        .fileExporter(
+            isPresented: $importExportManager.showingExporter,
+            document: ExportedDeck(
+                data: importExportManager.deckDataToExport,
+                deck: importExportManager.deckToExport
+            ),
+            contentType: .deck,
+            defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
+        ) { result in
+            importExportManager
+                .handleDeckExport(
+                    deck: importExportManager.deckToExport,
+                    result: result
+                )
+        }
+        .alert(isPresented: $importExportManager.showingImportExportError, error: importExportManager.importExportError) {
+            Button("OK") {
+                importExportManager.showingImportExportError = false
+                importExportManager.importExportError = nil
+            }
+        }
+        .alert(
+            importExportManager.importSuccessMessage,
+            isPresented: $importExportManager.showingImportSuccess) {
+                Button("OK") {
+                    importExportManager.showingImportSuccess = false
+                    importExportManager.importSuccessMessage = String()
+                }
+            }
+            .alert(
+                importExportManager.exportSuccessMessage,
+                isPresented: $importExportManager.showingExportSuccess) {
+                    Button("OK") {
+                        importExportManager.showingExportSuccess = false
+                        importExportManager.exportSuccessMessage = String()
+                    }
+                }
+                .focusedSceneObject(dialogManager)
+                .environmentObject(dialogManager)
+                .focusedSceneObject(speechManager)
+                .environmentObject(speechManager)
+                .focusedSceneObject(importExportManager)
+                .environmentObject(importExportManager)
     }
 
     @ViewBuilder
@@ -63,19 +121,21 @@ struct ContentView: View {
                         NavigationLink(value: deck) {
                             DeckRowView(deck: deck)
                         }
-                            .contextMenu {
-                                Button("Deck Settings…", systemImage: "gear") {
-                                    dialogManager.deckToShowSettings = deck
-                                }
-                                Divider()
-                                Button(role: .destructive) {
-                                    dialogManager.deckToDelete = deck
-                                    dialogManager.showingDeleteDeck = true
-                                } label: {
-                                    Label("Delete…", systemImage: "trash")
-                                        .foregroundStyle(.red)
-                                }
+                        .contextMenu {
+                            ExportButton(deck: deck)
+                            Divider()
+                            Button("Deck Settings…", systemImage: "gear") {
+                                dialogManager.deckToShowSettings = deck
                             }
+                            Divider()
+                            Button(role: .destructive) {
+                                dialogManager.deckToDelete = deck
+                                dialogManager.showingDeleteDeck = true
+                            } label: {
+                                Label("Delete…", systemImage: "trash")
+                                    .foregroundStyle(.red)
+                            }
+                        }
                     }
                     .onDelete(perform: deleteDecks)
                 }
@@ -90,12 +150,10 @@ struct ContentView: View {
             selectedCard = nil
         }
         .navigationTitle("FlexiDeck")
-        #if !os(macOS)
+#if !os(macOS)
         .navigationBarTitleDisplayMode(.large)
-        #endif
-#if os(macOS)
-        .navigationSplitViewColumnWidth(min: 300, ideal: 300)
 #endif
+        .navigationSplitViewColumnWidth(min: 300, ideal: 300)
         .alert("Delete this deck?", isPresented: $dialogManager.showingDeleteDeck, presenting: $dialogManager.deckToDelete) { deck in
             Button("Delete", role: .destructive) {
                 deleteDeck(deck.wrappedValue!)
@@ -121,31 +179,36 @@ struct ContentView: View {
             Button("Cancel", role: .cancel) {
                 dialogManager.showingDeleteAllDecks = false
             }
+        } message: {
+            Text("If you have any decks you may want to keep, export them before deletion.")
         }
         .toolbar {
-            #if os(macOS)
+#if os(macOS)
             ToolbarItem {
                 newDeckButton
             }
-            #else
+#else
             ToolbarItem(placement: .bottomBar) {
                 newDeckButton
                     .labelStyle(.titleAndIcon)
             }
-            #endif
+#endif
             ToolbarItem {
                 OptionsMenu(title: .menu) {
+                    ImportButton()
+                    Divider()
                     Button(role: .destructive) {
                         dialogManager.showingDeleteAllDecks = true
                     } label: {
                         Label("Delete All Decks…", systemImage: "trash.fill")
                             .foregroundStyle(.red)
                     }
-                    #if !os(macOS)
+#if !os(macOS)
+                    Divider()
                     Button("Settings…", systemImage: "gear") {
                         dialogManager.showingSettings = true
                     }
-                    #endif
+#endif
                 }
             }
         }
@@ -165,16 +228,14 @@ struct ContentView: View {
                 CardListView(deck: deck, selectedCard: $selectedCard)
             } else {
                 if !decks.isEmpty {
-                Text("Select a deck")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
+                    Text("Select a deck")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
                 }
             }
         }
-#if os(macOS)
         .navigationSplitViewColumnWidth(min: 300, ideal: 300)
-#endif
     }
 
     @ViewBuilder
@@ -192,9 +253,7 @@ struct ContentView: View {
                 }
             }
         }
-#if os(macOS)
         .navigationSplitViewColumnWidth(min: 500, ideal: 600)
-#endif
     }
 
     // MARK: - Data Management
@@ -234,6 +293,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .modelContainer(for: Card.self, inMemory: true)
-        .environmentObject(DialogManager())
-        .environmentObject(SpeechManager())
 }
