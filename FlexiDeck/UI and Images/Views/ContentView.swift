@@ -61,7 +61,7 @@ struct ContentView: View {
 #endif
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
-            allowedContentTypes: [.deck],
+            allowedContentTypes: [.flexiDeckDeck],
             allowsMultipleSelection: true,
         ) { result in
             importExportManager.handleDeckImport(result: result, modelContext: modelContext)
@@ -69,22 +69,16 @@ struct ContentView: View {
         .fileDialogMessage("Select deck(s) to import")
         .fileExporter(
             isPresented: $importExportManager.showingExporter,
-            document: ExportedDeck(
-                data: importExportManager.deckDataToExport,
-                deck: importExportManager.deckToExport
+            document: ExportedDeck(data: importExportManager.deckDataToExport, deck: importExportManager.deckToExport
             ),
-            contentType: .deck,
+            contentType: .flexiDeckDeck,
             defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
         ) { result in
-            importExportManager
-                .handleDeckExport(
-                    deck: importExportManager.deckToExport,
-                    result: result
-                )
+            importExportManager.handleDeckExport(deck: importExportManager.deckToExport, result: result)
         }
-        .alert(isPresented: $importExportManager.showingImportExportError, error: importExportManager.importExportError) {
+        .alert(isPresented: $importExportManager.showingError, error: importExportManager.importExportError) {
             Button("OK") {
-                importExportManager.showingImportExportError = false
+                importExportManager.showingError = false
                 importExportManager.importExportError = nil
             }
         }
@@ -260,9 +254,13 @@ struct ContentView: View {
 
     private func addDeck() {
         withAnimation {
+            // 1. Create a new Deck object with the default name and default number of sides.
             let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
+            // 2. INsert the new deck into the model context.
             modelContext.insert(newItem)
+            // 3. Select the new deck.
             selectedDeck = newItem
+            // 4. If set to show deck settings upon creation, show the new deck's settings.
             if showSettingsWhenCreating >= 1 {
                 dialogManager.deckToShowSettings = newItem
             }
@@ -278,9 +276,12 @@ struct ContentView: View {
     }
 
     func deleteDeck(_ deck: Deck) {
+        // 1. Nil-out all selections.
         selectedCard = nil
         selectedDeck = nil
+        // 2. Delete all cards from the deck.
         deck.cards?.removeAll()
+        // 3. Delete the deck.
         DispatchQueue.main.async {
             modelContext.delete(deck)
         }

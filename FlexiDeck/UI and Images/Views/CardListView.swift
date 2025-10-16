@@ -148,8 +148,11 @@ struct CardListView: View {
         } else {
             // 3. Return cards with titles or text that contain all or part of the search text.
             return content.filter { card in
+                // Title
                 let titleRange = card.title?.range(of: searchText, options: .caseInsensitive)
+                // Front
                 let frontRange = card.front.range(of: searchText, options: .caseInsensitive)
+                // Back
                 let backRange = card.back.range(of: searchText, options: .caseInsensitive)
                 let textMatchesSearchTerm = titleRange != nil || frontRange != nil || backRange != nil
                 return textMatchesSearchTerm
@@ -288,9 +291,7 @@ struct CardListView: View {
         }
         .alert("Delete all cards in deck \"\(deck.name!)\"", isPresented: $dialogManager.showingDeleteAllCards) {
             Button("Delete", role: .destructive) {
-                selectedCard = nil
-                deck.cards?.removeAll()
-                dialogManager.showingDeleteAllCards = false
+                deleteAllCards()
             }
             Button("Cancel", role: .cancel) {
                 dialogManager.showingDeleteAllCards = false
@@ -375,8 +376,7 @@ struct CardListView: View {
                     dialogManager.deckToShowSettings = deck
                 }
                 Button(role: .destructive) {
-                    dialogManager.deckToDelete = deck
-                    dialogManager.showingDeleteDeck = true
+                    deleteDeck()
                 } label: {
                     Label("Delete Deck…", systemImage: "trash")
                 }
@@ -471,9 +471,11 @@ struct CardListView: View {
 
     // MARK: - Reset Card Filter
 
-    func resetCardFilter() {
+    func resetCardFilter(shouldResetSidesFilter: Bool = true) {
+        if shouldResetSidesFilter {
+            cardFilterSides = 0
+        }
         cardFilterTags = "off"
-        cardFilterSides = 0
         cardFilterComplete = 0
         cardFilterRating = 0
     }
@@ -482,15 +484,18 @@ struct CardListView: View {
 
     private func newCard(is2Sided: Bool) {
         withAnimation {
+            // 1. Create a new Card object with the default title and the deck's "number of sides" setting.
             let newItem = Card(title: defaultCardName, is2Sided: is2Sided)
+            // 2. Append the new card to the deck's list of cards.
             deck.cards?.append(newItem)
+            // 3. Select the new card.
             selectedCard = newItem
+            // 4. If set to show settings when creating new decks and cards, show the new card's settings.
             if showSettingsWhenCreating == 2 {
                 dialogManager.cardToShowSettings = newItem
             }
-            cardFilterRating = 0
-            cardFilterComplete = 0
-            cardFilterTags = "off"
+            // 5. Disable all filters except the sides filter.
+            resetCardFilter(shouldResetSidesFilter: false)
         }
     }
 
@@ -505,6 +510,17 @@ struct CardListView: View {
     func deleteCard(at index: Int) {
         selectedCard = nil
         deck.cards?.remove(at: index)
+    }
+
+    func deleteAllCards() {
+        selectedCard = nil
+        deck.cards?.removeAll()
+        dialogManager.showingDeleteAllCards = false
+    }
+
+    func deleteDeck() {
+        dialogManager.deckToDelete = deck
+        dialogManager.showingDeleteDeck = true
     }
 
 }

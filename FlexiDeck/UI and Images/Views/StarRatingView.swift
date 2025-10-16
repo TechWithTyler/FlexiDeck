@@ -17,12 +17,7 @@ struct StarRatingView: View {
             HStack {
                 ForEach(1..<6) { rating in
                     StarButton(rating: rating, isSelected: card.starRating >= rating) {
-                        if card.starRating == rating {
-                            card.starRating = 0
-                        } else {
-                            card.starRating = rating
-                        }
-                        card.modifiedDate = Date()
+                        setStarRating(to: rating)
                     }
                     .padding(.horizontal, 5)
                 }
@@ -31,6 +26,17 @@ struct StarRatingView: View {
             .padding(.vertical, 2)
         }
         .padding(.top, 10)
+    }
+
+    func setStarRating(to rating: Int) {
+        // 1. If the card's star rating is the same as the star that was selected, set the rating to 0. Otherwise, set it to that rating.
+        if card.starRating == rating {
+            card.starRating = 0
+        } else {
+            card.starRating = rating
+        }
+        // 2. Set the card's modified date to the current date/time.
+        card.modifiedDate = Date()
     }
 
 }

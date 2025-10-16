@@ -19,7 +19,6 @@ struct CardListDetailOptions: View {
     // MARK: - Body
 
     var body: some View {
-
         Picker("Date/Time", selection: $cardDateTimeDisplay) {
             Text("Date Only").tag(false)
             Text("Date and Time").tag(true)

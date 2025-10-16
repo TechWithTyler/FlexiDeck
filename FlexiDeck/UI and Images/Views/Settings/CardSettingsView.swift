@@ -43,6 +43,7 @@ struct CardSettingsView: View {
                     .focused($editingName, equals: true)
                 let firstLineOfFront = card.front.components(separatedBy: .newlines).first!
                 if (newName == defaultCardName || newName.isEmpty) && !firstLineOfFront.isEmpty {
+                    // If the title is empty or the default, the suggested title is the first line of the card's front side.
                         HStack {
                             Text("Suggested Title")
                             Spacer()
@@ -59,7 +60,7 @@ struct CardSettingsView: View {
                     Text("2-Sided").tag(true)
                 }
                 if !is2Sided && (card.is2Sided)! && !card.back.isEmpty {
-                    WarningText("Changing to a 1-sided card will remove its back side.", prefix: .warning)
+                    WarningText("Changing to a 1-sided card will remove its back side!", prefix: .warning)
                 }
                 Picker("Deck", selection: $selectedDeck) {
                     ForEach(decks) { deck in

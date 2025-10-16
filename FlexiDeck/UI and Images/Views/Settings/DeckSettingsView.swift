@@ -51,7 +51,7 @@ struct DeckSettingsView: View {
                 Toggle("Apply Card Type To Existing Cards", isOn: $applyCardTypeToExistingCards)
                 InfoText("Turn this on to apply this deck's default card type to all existing cards in it when saving settings.")
                 if applyCardTypeToExistingCards && cardsWillLoseBackSide {
-                    WarningText("This will cause all existing cards in this deck to lose their back side.", prefix: .warning)
+                    WarningText("This will cause all existing cards in this deck to lose their back side!", prefix: .warning)
                 }
             }
             .formStyle(.grouped)

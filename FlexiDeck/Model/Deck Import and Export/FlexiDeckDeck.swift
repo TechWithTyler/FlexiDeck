@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 extension UTType {
 
-    static var deck: UTType {
+    static var flexiDeckDeck: UTType {
         UTType(importedAs: "com.tylersheft.FlexiDeckDeck")
     }
 

@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct ExportedDeck: FileDocument {
 
-    static var readableContentTypes: [UTType] { [.deck] }
+    static var readableContentTypes: [UTType] { [.flexiDeckDeck] }
 
     var data: Data?
 
