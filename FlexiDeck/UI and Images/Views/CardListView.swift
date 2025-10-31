@@ -423,7 +423,7 @@ struct CardListView: View {
                 Text("5 Stars").tag(5)
             }
             Divider()
-            Button("Reset") {
+            Button("Reset", systemImage: "arrow.clockwise") {
                 resetCardFilter()
             }
         } label: {
