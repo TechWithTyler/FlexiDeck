@@ -5,6 +5,8 @@
 //  Created by Tyler Sheft on 7/4/25.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 import UniformTypeIdentifiers
 

@@ -5,6 +5,8 @@
 //  Created by Tyler Sheft on 7/8/25.
 //
 
+// MARK: - Imports
+
 import Foundation
 import UniformTypeIdentifiers
 

@@ -5,6 +5,8 @@
 //  Created by Tyler Sheft on 9/13/24.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 
 struct StarRatingView: View {
