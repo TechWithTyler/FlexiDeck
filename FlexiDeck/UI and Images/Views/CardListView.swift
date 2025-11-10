@@ -24,10 +24,13 @@ struct CardListView: View {
 
     // MARK: - Properties - Strings
 
+    // The search text.
     @State var searchText: String = String()
 
+    // The current setting of the tags card filter.
     @State var cardFilterTags: String = "off"
 
+    // All tags across all cards. A tag is any word that begins with a hashtag (#).
     var allTags: [String] {
         // 1. Try to get all cards in the selected deck.
         guard let cards = deck.cards else {
@@ -48,14 +51,18 @@ struct CardListView: View {
 
     // MARK: - Properties - Integers
 
+    // The current setting of the sides card filter.
     @State var cardFilterSides: Int = 0
 
+    // The current setting of the completed status card filter.
     @State var cardFilterComplete: Int = 0
 
+    // The current setting of the star rating card filter.
     @State var cardFilterRating: Int = 0
 
     // MARK: - Properties - Card Sort Mode
 
+    // The current card sort mode setting.
     @AppStorage(UserDefaults.KeyNames.cardSortMode) var cardSortMode: Card.SortMode = .creationDateDescending
 
     // MARK: - Properties - Decks and Cards
@@ -64,6 +71,7 @@ struct CardListView: View {
 
     @Binding var selectedCard: Card?
 
+    // All cards, sorted based on the selected sort mode.
     var sortedCards: [Card] {
         // 1. Try to get all cards in the selected deck.
         guard let cards = deck.cards else {
@@ -92,6 +100,7 @@ struct CardListView: View {
         }
     }
 
+    // All cards, filtered by number of sides.
     var sidesFilteredCards: [Card] {
         switch cardFilterSides {
             // 1. If cardFilterSides is 1, return only 1-sided cards.
@@ -103,6 +112,7 @@ struct CardListView: View {
         }
     }
 
+    // All cards, filtered by number of sides then the selected tag.
     var tagsFilteredCards: [Card] {
         switch cardFilterTags {
             // 1. If the tags filter is turned off, return all cards returned by sidesFilteredCards.
@@ -114,6 +124,7 @@ struct CardListView: View {
         }
     }
 
+    // All cards, filtered by number of sides, the selected tag, then completed status.
     var completeFilteredCards: [Card] {
         switch cardFilterComplete {
             // 1. If cardFilterComplete is 1, return only non-completed cards.
@@ -125,6 +136,7 @@ struct CardListView: View {
         }
     }
 
+    // All cards, filtered by number of sides, the selected tag, completed status, then star rating.
     var ratingFilteredCards: [Card] {
         switch cardFilterRating {
             // 1. If cardFilterRating is -1, return only cards without a star rating.
@@ -136,11 +148,13 @@ struct CardListView: View {
         }
     }
 
+    // All cards matching the selected filters.
     var filteredCards: [Card] {
         // Return the last filter.
         return ratingFilteredCards
     }
 
+    // All cards matching the selected filters and search text.
     var searchResults: [Card] {
         // 1. Define the content being searched.
         let content = filteredCards
@@ -164,12 +178,15 @@ struct CardListView: View {
 
     // MARK: - Properties - Booleans
 
+    // Whether to show settings when creating decks or cards.
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
+    // Whether one or more card filters are enabled.
     var cardFilterEnabled: Bool {
         return cardFilterTags != "off" || cardFilterSides != 0 || cardFilterRating != 0 || cardFilterComplete != 0
     }
 
+    // Whether new cards should have 2 sides.
     var shouldCreate2SidedCards: Bool {
         // 1. If the sides filter is enabled, decide based on it.
         switch cardFilterSides {
@@ -360,10 +377,10 @@ struct CardListView: View {
                     }
                     Menu("Mark All Cards As", systemImage: "checkmark.circle") {
                         Button("Completed") {
-                            markCardsAs(completed: true)
+                            markAllCardsAs(completed: true)
                         }
                         Button("Not Completed") {
-                            markCardsAs(completed: false)
+                            markAllCardsAs(completed: false)
                         }
                     }
                 }
@@ -465,7 +482,7 @@ struct CardListView: View {
 
     // MARK: - Mark All Cards As Completed/Not Completed
 
-    func markCardsAs(completed: Bool) {
+    func markAllCardsAs(completed: Bool) {
         for card in searchResults {
             card.isCompleted = completed
         }
@@ -484,6 +501,7 @@ struct CardListView: View {
 
     // MARK: - Data Management
 
+    // This method creates a new Card object and adds it to the deck's cards array.
     private func newCard(is2Sided: Bool) {
         withAnimation {
             // 1. Create a new Card object with the default title and the deck's "number of sides" setting.
@@ -501,6 +519,7 @@ struct CardListView: View {
         }
     }
 
+    // This method deletes the card at the given index set.
     private func deleteCards(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
         withAnimation {
@@ -509,17 +528,20 @@ struct CardListView: View {
         }
     }
 
+    // This method deletes the card at index.
     func deleteCard(at index: Int) {
         selectedCard = nil
         deck.cards?.remove(at: index)
     }
 
+    // This method deletes all cards.
     func deleteAllCards() {
         selectedCard = nil
         deck.cards?.removeAll()
         dialogManager.showingDeleteAllCards = false
     }
 
+    // This method deletes the deck.
     func deleteDeck() {
         dialogManager.deckToDelete = deck
         dialogManager.showingDeleteDeck = true

@@ -14,7 +14,7 @@ import SheftAppsStylishUI
 
 struct CardSettingsView: View {
 
-    // MARK: - Properties - Card
+    // MARK: - Properties - Decks and Cards
 
     var card: Card
 

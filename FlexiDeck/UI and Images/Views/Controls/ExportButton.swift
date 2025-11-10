@@ -12,9 +12,13 @@ import SwiftUI
 
 struct ExportButton: View {
 
+    // MARK: - Properties - Objects
+
     @EnvironmentObject var importExportManager: ImportExportManager
 
     var deck: Deck
+
+    // MARK: - Body
 
     var body: some View {
         Button {
@@ -25,6 +29,8 @@ struct ExportButton: View {
     }
 
 }
+
+// MARK: - Preview
 
 #Preview {
     ExportButton(deck: Deck(name: "Deck", newCardsAre2Sided: true))

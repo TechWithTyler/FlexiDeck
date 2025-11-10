@@ -15,8 +15,10 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Type Aliases
 
+    // The type of deck import results. Import can accept multiple file URLs.
     typealias DeckImportResult = Result<[URL], Error>
 
+    // The type of deck export results. Export can only accept a single file URL.
     typealias DeckExportResult = Result<URL, Error>
 
     // MARK: - Properties - Booleans
@@ -57,11 +59,13 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Show Dialog
 
+    // This method shows the deck import dialog.
     func showDeckImport() {
         // Import is shown before processing any data.
         showingImporter = true
     }
 
+    // This method encodes deck, then shows the export dialog if successful.
     func showDeckExport(for deck: Deck) {
         // Export needs to encode a deck to data before it can be shown.
         // 1. Try to encode deck to data for export.
@@ -80,6 +84,7 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - File Operation Handlers
 
+    // This method imports the selected decks.
     func handleDeckImport(result: DeckImportResult, modelContext: ModelContext) {
         // 1. Create a variable to keep track of how many decks were successfully imported. This number will appear in the success dialog which is shown after imports complete or fail, if at least 1 was successfully imported.
         var successfulDeckImportCount = 0
@@ -130,6 +135,7 @@ class ImportExportManager: ObservableObject {
         }
     }
 
+    // This method exports deck.
     func handleDeckExport(deck: Deck?, result: DeckExportResult) {
         // 1. Nil-out the deckDataToExport and fileToExport properties as they're no longer needed.
         deckDataToExport = nil
@@ -148,13 +154,13 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Encoding/Decoding
 
-    // Creates a Deck object (including its cards) from the given Data.
+    // This method creates a Deck object (including its cards) from the given Data.
     func decodeDeckForImport(from data: Data) throws -> Deck {
         let decoder = JSONDecoder()
         return try decoder.decode(Deck.self, from: data)
     }
 
-    // Encodes a Deck instance (including its cards) into Data.
+    // This method encodes a Deck instance (including its cards) into Data.
     func encodeDeckForExport(_ deck: Deck) throws -> Data {
         let encoder = JSONEncoder()
         return try encoder.encode(deck)

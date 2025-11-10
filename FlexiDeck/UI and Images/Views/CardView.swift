@@ -13,9 +13,11 @@ import SheftAppsStylishUI
 
 struct CardView: View {
 
-    @EnvironmentObject var speechManager: SpeechManager
+    // MARK: - Properties - Objects
 
-    // MARK: - Properties - Card
+    @EnvironmentObject var dialogManager: DialogManager
+
+    @EnvironmentObject var speechManager: SpeechManager
 
     @Bindable var selectedCard: Card
 
@@ -36,10 +38,6 @@ struct CardView: View {
     @FocusState var frontFocused: Bool
 
     @FocusState var backFocused: Bool
-
-    // MARK: - Properties - Dialog Manager
-
-    @EnvironmentObject var dialogManager: DialogManager
 
     // MARK: - Body
 
@@ -140,6 +138,7 @@ struct CardView: View {
 
     // MARK: - Data Management
 
+    // This method sets the front and back text to those of the selected card.
     func loadCard(card: Card) {
         // 1. Set the front and back text to the card's front and back text. For a 1-sided card, the back text is removed instead.
         front = card.front
@@ -159,6 +158,7 @@ struct CardView: View {
         backFocused = false
     }
 
+    // This method sets the selected card's front and back text to the view's front and back text.
     func saveCard(card: Card) {
         // 1. If the card was modified, update the modified date.
         if front != card.front || back != card.back {
@@ -187,6 +187,7 @@ struct CardView: View {
         speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
     }
 
+    // This method saves the previously-selected card and loads the newly-selected one.
     func selectedCardChanged(oldCard: Card, newCard: Card) {
         // 1. Flip the card to the front side.
         isFlipped = false

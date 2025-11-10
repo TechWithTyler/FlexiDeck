@@ -22,6 +22,8 @@ struct DecksCardsSettingsPageView: View {
 
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
+    // MARK: - Body
+
     var body: some View {
         Form {
             Section {
@@ -46,7 +48,10 @@ struct DecksCardsSettingsPageView: View {
             }
         }
     }
+
 }
+
+// MARK: - Preview
 
 #Preview {
     DecksCardsSettingsPageView()

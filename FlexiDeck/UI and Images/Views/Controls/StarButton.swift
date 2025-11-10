@@ -12,11 +12,19 @@ import SwiftUI
 
 struct StarButton: View {
 
+    // MARK: - Properties - Integers
+
     var rating: Int
+
+    // MARK: - Properties - Booleans
 
     var isSelected: Bool
 
+    // MARK: - Properties - Selection Action
+
     var action: () -> Void
+
+    // MARK: - Body
 
     var body: some View {
         Button {
@@ -29,7 +37,10 @@ struct StarButton: View {
         .accessibilityLabel("\(rating)-star")
         .accessibilityConditionalTrait(.isSelected, condition: isSelected)
     }
+
 }
+
+// MARK: - Preview
 
 #Preview("Selected Star") {
     StarButton(rating: 1, isSelected: true) {}

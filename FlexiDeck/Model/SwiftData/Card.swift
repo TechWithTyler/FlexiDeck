@@ -108,6 +108,8 @@ final class Card: Codable {
         // This is where we would initialize a new Card object with the decoded data, except we don't need to--encoding/decoding Card is only necessary for encoded/decoded Decks to have a cards property.
     }
 
+    // MARK: - Encode Card for Export
+
     func encode(to encoder: Encoder) throws {
         // 1. Create a container for the encoded data.
         var container = encoder.container(keyedBy: CodingKeys.self)

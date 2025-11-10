@@ -14,6 +14,8 @@ extension UserDefaults {
 
     struct KeyNames {
 
+        // MARK: - UserDefaults Key Names
+
         static let cardTextSize: String = "cardTextSize"
 
         static let cardSortMode = "cardSortMode"

@@ -17,6 +17,8 @@ struct SpeechSettingsPageView: View {
 
     @EnvironmentObject var speechManager: SpeechManager
 
+    // MARK: - Body
+
     var body: some View {
         Form {
             Section {
@@ -38,7 +40,10 @@ struct SpeechSettingsPageView: View {
             }
         }
     }
+
 }
+
+// MARK: - Preview
 
 #Preview {
     SpeechSettingsPageView()

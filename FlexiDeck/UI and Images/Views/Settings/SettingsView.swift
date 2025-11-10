@@ -13,8 +13,6 @@ import SheftAppsStylishUI
 
 struct SettingsView: View {
 
-    // MARK: - Properties - Dialog Manager
-
     // MARK: - Properties - Objects
 
     @ObservedObject var dialogManager = DialogManager()

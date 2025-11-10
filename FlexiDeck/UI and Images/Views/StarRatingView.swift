@@ -11,7 +11,11 @@ import SwiftUI
 
 struct StarRatingView: View {
 
+    // MARK: - Properties - Card
+
     var card: Card
+
+    // MARK: - Body
 
     var body: some View {
         VStack {
@@ -30,6 +34,9 @@ struct StarRatingView: View {
         .padding(.top, 10)
     }
 
+    // MARK: - Set Star Rating
+
+    // This method sets the card's star rating to rating.
     func setStarRating(to rating: Int) {
         // 1. If the card's star rating is the same as the star that was selected, set the rating to 0. Otherwise, set it to that rating.
         if card.starRating == rating {
@@ -42,6 +49,8 @@ struct StarRatingView: View {
     }
 
 }
+
+// MARK: - Preview
 
 #Preview {
     StarRatingView(card: Card(title: "Test Card", is2Sided: true))

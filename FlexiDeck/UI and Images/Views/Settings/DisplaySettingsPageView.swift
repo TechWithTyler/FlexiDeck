@@ -29,6 +29,7 @@ struct DisplaySettingsPageView: View {
             }
         }
     }
+    
 }
 
 // MARK: - Preview

@@ -3,6 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/4/25.
+//  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -10,6 +11,8 @@
 import Foundation
 
 enum DeckImportExportError: LocalizedError {
+
+    // MARK: - Error Cases
 
     case fileWrapperError(Deck?)
 
@@ -20,6 +23,8 @@ enum DeckImportExportError: LocalizedError {
     case importError(URL, NSError)
 
     case securityScopedResourceAccessError(URL)
+
+    // MARK: - Error Description
 
     var errorDescription: String? {
         switch self {

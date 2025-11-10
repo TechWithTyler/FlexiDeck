@@ -16,6 +16,7 @@ struct ContentView: View {
 
     // MARK: - Properties - Model Context
 
+    // The model context.
     @Environment(\.modelContext) private var modelContext
 
     // MARK: - Properties - Booleans
@@ -26,10 +27,13 @@ struct ContentView: View {
 
     // MARK: - Properties - Decks and Cards
 
+    // The decks loaded from the model context.
     @Query private var decks: [Deck]
 
+    // The selected deck.
     @State private var selectedDeck: Deck? = nil
 
+    // The selected card.
     @State private var selectedCard: Card? = nil
 
     // MARK: - Properties - Managers
@@ -107,6 +111,8 @@ struct ContentView: View {
                 .focusedSceneObject(importExportManager)
                 .environmentObject(importExportManager)
     }
+
+    // MARK: - Sidebar
 
     @ViewBuilder
     var sidebar: some View {
@@ -217,6 +223,8 @@ struct ContentView: View {
         }
     }
 
+    // MARK: - Card List
+
     @ViewBuilder
     var cardList: some View {
         ZStack {
@@ -233,6 +241,8 @@ struct ContentView: View {
         }
         .navigationSplitViewColumnWidth(min: 300, ideal: 300)
     }
+
+    // MARK: - Card View
 
     @ViewBuilder
     var cardView: some View {
@@ -254,6 +264,7 @@ struct ContentView: View {
 
     // MARK: - Data Management
 
+    // This method creates a new Deck object and inserts it into the model context.
     private func addDeck() {
         withAnimation {
             // 1. Create a new Deck object with the default name and default number of sides.
@@ -269,6 +280,7 @@ struct ContentView: View {
         }
     }
 
+    // This method deletes the deck at the given index set.
     private func deleteDecks(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
         withAnimation {
@@ -277,6 +289,7 @@ struct ContentView: View {
         }
     }
 
+    // This method deletes the given deck.
     func deleteDeck(_ deck: Deck) {
         // 1. Nil-out all selections.
         selectedCard = nil
