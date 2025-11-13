@@ -214,6 +214,9 @@ struct CardListView: View {
                             CardRowView(card: card, searchText: searchText)
                         }
                         .contextMenu {
+                            CompletedStatusPicker(card: card)
+                            StarRatingPicker(card: card)
+                            Divider()
                             Button("Card Settings…", systemImage: "gear") {
                                 dialogManager.cardToShowSettings = card
                             }

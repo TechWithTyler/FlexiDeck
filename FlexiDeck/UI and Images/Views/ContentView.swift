@@ -57,6 +57,7 @@ struct ContentView: View {
         } detail: {
             cardView
         }
+        // Settings
         .sheet(item: $dialogManager.deckToShowSettings) { deck in
             DeckSettingsView(deck: deck)
         }
@@ -65,6 +66,7 @@ struct ContentView: View {
             SettingsView()
         }
 #endif
+        // Import/Export
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
             allowedContentTypes: [.flexiDeckDeck],
@@ -269,7 +271,7 @@ struct ContentView: View {
         withAnimation {
             // 1. Create a new Deck object with the default name and default number of sides.
             let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
-            // 2. INsert the new deck into the model context.
+            // 2. Insert the new deck into the model context.
             modelContext.insert(newItem)
             // 3. Select the new deck.
             selectedDeck = newItem
