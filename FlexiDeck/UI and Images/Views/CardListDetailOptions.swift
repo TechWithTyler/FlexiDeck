@@ -25,7 +25,7 @@ struct CardListDetailOptions: View {
             Text("Date Only").tag(false)
             Text("Date and Time").tag(true)
         }
-        Toggle("Show Number Of Sides", isOn: $showNumberOfSides)
+        Toggle("Show Number of Sides", isOn: $showNumberOfSides)
     }
 
 }

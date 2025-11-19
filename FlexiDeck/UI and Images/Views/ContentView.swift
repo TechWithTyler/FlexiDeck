@@ -16,7 +16,7 @@ struct ContentView: View {
 
     // MARK: - Properties - Model Context
 
-    // The model context.
+    // The model context, which stores data for the app.
     @Environment(\.modelContext) private var modelContext
 
     // MARK: - Properties - Booleans
