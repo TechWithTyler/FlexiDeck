@@ -14,30 +14,35 @@ enum DeckImportExportError: LocalizedError {
 
     // MARK: - Error Cases
 
-    case fileWrapperError(Deck?)
+    // Error with wrapping up a deck's data into an exportable file
+    case fileWrapperError
 
-    case urlResultFailure(NSError)
+    // Imported file URL result failed
+    case fileImportURLResultFailure(NSError)
 
+    // Export error.
     case exportError(Deck, NSError)
 
+    // Import error
     case importError(URL, NSError)
 
+    // Security-scoped resource access error
     case securityScopedResourceAccessError(URL)
 
     // MARK: - Error Description
 
     var errorDescription: String? {
         switch self {
-        case .fileWrapperError(let deck):
-            return "The deck \"\((deck?.name)!)\" couldn't be wrapped up to prepare for export."
-            case .urlResultFailure(let error):
-            return "The URL result was nil or invalid: \(error.localizedDescription)"
+        case .fileWrapperError:
+            return "Deck couldn't be wrapped up into an exportable file."
+            case .fileImportURLResultFailure(let error):
+            return "The file import URL result was nil or invalid: \(error.localizedDescription)"
             case .exportError(let deck, let error):
             return "The deck \"\(deck.name!)\" couldn't be exported: \(error.localizedDescription)"
-            case .importError(let url, let error):
-            return "The deck at \(url.path) couldn't be imported: \(error.localizedDescription)"
-        case .securityScopedResourceAccessError(let url):
-            return "The deck at \(url.path) couldn't be imported because the security scoped resource access failed. Please ensure you have permission to access this resource."
+            case .importError(let fileURL, let error):
+            return "The deck at \(fileURL.path) couldn't be imported: \(error.localizedDescription)"
+        case .securityScopedResourceAccessError(let fileURL):
+            return "The deck at \(fileURL.path) couldn't be imported because the security-scoped resource access failed. Please ensure you have permission to access this resource."
         }
     }
 

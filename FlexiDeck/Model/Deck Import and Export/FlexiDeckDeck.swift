@@ -12,10 +12,11 @@ import UniformTypeIdentifiers
 
 extension UTType {
 
-    // MARK: - Uniform Types
+    // MARK: - Properties Uniform Types
 
     static var flexiDeckDeck: UTType {
-        UTType(importedAs: "com.tylersheft.FlexiDeckDeck")
+        let typeName = "com.tylersheft.FlexiDeckDeck"
+        return UTType(importedAs: typeName)
     }
 
 }

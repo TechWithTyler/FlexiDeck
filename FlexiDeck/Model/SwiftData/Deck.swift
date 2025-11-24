@@ -12,7 +12,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Deck: Codable, Sendable {
+final class Deck: Codable {
 
     // MARK: - CodingKeys Enum
 

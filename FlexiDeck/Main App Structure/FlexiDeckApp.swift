@@ -38,13 +38,13 @@ struct FlexiDeckApp: App {
         let location: FileManager.SearchPathDirectory = .applicationSupportDirectory
         // The URLs for the given location in the given domain.
         let URLs = storeManager.urls(for: location, in: domain)
-        // Gets the last URL from the URLs array and adds a new folder to it.
+        // Gets the last URL from the URLs array and adds a new file to it.
         let appSupportURL: URL = URLs.last!
         // Creates a URL with name "default.store"
         // Here, a file or directory is inserted into the specified location in the specified domain.
         // Like with arrays, to append something means "to add."
         let fileURL: URL = appSupportURL.appending(path: storeFilename, directoryHint: .notDirectory)
-        // Appends ".store" to the URL. This is the full URL that gets returned.
+        // Appends ".store" to the URL. This is the full URL.
         let file: URL = fileURL.appendingPathExtension(storeFileExtension)
         // 3. Create a ModelConfiguration with the schema.
         let modelConfiguration = ModelConfiguration(schema: schema, url: file, allowsSave: true, cloudKitDatabase: .automatic)
@@ -71,7 +71,7 @@ struct FlexiDeckApp: App {
         }
         #if os(macOS)
         Settings {
-                SettingsView()
+            SettingsView()
         }
         #endif
     }

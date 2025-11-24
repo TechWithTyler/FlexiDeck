@@ -19,17 +19,14 @@ struct ExportedDeck: FileDocument {
 
     // MARK: - Properties - Data
 
+    // The deck data to wrap up into a file.
     var data: Data?
-
-    // MARK: - Properties - Deck
-
-    var deck: Deck?
 
     // MARK: - Initialization
 
-    init(data: Data?, deck: Deck?) {
+    // Creates an ExportedDeck with the encoded data and corresponding deck.
+    init(data: Data?) {
         self.data = data
-        self.deck = deck
     }
 
     init(configuration: ReadConfiguration) throws {
@@ -39,10 +36,11 @@ struct ExportedDeck: FileDocument {
     // MARK: - File Wrapper
 
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        // Make sure we can get the exported deck data. Otherwise, throw an error.
+        // 1. Make sure we can get the exported deck data. Otherwise, throw an error.
         guard let data = data else {
-            throw DeckImportExportError.fileWrapperError(deck)
+            throw DeckImportExportError.fileWrapperError
         }
+        // 2. Return the FileWrapper with the data.
         return FileWrapper(regularFileWithContents: data)
     }
 }

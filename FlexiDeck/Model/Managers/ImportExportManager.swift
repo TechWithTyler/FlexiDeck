@@ -25,37 +25,64 @@ class ImportExportManager: ObservableObject {
 
     @AppStorage(UserDefaults.KeyNames.useFilenameAsImportedDeckName) var useFilenameAsImportedDeckName: Bool = true
 
+    // Whether the file importer should be/is being displayed.
     @Published var showingImporter = false
 
+    // Whether the file exporter should be/is being displayed.
     @Published var showingExporter = false
 
+    // Whether an error should be/is being displayed.
     @Published var showingError: Bool = false
 
+    // Whether the import success message should be/is being displayed.
     @Published var showingImportSuccess: Bool = false
 
+    // Whether the export success message should be/is being displayed.
     @Published var showingExportSuccess: Bool = false
 
     // MARK: - Properties - Strings
 
+    // The message to display in the import success alert.
     @Published var importSuccessMessage: String = String()
 
+    // The message to display in the export success message.
     @Published var exportSuccessMessage: String = String()
-
-    // MARK: - Properties - URLs
-
-    @Published var fileToExport: URL? = nil
 
     // MARK: - Properties - Decks
 
+    // The deck to export.
     @Published var deckToExport: Deck? = nil
 
     // MARK: - Properties - Data
 
+    // The deck to export, encoded into data for export.
     @Published var deckDataToExport: Data? = nil
+
+    // MARK: - Properties - URLs
+
+    // The file to export after the deck data to export has been wrapped up in it.
+    @Published var fileToExport: URL? = nil
 
     // MARK: - Properties - Errors
 
+    // The error to be shown in the import/export error dialog.
     @Published var importExportError: DeckImportExportError? = nil
+
+    // MARK: - Encoding/Decoding
+
+    // This method creates a Deck object (including its cards) from the given Data. Decoding is performed after importing a file.
+    func decodeDeckForImport(from data: Data) throws -> Deck {
+        let decoder = JSONDecoder()
+        return try decoder.decode(Deck.self, from: data)
+    }
+
+    // This method encodes a Deck instance (including its cards) into Data. Encoding is performed before the file exporter for a file is shown.
+    func encodeDeckForExport(_ deck: Deck) throws -> Data {
+        let encoder = JSONEncoder()
+        let encodedDeck = try encoder.encode(deck)
+        deckToExport = deck
+        return encodedDeck
+    }
 
     // MARK: - Show Dialog
 
@@ -71,9 +98,8 @@ class ImportExportManager: ObservableObject {
         // 1. Try to encode deck to data for export.
         do {
             let data = try encodeDeckForExport(deck)
-            // 2. Set the deck and data properties, which are used by the file export dialog.
+            // 2. Set the data property, which is used by the file export dialog.
             deckDataToExport = data
-            deckToExport = deck
             // 3. Show the file export dialog.
             showingExporter = true
         } catch let error as NSError {
@@ -90,47 +116,47 @@ class ImportExportManager: ObservableObject {
         var successfulDeckImportCount = 0
         // 2. Go through each file selected for import.
         switch result {
-        case .success(let urls):
-            for url in urls {
-                // 3. Try to start accessing the security scoped resource.
-                let canAccessSecurityScopedResource = url.startAccessingSecurityScopedResource()
+        case .success(let fileURLs):
+            for fileURL in fileURLs {
+                // 3. Try to start accessing the security-scoped resource.
+                let canAccessSecurityScopedResource = fileURL.startAccessingSecurityScopedResource()
                 if canAccessSecurityScopedResource {
                 do {
                         // 4. If successful, try to load the data from the file.
-                        let data = try Data(contentsOf: url)
+                        let data = try Data(contentsOf: fileURL)
                         // 5. Try to decode the data into a Deck object.
                         let importedDeck = try decodeDeckForImport(from: data)
                     // 6. If the option to use an imported deck's filename as the deck name is enabled, change the deck name to its filename.
-                    if let deckNameFromFilename = url.deletingPathExtension().lastPathComponent.removingPercentEncoding, useFilenameAsImportedDeckName {
+                    if let deckNameFromFilename = fileURL.deletingPathExtension().lastPathComponent.removingPercentEncoding, useFilenameAsImportedDeckName {
                         importedDeck.name = deckNameFromFilename
                     }
                     // 7. Insert the imported deck into the model context.
                     modelContext.insert(importedDeck)
                     // 8. Increment the successful deck import count by 1.
                     successfulDeckImportCount += 1
-                        // 9. Stop accessing the security scoped resource now that it's no longer needed.
-                        url.stopAccessingSecurityScopedResource()
+                        // 9. Stop accessing the security-scoped resource now that it's no longer needed.
+                        fileURL.stopAccessingSecurityScopedResource()
                 } catch let error as NSError {
                     // 10. If any try expression above fails, show an error.
                     importExportError = DeckImportExportError
-                        .importError(url, error)
+                        .importError(fileURL, error)
                     showingError = true
                 }
                     } else {
-                        // 11. If accessing the security scoped resource failed, show an error.
-                        importExportError = .securityScopedResourceAccessError(url)
+                        // 11. If accessing the security-scoped resource failed, show an error.
+                        importExportError = .securityScopedResourceAccessError(fileURL)
                         showingError = true
                     }
             }
         case .failure(let error as NSError):
             // 12. If the file import result is a failure, show an error.
-            importExportError = .urlResultFailure(error)
+            importExportError = .fileImportURLResultFailure(error)
             showingError = true
         }
         // 13. If at least one deck was successfully imported, show the import success alert. If not, no alert will be presented here--one will have already been presented for each deck that failed to be imported.
         if successfulDeckImportCount > 0 {
-            let deckSingularPlural = successfulDeckImportCount == 1 ? "deck has" : "decks have"
-            importSuccessMessage = "\(successfulDeckImportCount) \(deckSingularPlural) been successfully imported!"
+            let deckSingularOrPlural = successfulDeckImportCount == 1 ? "deck has" : "decks have"
+            importSuccessMessage = "\(successfulDeckImportCount) \(deckSingularOrPlural) been successfully imported!"
             showingImportSuccess = true
         }
     }
@@ -148,22 +174,8 @@ class ImportExportManager: ObservableObject {
         case .failure(let error as NSError):
         // 3. If the file export failed, show an error.
             showingError = true
-            importExportError = .urlResultFailure(error)
+            importExportError = .fileImportURLResultFailure(error)
         }
-    }
-
-    // MARK: - Encoding/Decoding
-
-    // This method creates a Deck object (including its cards) from the given Data.
-    func decodeDeckForImport(from data: Data) throws -> Deck {
-        let decoder = JSONDecoder()
-        return try decoder.decode(Deck.self, from: data)
-    }
-
-    // This method encodes a Deck instance (including its cards) into Data.
-    func encodeDeckForExport(_ deck: Deck) throws -> Data {
-        let encoder = JSONEncoder()
-        return try encoder.encode(deck)
     }
 
 }

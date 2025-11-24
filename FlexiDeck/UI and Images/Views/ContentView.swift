@@ -77,7 +77,7 @@ struct ContentView: View {
         .fileDialogMessage("Select deck(s) to import")
         .fileExporter(
             isPresented: $importExportManager.showingExporter,
-            document: ExportedDeck(data: importExportManager.deckDataToExport, deck: importExportManager.deckToExport
+            document: ExportedDeck(data: importExportManager.deckDataToExport
             ),
             contentType: .flexiDeckDeck,
             defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName

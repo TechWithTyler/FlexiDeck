@@ -241,8 +241,8 @@
 		8DCB0A582C62BE2D00EB82DC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8D12ADD92E18730100A59606 /* Deck Import and Export */,
 				8DCB0A632C640B7B00EB82DC /* SwiftData */,
+				8D12ADD92E18730100A59606 /* Deck Import and Export */,
 				8D26277D2C77D80000D11F80 /* Managers */,
 				8D38ED622CAC98E300CCC422 /* Settings */,
 			);
@@ -593,6 +593,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
@@ -647,6 +648,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
