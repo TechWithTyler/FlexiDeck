@@ -6,6 +6,8 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 
 // Manages the display of dialogs in the app.

@@ -6,6 +6,8 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 
 struct DecksCardsSettingsPageView: View {
@@ -20,6 +22,8 @@ struct DecksCardsSettingsPageView: View {
 
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
+    // MARK: - Body
+
     var body: some View {
         Form {
             Section {
@@ -28,7 +32,7 @@ struct DecksCardsSettingsPageView: View {
                     Text("2-Sided").tag(true)
                 }
             } footer: {
-                Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting determines the default number of sides for new decks.")
+                Text("The number of sides a card can have can be changed on a per-card and per-deck basis. This setting determines the setting to be used for new decks.")
             }
             Section {
                 Picker("Show Settings When Creating", selection: $showSettingsWhenCreating) {
@@ -44,7 +48,10 @@ struct DecksCardsSettingsPageView: View {
             }
         }
     }
+
 }
+
+// MARK: - Preview
 
 #Preview {
     DecksCardsSettingsPageView()

@@ -6,6 +6,8 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 import SwiftData
 import SheftAppsStylishUI
@@ -14,6 +16,7 @@ struct ContentView: View {
 
     // MARK: - Properties - Model Context
 
+    // The model context, which stores data for the app.
     @Environment(\.modelContext) private var modelContext
 
     // MARK: - Properties - Booleans
@@ -24,10 +27,13 @@ struct ContentView: View {
 
     // MARK: - Properties - Decks and Cards
 
+    // The decks loaded from the model context.
     @Query private var decks: [Deck]
 
+    // The selected deck.
     @State private var selectedDeck: Deck? = nil
 
+    // The selected card.
     @State private var selectedCard: Card? = nil
 
     // MARK: - Properties - Managers
@@ -51,6 +57,7 @@ struct ContentView: View {
         } detail: {
             cardView
         }
+        // Settings
         .sheet(item: $dialogManager.deckToShowSettings) { deck in
             DeckSettingsView(deck: deck)
         }
@@ -59,9 +66,10 @@ struct ContentView: View {
             SettingsView()
         }
 #endif
+        // Import/Export
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
-            allowedContentTypes: [.deck],
+            allowedContentTypes: [.flexiDeckDeck],
             allowsMultipleSelection: true,
         ) { result in
             importExportManager.handleDeckImport(result: result, modelContext: modelContext)
@@ -69,22 +77,16 @@ struct ContentView: View {
         .fileDialogMessage("Select deck(s) to import")
         .fileExporter(
             isPresented: $importExportManager.showingExporter,
-            document: ExportedDeck(
-                data: importExportManager.deckDataToExport,
-                deck: importExportManager.deckToExport
+            document: ExportedDeck(data: importExportManager.deckDataToExport
             ),
-            contentType: .deck,
+            contentType: .flexiDeckDeck,
             defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
         ) { result in
-            importExportManager
-                .handleDeckExport(
-                    deck: importExportManager.deckToExport,
-                    result: result
-                )
+            importExportManager.handleDeckExport(deck: importExportManager.deckToExport, result: result)
         }
-        .alert(isPresented: $importExportManager.showingImportExportError, error: importExportManager.importExportError) {
+        .alert(isPresented: $importExportManager.showingError, error: importExportManager.importExportError) {
             Button("OK") {
-                importExportManager.showingImportExportError = false
+                importExportManager.showingError = false
                 importExportManager.importExportError = nil
             }
         }
@@ -111,6 +113,8 @@ struct ContentView: View {
                 .focusedSceneObject(importExportManager)
                 .environmentObject(importExportManager)
     }
+
+    // MARK: - Sidebar
 
     @ViewBuilder
     var sidebar: some View {
@@ -221,6 +225,8 @@ struct ContentView: View {
         }
     }
 
+    // MARK: - Card List
+
     @ViewBuilder
     var cardList: some View {
         ZStack {
@@ -237,6 +243,8 @@ struct ContentView: View {
         }
         .navigationSplitViewColumnWidth(min: 300, ideal: 300)
     }
+
+    // MARK: - Card View
 
     @ViewBuilder
     var cardView: some View {
@@ -258,17 +266,23 @@ struct ContentView: View {
 
     // MARK: - Data Management
 
+    // This method creates a new Deck object and inserts it into the model context.
     private func addDeck() {
         withAnimation {
+            // 1. Create a new Deck object with the default name and default number of sides.
             let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
+            // 2. Insert the new deck into the model context.
             modelContext.insert(newItem)
+            // 3. Select the new deck.
             selectedDeck = newItem
+            // 4. If set to show deck settings upon creation, show the new deck's settings.
             if showSettingsWhenCreating >= 1 {
                 dialogManager.deckToShowSettings = newItem
             }
         }
     }
 
+    // This method deletes the deck at the given index set.
     private func deleteDecks(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
         withAnimation {
@@ -277,10 +291,14 @@ struct ContentView: View {
         }
     }
 
+    // This method deletes the given deck.
     func deleteDeck(_ deck: Deck) {
+        // 1. Nil-out all selections.
         selectedCard = nil
         selectedDeck = nil
+        // 2. Delete all cards from the deck.
         deck.cards?.removeAll()
+        // 3. Delete the deck.
         DispatchQueue.main.async {
             modelContext.delete(deck)
         }

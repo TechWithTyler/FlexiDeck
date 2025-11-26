@@ -35,6 +35,8 @@
 		8DB0621C2C5D734D0057E7DC /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621B2C5D734D0057E7DC /* CardListView.swift */; };
 		8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */; };
 		8DB062202C5D7C160057E7DC /* CardSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */; };
+		8DC6D6162EC68D95007F8794 /* CompletedStatusPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6D6152EC68D95007F8794 /* CompletedStatusPicker.swift */; };
+		8DC6D6182EC68E20007F8794 /* StarRatingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6D6172EC68E20007F8794 /* StarRatingPicker.swift */; };
 		8DC964E42D0B877B00984466 /* CardListDetailOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DC964E32D0B877B00984466 /* CardListDetailOptions.swift */; };
 		8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */; };
 		8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCB0A612C6409AD00EB82DC /* DialogManager.swift */; };
@@ -93,6 +95,8 @@
 		8DB0621B2C5D734D0057E7DC /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
 		8DB0621D2C5D7AAB0057E7DC /* DeckSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSettingsView.swift; sourceTree = "<group>"; };
 		8DB0621F2C5D7C160057E7DC /* CardSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSettingsView.swift; sourceTree = "<group>"; };
+		8DC6D6152EC68D95007F8794 /* CompletedStatusPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedStatusPicker.swift; sourceTree = "<group>"; };
+		8DC6D6172EC68E20007F8794 /* StarRatingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingPicker.swift; sourceTree = "<group>"; };
 		8DC964E32D0B877B00984466 /* CardListDetailOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListDetailOptions.swift; sourceTree = "<group>"; };
 		8DCB0A5B2C62BE8800EB82DC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8DCB0A612C6409AD00EB82DC /* DialogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogManager.swift; sourceTree = "<group>"; };
@@ -225,11 +229,20 @@
 			path = "List Row Content";
 			sourceTree = "<group>";
 		};
+		8DC6D6192EC69275007F8794 /* Menu Items */ = {
+			isa = PBXGroup;
+			children = (
+				8DC6D6152EC68D95007F8794 /* CompletedStatusPicker.swift */,
+				8DC6D6172EC68E20007F8794 /* StarRatingPicker.swift */,
+			);
+			path = "Menu Items";
+			sourceTree = "<group>";
+		};
 		8DCB0A582C62BE2D00EB82DC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8D12ADD92E18730100A59606 /* Deck Import and Export */,
 				8DCB0A632C640B7B00EB82DC /* SwiftData */,
+				8D12ADD92E18730100A59606 /* Deck Import and Export */,
 				8D26277D2C77D80000D11F80 /* Managers */,
 				8D38ED622CAC98E300CCC422 /* Settings */,
 			);
@@ -259,6 +272,7 @@
 				8D02F07E2C655E3C00E6A48A /* Settings */,
 				8D38ED612CAC98AC00CCC422 /* Controls */,
 				8DC964E32D0B877B00984466 /* CardListDetailOptions.swift */,
+				8DC6D6192EC69275007F8794 /* Menu Items */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -322,6 +336,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 2600;
+				ORGANIZATIONNAME = SheftApps;
 				TargetAttributes = {
 					8D0768592C543AED007F6501 = {
 						CreatedOnToolsVersion = 16.0;
@@ -375,6 +390,7 @@
 				8DB0621A2C5D72640057E7DC /* Deck.swift in Sources */,
 				8D2627812C77D87A00D11F80 /* Globals.swift in Sources */,
 				8D38ED5C2CAC8F3E00CCC422 /* SpeechSettingsPageView.swift in Sources */,
+				8DC6D6162EC68D95007F8794 /* CompletedStatusPicker.swift in Sources */,
 				8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */,
 				8DDE5FEC2CB86B4900697F70 /* AppDelegate.swift in Sources */,
 				8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */,
@@ -396,6 +412,7 @@
 				8DB0621E2C5D7AAB0057E7DC /* DeckSettingsView.swift in Sources */,
 				8D12ADDD2E1C6A8000A59606 /* ExportButton.swift in Sources */,
 				8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */,
+				8DC6D6182EC68E20007F8794 /* StarRatingPicker.swift in Sources */,
 				8DE403B32C66B55100D61D6E /* FlexiDeckCommands.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -534,7 +551,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 400;
+				CURRENT_PROJECT_VERSION = 450;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				ENABLE_APP_SANDBOX = YES;
@@ -569,13 +586,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2025.9;
+				MARKETING_VERSION = 2025.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.FlexiDeck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
@@ -588,7 +606,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 400;
+				CURRENT_PROJECT_VERSION = 450;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				ENABLE_APP_SANDBOX = YES;
@@ -623,13 +641,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 2025.9;
+				MARKETING_VERSION = 2025.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.FlexiDeck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};

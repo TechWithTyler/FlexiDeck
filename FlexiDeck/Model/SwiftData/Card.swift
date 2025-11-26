@@ -6,6 +6,8 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import Foundation
 import SwiftData
 
@@ -105,6 +107,8 @@ final class Card: Codable {
         isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
         // This is where we would initialize a new Card object with the decoded data, except we don't need to--encoding/decoding Card is only necessary for encoded/decoded Decks to have a cards property.
     }
+
+    // MARK: - Encode Card for Export
 
     func encode(to encoder: Encoder) throws {
         // 1. Create a container for the encoded data.

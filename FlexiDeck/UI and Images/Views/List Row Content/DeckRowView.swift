@@ -6,11 +6,17 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 
 struct DeckRowView: View {
 
+    // MARK: - Properties - Deck
+
     var deck: Deck
+
+    // MARK: - Properties - Strings
 
     var cardCountText: String {
         guard let cardCount = deck.cards?.count else { fatalError("Card count unavailable") }
@@ -18,13 +24,18 @@ struct DeckRowView: View {
         return "\(cardCount) \(countSingularOrPlural)"
     }
 
+    // MARK: - Body
+
     var body: some View {
         HStack {
             Text(deck.name ?? String())
                 .badge(cardCountText)
         }
     }
+
 }
+
+// MARK: - Preview
 
 #Preview {
     DeckRowView(deck: Deck(name: "Test Deck", newCardsAre2Sided: true))

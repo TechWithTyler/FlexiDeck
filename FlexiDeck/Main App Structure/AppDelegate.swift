@@ -7,6 +7,9 @@
 //
 
 #if os(macOS)
+
+// MARK: - Imports
+
 import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate {

@@ -6,6 +6,8 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 import SheftAppsStylishUI
 
@@ -27,6 +29,7 @@ struct DisplaySettingsPageView: View {
             }
         }
     }
+    
 }
 
 // MARK: - Preview

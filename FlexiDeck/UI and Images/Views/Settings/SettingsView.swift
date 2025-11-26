@@ -6,12 +6,12 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 import SheftAppsStylishUI
 
 struct SettingsView: View {
-
-    // MARK: - Properties - Dialog Manager
 
     // MARK: - Properties - Objects
 

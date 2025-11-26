@@ -6,11 +6,13 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import Foundation
 import SwiftData
 
 @Model
-final class Deck: Codable, Sendable {
+final class Deck: Codable {
 
     // MARK: - CodingKeys Enum
 
@@ -50,9 +52,11 @@ final class Deck: Codable, Sendable {
         let newCardsAre2Sided = try container.decodeIfPresent(Bool.self, forKey: .newCardsAre2Sided)
         let cards = try container.decodeIfPresent([Card].self, forKey: .cards)
         // 3. Create a new Deck object with the decoded properties by calling the "new deck" initializer above and setting the cards property.
-        self.init(name: name ?? "", newCardsAre2Sided: newCardsAre2Sided ?? false)
+        self.init(name: name ?? String(), newCardsAre2Sided: newCardsAre2Sided ?? false)
         self.cards = cards
     }
+
+    // MARK: - Encode Card for Export
 
     func encode(to encoder: Encoder) throws {
         // 1. Create a container for the encoded data.

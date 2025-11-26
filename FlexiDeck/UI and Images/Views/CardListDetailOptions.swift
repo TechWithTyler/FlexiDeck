@@ -6,6 +6,8 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 
 struct CardListDetailOptions: View {
@@ -19,12 +21,11 @@ struct CardListDetailOptions: View {
     // MARK: - Body
 
     var body: some View {
-
         Picker("Date/Time", selection: $cardDateTimeDisplay) {
             Text("Date Only").tag(false)
             Text("Date and Time").tag(true)
         }
-        Toggle("Show Number Of Sides", isOn: $showNumberOfSides)
+        Toggle("Show Number of Sides", isOn: $showNumberOfSides)
     }
 
 }

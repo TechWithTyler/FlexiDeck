@@ -6,11 +6,15 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import Foundation
 
 extension UserDefaults {
 
     struct KeyNames {
+
+        // MARK: - UserDefaults Key Names
 
         static let cardTextSize: String = "cardTextSize"
 

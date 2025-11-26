@@ -6,14 +6,18 @@
 //  Copyright © 2024-2025 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 import SheftAppsStylishUI
 
 struct CardView: View {
 
-    @EnvironmentObject var speechManager: SpeechManager
+    // MARK: - Properties - Objects
 
-    // MARK: - Properties - Card
+    @EnvironmentObject var dialogManager: DialogManager
+
+    @EnvironmentObject var speechManager: SpeechManager
 
     @Bindable var selectedCard: Card
 
@@ -35,15 +39,12 @@ struct CardView: View {
 
     @FocusState var backFocused: Bool
 
-    // MARK: - Properties - Dialog Manager
-
-    @EnvironmentObject var dialogManager: DialogManager
-
     // MARK: - Body
 
     var body: some View {
         TranslucentFooterVStack {
             ZStack {
+                // The flip animation is achieved by stacking 2 TextEditors on top of each other, one for the front side and one for the back side. The visible side's TextEditor is at the top of the ZStack and the hidden one is disabled.
                 TextEditor(text: $front)
                     .rotation3DEffect(.degrees(isFlipped ? 90 : 0), axis: (x: 0, y: 1, z: 0))
                     .animation(isFlipped ? .linear : .linear.delay(0.35), value: isFlipped)
@@ -98,11 +99,6 @@ struct CardView: View {
         }
         .onAppear {
             loadCard(card: selectedCard)
-            if speechManager.speakOnSelectionOrFlip {
-                speechManager.speak(text: front)
-            }
-            frontFocused = true
-            backFocused = false
         }
         .onDisappear {
             saveCard(card: selectedCard)
@@ -142,7 +138,9 @@ struct CardView: View {
 
     // MARK: - Data Management
 
+    // This method sets the front and back text to those of the selected card.
     func loadCard(card: Card) {
+        // 1. Set the front and back text to the card's front and back text. For a 1-sided card, the back text is removed instead.
         front = card.front
         if card.is2Sided! {
             back = card.back
@@ -151,16 +149,26 @@ struct CardView: View {
             isFlipped = false
             back.removeAll()
         }
+        // 2. If the option to speak card text on selection or flip is enabled, speak the newly-selected card's front side.
+        if speechManager.speakOnSelectionOrFlip {
+            speechManager.speak(text: front)
+        }
+        // 3. Set focus to the front side.
+        frontFocused = true
+        backFocused = false
     }
 
+    // This method sets the selected card's front and back text to the view's front and back text.
     func saveCard(card: Card) {
         // 1. If the card was modified, update the modified date.
         if front != card.front || back != card.back {
             card.modifiedDate = Date()
         }
-        // 2. If the title matches the front's first line before the front was changed, set the title to the front's first line. If the front is empty, reset the title to "New Card".
-        if card.front.components(separatedBy: .newlines).first! == card.title || card.title == defaultCardName {
-            card.title = front.isEmpty ? defaultCardName : front.components(separatedBy: .newlines).first!
+        // 2. If the title matches the front's first line before the front was changed to a new card's front, set the title to the front's first line. If the front is empty, reset the title to "New Card".
+        let firstLineOfCardFront = card.front.components(separatedBy: .newlines).first!
+        let firstLineOfFront = front.components(separatedBy: .newlines).first!
+        if firstLineOfCardFront == card.title || card.title == defaultCardName {
+            card.title = front.isEmpty ? defaultCardName : firstLineOfFront
         }
         // 3. Set the card's front and back text.
         card.front = front
@@ -179,23 +187,18 @@ struct CardView: View {
         speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
     }
 
+    // This method saves the previously-selected card and loads the newly-selected one.
     func selectedCardChanged(oldCard: Card, newCard: Card) {
         // 1. Flip the card to the front side.
         isFlipped = false
         // 2. Save the previously-selected card.
         saveCard(card: oldCard)
-        // 3. Load the newly-selected card.
+        // 3. Stop speech.
+        speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+        // 4. Load the newly-selected card.
         if newCard != oldCard {
             loadCard(card: newCard)
         }
-        // 4. Stop speech.
-        speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
-        // 5. If the option to speak card text on selection or flip is enabled, speak the newly-selected card's front side.
-        if speechManager.speakOnSelectionOrFlip {
-            speechManager.speak(text: selectedCard.front)
-        }
-        backFocused = false
-        frontFocused = true
     }
 
 }
