@@ -17,7 +17,7 @@ class DialogManager: ObservableObject {
 
 #if os(macOS)
     // The page currently selected in the Settings window on macOS.
-    @AppStorage("selectedSettingsPage") var selectedSettingsPage: SettingsPage = .display
+    @AppStorage(UserDefaults.KeyNames.selectedSettingsPage) var selectedSettingsPage: SettingsPage = .display
 #endif
 
     // MARK: - Properties - Booleans

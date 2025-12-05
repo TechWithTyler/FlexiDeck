@@ -22,6 +22,8 @@ extension UserDefaults {
 
         static let sortCardsAscending = "sortCardsAscending"
 
+        static let selectedSettingsPage: String = "selectedSettingsPage"
+
         static let newDecksDefaultTo2SidedCards: String = "newDecksDefaultTo2SidedCards"
 
         static let showSettingsWhenCreating: String = "showSettingsWhenCreating"
