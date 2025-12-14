@@ -9,7 +9,7 @@
 // MARK: - Imports
 
 import SwiftUI
-import AVFoundation
+import Speech
 import SheftAppsStylishUI
 
 class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
@@ -40,7 +40,7 @@ class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
 
     // MARK: - Load Voices
 
-    // This method loads all installed voices into the app.
+    // This method loads all installed voices into the manager.
     func loadVoices() {
             AVSpeechSynthesizer.requestPersonalVoiceAuthorization { [self] status in
                 voices = AVSpeechSynthesisVoice.speechVoices().filter({$0.language == "en-US"})
@@ -53,6 +53,7 @@ class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
 
     // MARK: - Speak Text
 
+    // This method speaks text using the selected voice, or if text is the text currently being spoken, stops speech.
     func speak(text: String, forSettingsPreview: Bool = false) {
         DispatchQueue.main.async { [self] in
             // 1. Stop any in-progress speech.
@@ -71,12 +72,14 @@ class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
 
     // MARK: - Speech Synthesizer Delegate
 
+    // This method sets textBeingSpoken to utterance's speechString when speech starts.
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
         textBeingSpoken = utterance.speechString
     }
 
+    // This method resets textBeingSpoken to an empty String once speech completes or stops.
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        textBeingSpoken.removeAll()
+        textBeingSpoken = String()
     }
 
 }
