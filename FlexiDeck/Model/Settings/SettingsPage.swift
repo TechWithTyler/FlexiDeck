@@ -35,4 +35,10 @@ enum SettingsPage : String {
 
     case decksCards = "Decks/Cards"
 
+    // MARK: - Settings Page Title
+
+    var title: String {
+        return rawValue.capitalized
+    }
+
 }
