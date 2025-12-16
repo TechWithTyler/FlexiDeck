@@ -15,10 +15,10 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Type Aliases
 
-    // The type of deck import results. Import can accept multiple file URLs.
+    // The type of deck import results. Import can accept multiple file URLs. Success is the array of file URLs to create Deck objects from.
     typealias DeckImportResult = Result<[URL], Error>
 
-    // The type of deck export results. Export can only accept a single file URL.
+    // The type of deck export results. Export can only accept a single file URL. Success is the file URL to be exported.
     typealias DeckExportResult = Result<URL, Error>
 
     // MARK: - Properties - Booleans
