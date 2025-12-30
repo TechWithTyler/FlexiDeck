@@ -8,12 +8,12 @@
 
 // MARK: - Imports
 
-import SwiftUI
+import SheftAppsStylishUI
 
 // MARK: - Functions
 
 func showHelp() {
-    let helpURL = URL(string: "https://techwithtyler20.weebly.com/\((appName?.lowercased())!)help")!
+    let helpURL = SAAppHelpURL
     #if os(macOS)
     NSWorkspace.shared.open(helpURL)
     #else
@@ -22,9 +22,6 @@ func showHelp() {
 }
 
 // MARK: - Properties - Strings
-
-// The application name.
-let appName: String? = (Bundle.main.infoDictionary?[String(kCFBundleNameKey)] as? String)!
 
 // The default name for new decks.
 let defaultDeckName = "New Deck"
