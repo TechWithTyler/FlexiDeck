@@ -12,6 +12,8 @@
 		8D12ADDD2E1C6A8000A59606 /* ExportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */; };
 		8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */; };
 		8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */; };
+		8D1F3D982F0C403600FA12FE /* SheftAppsInternals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D1F3D972F0C403600FA12FE /* SheftAppsInternals.framework */; };
+		8D1F3D992F0C403600FA12FE /* SheftAppsInternals.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8D1F3D972F0C403600FA12FE /* SheftAppsInternals.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8D26277F2C77D81000D11F80 /* SpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D26277E2C77D81000D11F80 /* SpeechManager.swift */; };
 		8D2627812C77D87A00D11F80 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2627802C77D87A00D11F80 /* Globals.swift */; };
 		8D2627832C77D9B600D11F80 /* SpeakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2627822C77D9B600D11F80 /* SpeakButton.swift */; };
@@ -56,6 +58,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8D1F3D992F0C403600FA12FE /* SheftAppsInternals.framework in Embed Frameworks */,
 				8DE403AD2C65674200D61D6E /* SheftAppsStylishUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -70,6 +73,7 @@
 		8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportButton.swift; sourceTree = "<group>"; };
 		8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportManager.swift; sourceTree = "<group>"; };
 		8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaVersioning.swift; sourceTree = "<group>"; };
+		8D1F3D972F0C403600FA12FE /* SheftAppsInternals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsInternals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D26277E2C77D81000D11F80 /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
 		8D2627802C77D87A00D11F80 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		8D2627822C77D9B600D11F80 /* SpeakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButton.swift; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D1F3D982F0C403600FA12FE /* SheftAppsInternals.framework in Frameworks */,
 				8DE403AC2C65674200D61D6E /* SheftAppsStylishUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,6 +295,7 @@
 		8DD2CB622C58334F00761E05 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8D1F3D972F0C403600FA12FE /* SheftAppsInternals.framework */,
 				8DE403AB2C65674200D61D6E /* SheftAppsStylishUI.framework */,
 			);
 			name = Frameworks;
