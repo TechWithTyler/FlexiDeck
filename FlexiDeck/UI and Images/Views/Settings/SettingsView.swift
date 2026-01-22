@@ -15,9 +15,9 @@ struct SettingsView: View {
 
     // MARK: - Properties - Objects
 
-    @ObservedObject var dialogManager = DialogManager()
+    @StateObject var dialogManager = DialogManager()
 
-    @ObservedObject var speechManager = SpeechManager()
+    @StateObject var speechManager = SpeechManager()
 
     // MARK: - Properties - Dismiss Action
 

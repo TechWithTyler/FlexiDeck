@@ -39,13 +39,13 @@ struct ContentView: View {
     // MARK: - Properties - Managers
 
     // Handles the display of dialogs in the app.
-    @ObservedObject var dialogManager = DialogManager()
+    @StateObject var dialogManager = DialogManager()
 
     // Handles import/export of decks.
-    @ObservedObject var importExportManager = ImportExportManager()
+    @StateObject var importExportManager = ImportExportManager()
 
     // Handles speech in the app.
-    @ObservedObject var speechManager = SpeechManager()
+    @StateObject var speechManager = SpeechManager()
 
     // MARK: - Body
 
