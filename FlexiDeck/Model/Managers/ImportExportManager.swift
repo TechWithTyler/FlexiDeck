@@ -178,4 +178,24 @@ class ImportExportManager: ObservableObject {
         }
     }
 
+    // MARK: - Dismiss Alert
+
+    // This method dismisses the error alert.
+    func dismissErrorAlert() {
+        showingError = false
+        importExportError = nil
+    }
+
+    // This method dismisses the import success alert.
+    func dismissImportSuccessAlert() {
+        showingImportSuccess = false
+        importSuccessMessage = String()
+    }
+
+    // This method dismisses the export success alert.
+    func dismissExportSuccessAlert() {
+        showingExportSuccess = false
+        exportSuccessMessage = String()
+    }
+
 }

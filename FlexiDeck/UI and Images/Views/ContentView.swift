@@ -21,8 +21,10 @@ struct ContentView: View {
 
     // MARK: - Properties - Booleans
 
+    // Whether new decks default to creating new cards with 2 sides.
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
+    // Whether deck/card settings are shown upon creating.
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
     // MARK: - Properties - Decks and Cards
@@ -70,7 +72,7 @@ struct ContentView: View {
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
             allowedContentTypes: [.flexiDeckDeck],
-            allowsMultipleSelection: true,
+            allowsMultipleSelection: true
         ) { result in
             importExportManager.handleDeckImport(result: result, modelContext: modelContext)
         }
@@ -86,24 +88,21 @@ struct ContentView: View {
         }
         .alert(isPresented: $importExportManager.showingError, error: importExportManager.importExportError) {
             Button("OK") {
-                importExportManager.showingError = false
-                importExportManager.importExportError = nil
+                importExportManager.dismissErrorAlert()
             }
         }
         .alert(
             importExportManager.importSuccessMessage,
             isPresented: $importExportManager.showingImportSuccess) {
                 Button("OK") {
-                    importExportManager.showingImportSuccess = false
-                    importExportManager.importSuccessMessage = String()
+                    importExportManager.dismissImportSuccessAlert()
                 }
             }
             .alert(
                 importExportManager.exportSuccessMessage,
                 isPresented: $importExportManager.showingExportSuccess) {
                     Button("OK") {
-                        importExportManager.showingExportSuccess = false
-                        importExportManager.exportSuccessMessage = String()
+                        importExportManager.dismissExportSuccessAlert()
                     }
                 }
                 .focusedSceneObject(dialogManager)
