@@ -88,21 +88,21 @@ struct ContentView: View {
         }
         .alert(isPresented: $importExportManager.showingError, error: importExportManager.importExportError) {
             Button("OK") {
-                importExportManager.dismissErrorAlert()
+                importExportManager.importExportError = nil
             }
         }
         .alert(
             importExportManager.importSuccessMessage,
             isPresented: $importExportManager.showingImportSuccess) {
                 Button("OK") {
-                    importExportManager.dismissImportSuccessAlert()
+                    importExportManager.importSuccessMessage = String()
                 }
             }
             .alert(
                 importExportManager.exportSuccessMessage,
                 isPresented: $importExportManager.showingExportSuccess) {
                     Button("OK") {
-                        importExportManager.dismissExportSuccessAlert()
+                        importExportManager.exportSuccessMessage = String()
                     }
                 }
                 .focusedSceneObject(dialogManager)
