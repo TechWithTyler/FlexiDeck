@@ -13,7 +13,7 @@ import SwiftData
 
 class ImportExportManager: ObservableObject {
 
-    // MARK: - Type Aliases
+    // MARK: - Result Type Aliases
 
     // The type of deck import results. Import can accept multiple file URLs. Success is the array of file URLs to create Deck objects from.
     typealias DeckImportResult = Result<[URL], Error>
