@@ -9,6 +9,7 @@
 // MARK: - Imports
 
 import SheftAppsStylishUI
+import SheftAppsInternals
 
 // MARK: - Functions
 

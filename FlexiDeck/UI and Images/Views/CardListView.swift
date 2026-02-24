@@ -208,76 +208,12 @@ struct CardListView: View {
     var body: some View {
         ZStack {
             if searchResults.count > 0 {
-                List(selection: $selectedCard) {
-                    ForEach(searchResults) { card in
-                        NavigationLink(value: card) {
-                            CardRowView(card: card, searchText: searchText)
-                        }
-                        .contextMenu {
-                            CompletedStatusPicker(card: card)
-                            StarRatingPicker(card: card)
-                            Divider()
-                            Button("Card Settings…", systemImage: "gear") {
-                                dialogManager.cardToShowSettings = card
-                            }
-                            Divider()
-                            Button(role: .destructive) {
-                                dialogManager.cardToDelete = card
-                                dialogManager.showingDeleteCard = true
-                            } label: {
-                                Label("Delete…", systemImage: "trash")
-                                    .foregroundStyle(.red)
-                            }
-                        }
-                        .onChange(of: card.deck) { oldValue, newValue in
-                            selectedCard = nil
-                        }
-                        .onChange(of: card.starRating) { oldValue, newValue in
-                            if let card = selectedCard, !ratingFilteredCards.contains(card) {
-                                selectedCard = nil
-                            }
-                        }
-                        .onChange(of: card.tags) { oldValue, newValue in
-                            if !newValue.contains(cardFilterTags) {
-                                cardFilterTags = "off"
-                            }
-                        }
-                    }
-                    .onDelete(perform: deleteCards)
-                }
+                cardList
 #if !os(macOS)
                 .listStyle(.insetGrouped)
 #endif
             } else {
-                VStack {
-                    if !searchText.isEmpty {
-                        Text("No cards containing \"\(searchText)\"")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        Text("Please check your search terms.")
-                            .font(.callout)
-                            .foregroundStyle(.tertiary)
-                    } else if cardFilterEnabled {
-                        Text("No cards matching the selected filters")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        Text("Adjust your filters or add a new card.")
-                            .font(.callout)
-                            .foregroundStyle(.tertiary)
-                        addCardButton
-                            .buttonStyle(.borderedProminent)
-                    } else {
-                        Text("No cards in this deck")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        addCardButton
-                            .buttonStyle(.borderedProminent)
-                    }
-                }
-                .padding()
+                noCardsView
             }
         }
         .contextMenu {
@@ -321,6 +257,80 @@ struct CardListView: View {
         }
         .toolbar {
             toolbarContent
+        }
+    }
+
+    @ViewBuilder
+    var noCardsView: some View {
+        VStack {
+            if !searchText.isEmpty {
+                Text("No cards containing \"\(searchText)\"")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                Text("Please check your search terms.")
+                    .font(.callout)
+                    .foregroundStyle(.tertiary)
+            } else if cardFilterEnabled {
+                Text("No cards matching the selected filters")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                Text("Adjust your filters or add a new card.")
+                    .font(.callout)
+                    .foregroundStyle(.tertiary)
+                addCardButton
+                    .buttonStyle(.borderedProminent)
+            } else {
+                Text("No cards in this deck")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                addCardButton
+                    .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding()
+    }
+
+    @ViewBuilder
+    var cardList: some View {
+        List(selection: $selectedCard) {
+            ForEach(searchResults) { card in
+                NavigationLink(value: card) {
+                    CardRowView(card: card, searchText: searchText)
+                }
+                .contextMenu {
+                    CompletedStatusPicker(card: card)
+                    StarRatingPicker(card: card)
+                    Divider()
+                    Button("Card Settings…", systemImage: "gear") {
+                        dialogManager.cardToShowSettings = card
+                    }
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.cardToDelete = card
+                        dialogManager.showingDeleteCard = true
+                    } label: {
+                        Label("Delete…", systemImage: "trash")
+                            .foregroundStyle(.red)
+                    }
+                }
+                .onChange(of: card.deck) { oldValue, newValue in
+                    selectedCard = nil
+                }
+                .onChange(of: card.starRating) { oldValue, newValue in
+                    if let card = selectedCard, !ratingFilteredCards.contains(card) {
+                        selectedCard = nil
+                    }
+                }
+                .onChange(of: card.tags) { oldValue, newValue in
+                    if !newValue.contains(cardFilterTags) {
+                        cardFilterTags = "off"
+                    }
+                }
+            }
+            .onDelete(perform: deleteCards)
         }
     }
 

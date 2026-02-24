@@ -15,7 +15,7 @@ struct DisplaySettingsPageView: View {
 
     // MARK: - Properties - Doubles
 
-    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
+    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewIdealMinFontSize
 
     // MARK: - Body
 

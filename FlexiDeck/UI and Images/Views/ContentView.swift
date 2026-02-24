@@ -119,29 +119,7 @@ struct ContentView: View {
     var sidebar: some View {
         ZStack {
             if decks.count > 0 {
-                List(selection: $selectedDeck) {
-                    ForEach(decks) { deck in
-                        NavigationLink(value: deck) {
-                            DeckRowView(deck: deck)
-                        }
-                        .contextMenu {
-                            ExportButton(deck: deck)
-                            Divider()
-                            Button("Deck Settings…", systemImage: "gear") {
-                                dialogManager.deckToShowSettings = deck
-                            }
-                            Divider()
-                            Button(role: .destructive) {
-                                dialogManager.deckToDelete = deck
-                                dialogManager.showingDeleteDeck = true
-                            } label: {
-                                Label("Delete…", systemImage: "trash")
-                                    .foregroundStyle(.red)
-                            }
-                        }
-                    }
-                    .onDelete(perform: deleteDecks)
-                }
+                deckList
             } else {
                 Text("No decks")
                     .font(.largeTitle)
@@ -160,24 +138,17 @@ struct ContentView: View {
         .alert("Delete this deck?", isPresented: $dialogManager.showingDeleteDeck, presenting: $dialogManager.deckToDelete) { deck in
             Button("Delete", role: .destructive) {
                 deleteDeck(deck.wrappedValue!)
-                dialogManager.deckToDelete = nil
-                dialogManager.showingDeleteDeck = false
             }
             Button("Cancel", role: .cancel) {
                 dialogManager.deckToDelete = nil
                 dialogManager.showingDeleteDeck = false
             }
         } message: { deck in
-            Text("All cards in this deck will be deleted.")
+            Text("All cards in deck \"\((deck.wrappedValue?.name)!)\" will be deleted!")
         }
         .alert("Delete all decks?", isPresented: $dialogManager.showingDeleteAllDecks) {
             Button("Delete", role: .destructive) {
-                selectedCard = nil
-                selectedDeck = nil
-                for deck in decks {
-                    modelContext.delete(deck)
-                }
-                dialogManager.showingDeleteAllDecks = false
+                deleteAllDecks()
             }
             Button("Cancel", role: .cancel) {
                 dialogManager.showingDeleteAllDecks = false
@@ -214,6 +185,33 @@ struct ContentView: View {
 #endif
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    var deckList: some View {
+        List(selection: $selectedDeck) {
+            ForEach(decks) { deck in
+                NavigationLink(value: deck) {
+                    DeckRowView(deck: deck)
+                }
+                .contextMenu {
+                    ExportButton(deck: deck)
+                    Divider()
+                    Button("Deck Settings…", systemImage: "gear") {
+                        dialogManager.deckToShowSettings = deck
+                    }
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.deckToDelete = deck
+                        dialogManager.showingDeleteDeck = true
+                    } label: {
+                        Label("Delete…", systemImage: "trash")
+                            .foregroundStyle(.red)
+                    }
+                }
+            }
+            .onDelete(perform: deleteDecks)
         }
     }
 
@@ -292,7 +290,7 @@ struct ContentView: View {
 
     // This method deletes the given deck.
     func deleteDeck(_ deck: Deck) {
-        // 1. Nil-out all selections.
+        // 1. Nil-out the selected card and deck.
         selectedCard = nil
         selectedDeck = nil
         // 2. Delete all cards from the deck.
@@ -301,6 +299,22 @@ struct ContentView: View {
         DispatchQueue.main.async {
             modelContext.delete(deck)
         }
+        // 4. Dismiss the delete alert.
+        dialogManager.deckToDelete = nil
+        dialogManager.showingDeleteDeck = false
+    }
+
+    // This method deletes all decks.
+    func deleteAllDecks() {
+        // 1. Nil-out the selected card and deck.
+        selectedCard = nil
+        selectedDeck = nil
+        // 2. Delete each deck.
+        for deck in decks {
+            modelContext.delete(deck)
+        }
+        // 3. Dismiss the delete alert.
+        dialogManager.showingDeleteAllDecks = false
     }
 
 }
