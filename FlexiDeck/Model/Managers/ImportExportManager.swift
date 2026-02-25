@@ -114,50 +114,59 @@ class ImportExportManager: ObservableObject {
     func handleDeckImport(result: DeckImportResult, modelContext: ModelContext) {
         // 1. Create a variable to keep track of how many decks were successfully imported. This number will appear in the success dialog which is shown after imports complete or fail, if at least 1 was successfully imported.
         var successfulDeckImportCount = 0
-        // 2. Go through each file selected for import.
+        // 2. Try to import each file selected for import, showing errors for any failed imports.
         switch result {
         case .success(let fileURLs):
             for fileURL in fileURLs {
-                // 3. Try to start accessing the security-scoped resource.
-                let canAccessSecurityScopedResource = fileURL.startAccessingSecurityScopedResource()
-                if canAccessSecurityScopedResource {
-                do {
-                        // 4. If successful, try to load the data from the file.
-                        let data = try Data(contentsOf: fileURL)
-                        // 5. Try to decode the data into a Deck object.
-                        let importedDeck = try decodeDeckForImport(from: data)
-                    // 6. If the option to use an imported deck's filename as the deck name is enabled, change the deck name to its filename.
-                    if let deckNameFromFilename = fileURL.deletingPathExtension().lastPathComponent.removingPercentEncoding, useFilenameAsImportedDeckName {
-                        importedDeck.name = deckNameFromFilename
-                    }
-                    // 7. Insert the imported deck into the model context.
-                    modelContext.insert(importedDeck)
-                    // 8. Increment the successful deck import count by 1.
+                let success = importDeck(at: fileURL, to: modelContext)
+                if success {
                     successfulDeckImportCount += 1
-                        // 9. Stop accessing the security-scoped resource now that it's no longer needed.
-                        fileURL.stopAccessingSecurityScopedResource()
-                } catch let error as NSError {
-                    // 10. If any try expression above fails, show an error.
-                    importExportError = DeckImportExportError
-                        .importError(fileURL, error)
-                    showingError = true
                 }
-                    } else {
-                        // 11. If accessing the security-scoped resource failed, show an error.
-                        importExportError = .securityScopedResourceAccessError(fileURL)
-                        showingError = true
-                    }
             }
         case .failure(let error as NSError):
-            // 12. If the file import result is a failure, show an error.
+            // 3. If the file import result is a failure, show an error.
             importExportError = .fileImportURLResultFailure(error)
             showingError = true
         }
-        // 13. If at least one deck was successfully imported, show the import success alert. If not, no alert will be presented here--one will have already been presented for each deck that failed to be imported.
+        // 4. If at least one deck was successfully imported, show the import success alert. If not, no alert will be presented here--an alert will have already been presented for each deck that failed to be imported.
         if successfulDeckImportCount > 0 {
             let deckSingularOrPlural = successfulDeckImportCount == 1 ? "deck has" : "decks have"
             importSuccessMessage = "\(successfulDeckImportCount) \(deckSingularOrPlural) been successfully imported!"
             showingImportSuccess = true
+        }
+    }
+
+    // This method imports the deck from fileURL.
+    func importDeck(at fileURL: URL, to modelContext: ModelContext) -> Bool {
+        // 1. Try to start accessing the security-scoped resource.
+        let canAccessSecurityScopedResource = fileURL.startAccessingSecurityScopedResource()
+        if canAccessSecurityScopedResource {
+            do {
+                // 2. If successful, try to load the data from the file.
+                let data = try Data(contentsOf: fileURL)
+                // 3. Try to decode the data into a Deck object.
+                let importedDeck = try decodeDeckForImport(from: data)
+                // 4. If the option to use an imported deck's filename as the deck name is enabled, change the deck name to its filename.
+                if let deckNameFromFilename = fileURL.deletingPathExtension().lastPathComponent.removingPercentEncoding, useFilenameAsImportedDeckName {
+                    importedDeck.name = deckNameFromFilename
+                }
+                // 5. Insert the imported deck into the model context.
+                modelContext.insert(importedDeck)
+                // 6. Stop accessing the security-scoped resource now that it's no longer needed.
+                fileURL.stopAccessingSecurityScopedResource()
+                return true
+            } catch let error as NSError {
+                // 7. If any try expression above fails, show an error.
+                importExportError = DeckImportExportError
+                    .importError(fileURL, error)
+                showingError = true
+                return false
+            }
+        } else {
+            // 8. If accessing the security-scoped resource failed, show an error.
+            importExportError = .securityScopedResourceAccessError(fileURL)
+            showingError = true
+            return false
         }
     }
 
@@ -168,11 +177,11 @@ class ImportExportManager: ObservableObject {
         fileToExport = nil
         switch result {
         case .success:
-        // 2. If the file export was successful, show a success message.
+            // 2. If the file export was successful, show a success message.
             exportSuccessMessage = "The deck \"\((deck?.name)!)\" has been successfully exported!"
             showingExportSuccess = true
-        case .failure(let error as NSError):
-        // 3. If the file export failed, show an error.
+        case .failure(let error):
+            // 3. If the file export failed, show an error.
             showingError = true
             importExportError = .fileImportURLResultFailure(error)
         }

@@ -18,13 +18,13 @@ enum DeckImportExportError: LocalizedError {
     case fileWrapperError
 
     // Imported file URL result failed
-    case fileImportURLResultFailure(NSError)
+    case fileImportURLResultFailure(Error)
 
     // Export error.
-    case exportError(Deck, NSError)
+    case exportError(Deck, Error)
 
     // Import error
-    case importError(URL, NSError)
+    case importError(URL, Error)
 
     // Security-scoped resource access error
     case securityScopedResourceAccessError(URL)
