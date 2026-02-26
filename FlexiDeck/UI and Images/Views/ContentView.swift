@@ -11,6 +11,7 @@
 import SwiftUI
 import SwiftData
 import SheftAppsStylishUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
 
@@ -84,7 +85,7 @@ struct ContentView: View {
             contentType: .flexiDeckDeck,
             defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
         ) { result in
-            importExportManager.handleDeckExport(deck: importExportManager.deckToExport, result: result)
+            importExportManager.handleDeckExportToFile(deck: importExportManager.deckToExport, result: result)
         }
         .alert(isPresented: $importExportManager.showingError, error: importExportManager.importExportError) {
             Button("OK") {
@@ -121,11 +122,19 @@ struct ContentView: View {
             if decks.count > 0 {
                 deckList
             } else {
-                Text("No decks")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
+                // Use a VStack and spacers to increase the drop target area.
+                VStack {
+                    Spacer()
+                    Text("No decks")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
             }
+        }
+        .onDrop(of: [.flexiDeckDeck], isTargeted: $importExportManager.hoveringItemOverDeckList) { providers in
+            importExportManager.handleDroppedDeck(with: providers, modelContext: modelContext)
         }
         .onChange(of: selectedDeck) { oldValue, newValue in
             selectedCard = nil
@@ -194,6 +203,10 @@ struct ContentView: View {
             ForEach(decks) { deck in
                 NavigationLink(value: deck) {
                     DeckRowView(deck: deck)
+                }
+                .onDrag {
+                    // Provide an item for drag-and-drop export of a single deck
+                    importExportManager.exportDeck(deck: deck)
                 }
                 .contextMenu {
                     ExportButton(deck: deck)
@@ -325,3 +338,4 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Card.self, inMemory: true)
 }
+

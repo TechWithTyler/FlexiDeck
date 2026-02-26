@@ -23,8 +23,14 @@ enum DeckImportExportError: LocalizedError {
     // Export error.
     case exportError(Deck, Error)
 
-    // Import error
-    case importError(URL, Error)
+    // Import error (URL).
+    case importErrorURL(URL, Error)
+
+    // Import error (drop).
+    case importErrorDrop(Error)
+
+    // Dropped deck had no data.
+    case noDeckDataDrop
 
     // Security-scoped resource access error
     case securityScopedResourceAccessError(URL)
@@ -35,12 +41,16 @@ enum DeckImportExportError: LocalizedError {
         switch self {
         case .fileWrapperError:
             return "Deck couldn't be wrapped up into an exportable file."
-            case .fileImportURLResultFailure(let error):
+        case .fileImportURLResultFailure(let error):
             return "The file import URL result was nil or invalid: \(error.localizedDescription)"
-            case .exportError(let deck, let error):
+        case .exportError(let deck, let error):
             return "The deck \"\(deck.name!)\" couldn't be exported: \(error.localizedDescription)"
-            case .importError(let fileURL, let error):
+        case .importErrorURL(let fileURL, let error):
             return "The deck at \(fileURL.path) couldn't be imported: \(error.localizedDescription)"
+        case .importErrorDrop(let error):
+            return "One or more dropped deck(s) couldn't be imported: \(error.localizedDescription)"
+        case .noDeckDataDrop:
+            return "One or more dropped decks have no data."
         case .securityScopedResourceAccessError(let fileURL):
             return "The deck at \(fileURL.path) couldn't be imported because the security-scoped resource access failed. Please ensure you have permission to access this resource."
         }

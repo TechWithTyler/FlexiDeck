@@ -10,6 +10,7 @@
 
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 class ImportExportManager: ObservableObject {
 
@@ -30,6 +31,8 @@ class ImportExportManager: ObservableObject {
 
     // Whether the file exporter should be/is being displayed.
     @Published var showingExporter = false
+
+    @Published var hoveringItemOverDeckList: Bool = false
 
     // Whether an error should be/is being displayed.
     @Published var showingError: Bool = false
@@ -118,7 +121,7 @@ class ImportExportManager: ObservableObject {
         switch result {
         case .success(let fileURLs):
             for fileURL in fileURLs {
-                let success = importDeck(at: fileURL, to: modelContext)
+                let success = importDeckFromFile(at: fileURL, to: modelContext)
                 if success {
                     successfulDeckImportCount += 1
                 }
@@ -137,7 +140,7 @@ class ImportExportManager: ObservableObject {
     }
 
     // This method imports the deck from fileURL.
-    func importDeck(at fileURL: URL, to modelContext: ModelContext) -> Bool {
+    func importDeckFromFile(at fileURL: URL, to modelContext: ModelContext) -> Bool {
         // 1. Try to start accessing the security-scoped resource.
         let canAccessSecurityScopedResource = fileURL.startAccessingSecurityScopedResource()
         if canAccessSecurityScopedResource {
@@ -158,7 +161,7 @@ class ImportExportManager: ObservableObject {
             } catch let error as NSError {
                 // 7. If any try expression above fails, show an error.
                 importExportError = DeckImportExportError
-                    .importError(fileURL, error)
+                    .importErrorURL(fileURL, error)
                 showingError = true
                 return false
             }
@@ -171,7 +174,7 @@ class ImportExportManager: ObservableObject {
     }
 
     // This method exports deck.
-    func handleDeckExport(deck: Deck?, result: DeckExportResult) {
+    func handleDeckExportToFile(deck: Deck?, result: DeckExportResult) {
         // 1. Nil-out the deckDataToExport and fileToExport properties as they're no longer needed.
         deckDataToExport = nil
         fileToExport = nil
@@ -185,6 +188,68 @@ class ImportExportManager: ObservableObject {
             showingError = true
             importExportError = .fileImportURLResultFailure(error)
         }
+    }
+
+    // MARK: - Drag-and-Drop
+
+    // This method handles dropping of a deck.
+    func handleDroppedDeck(with providers: [NSItemProvider], modelContext: ModelContext) -> Bool {
+        // 1. Try to have the provider load deck data. If unsuccessful, show an error.
+        let deckTypeIdentifier = UTType.flexiDeckDeck.identifier
+        for provider in providers {
+            provider.loadDataRepresentation(forTypeIdentifier: deckTypeIdentifier) { [self] data, error in
+                handleDeckDropImportResult(data: data, error: error, modelContext: modelContext)
+            }
+        }
+        // 2. Return whether the drop was successful. This is determined by whether the error alert is being displayed.
+        return !showingError
+    }
+
+    // This method handles the result of dropping a deck for import.
+    func handleDeckDropImportResult(data: Data?, error: Error?, modelContext: ModelContext) {
+        // 1. If there's data, try to decode the deck for import. If that fails, show an error.
+        if let data = data {
+            do {
+                let deck = try decodeDeckForImport(from: data)
+                DispatchQueue.main.async {
+                    modelContext.insert(deck)
+                }
+            } catch {
+                importExportError = .importErrorDrop(error)
+                showingError = true
+            }
+        } else if let error = error {
+            // 2. If there's no data, show an error.
+            importExportError = .importErrorDrop(error)
+            showingError = true
+        } else {
+            // 3. If there's no data or explicit error, show a generic "no deck data" error.
+            importExportError = .noDeckDataDrop
+            showingError = true
+        }
+    }
+
+    // This method exports the dragged deck.
+    func exportDeck(deck: Deck) -> NSItemProvider {
+        // 1. Define the filename for the exported deck. The filename is the deck's name.
+        let filename = deck.name
+        // 2. Create an NSItemProvider that provides PNG data. This sets the file extension to ".png".
+        let itemProvider = NSItemProvider()
+        do {
+            let data = try encodeDeckForExport(deck)
+            let deckTypeIdentifier = UTType.flexiDeckDeck.identifier
+            itemProvider.registerDataRepresentation(forTypeIdentifier: deckTypeIdentifier, visibility: .all) { completion in
+                completion(data, nil)
+                return nil
+            }
+            // 3. Set the filename for the exported photo.
+            itemProvider.suggestedName = filename
+        } catch {
+            importExportError = .exportError(deck, error)
+            showingError = true
+        }
+        // 4. Return the provider.
+        return itemProvider
     }
 
 }
