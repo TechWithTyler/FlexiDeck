@@ -194,7 +194,7 @@ class ImportExportManager: ObservableObject {
 
     // This method handles dropping of a deck.
     func handleDroppedDeck(with providers: [NSItemProvider], modelContext: ModelContext) -> Bool {
-        // 1. Try to have the provider load deck data. If unsuccessful, show an error.
+        // 1. For each provider, try to have it load deck data. If unsuccessful, show an error.
         let deckTypeIdentifier = UTType.flexiDeckDeck.identifier
         for provider in providers {
             provider.loadDataRepresentation(forTypeIdentifier: deckTypeIdentifier) { [self] data, error in
@@ -233,7 +233,7 @@ class ImportExportManager: ObservableObject {
     func exportDeck(deck: Deck) -> NSItemProvider {
         // 1. Define the filename for the exported deck. The filename is the deck's name.
         let filename = deck.name
-        // 2. Create an NSItemProvider that provides PNG data. This sets the file extension to ".png".
+        // 2. Create an NSItemProvider that provides deck data. This sets the file extension to ".flexideck".
         let itemProvider = NSItemProvider()
         do {
             let data = try encodeDeckForExport(deck)
@@ -242,7 +242,7 @@ class ImportExportManager: ObservableObject {
                 completion(data, nil)
                 return nil
             }
-            // 3. Set the filename for the exported photo.
+            // 3. Set the filename for the exported deck.
             itemProvider.suggestedName = filename
         } catch {
             importExportError = .exportError(deck, error)
