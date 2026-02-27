@@ -75,7 +75,7 @@ struct ContentView: View {
             allowedContentTypes: [.flexiDeckDeck],
             allowsMultipleSelection: true
         ) { result in
-            importExportManager.handleDeckImport(result: result, modelContext: modelContext)
+            importExportManager.handleDeckImportFromFiles(result: result, modelContext: modelContext)
         }
         .fileDialogMessage("Select deck(s) to import")
         .fileExporter(
@@ -134,7 +134,7 @@ struct ContentView: View {
             }
         }
         .onDrop(of: [.flexiDeckDeck], isTargeted: $importExportManager.hoveringItemOverDeckList) { providers in
-            importExportManager.handleDroppedDeck(with: providers, modelContext: modelContext)
+            importExportManager.handleDroppedDecks(with: providers, modelContext: modelContext)
         }
         .onChange(of: selectedDeck) { oldValue, newValue in
             selectedCard = nil
@@ -205,8 +205,7 @@ struct ContentView: View {
                     DeckRowView(deck: deck)
                 }
                 .onDrag {
-                    // Provide an item for drag-and-drop export of a single deck
-                    importExportManager.exportDeck(deck: deck)
+                    importExportManager.exportDeck(deck)
                 }
                 .contextMenu {
                     ExportButton(deck: deck)

@@ -41,6 +41,7 @@ struct ExportedDeck: FileDocument {
             throw DeckImportExportError.fileWrapperError
         }
         // 2. Return the FileWrapper with the data.
-        return FileWrapper(regularFileWithContents: data)
+        let fileWrapper = FileWrapper(regularFileWithContents: data)
+        return fileWrapper
     }
 }

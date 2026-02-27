@@ -76,7 +76,8 @@ class ImportExportManager: ObservableObject {
     // This method creates a Deck object (including its cards) from the given Data. Decoding is performed after importing a file.
     func decodeDeckForImport(from data: Data) throws -> Deck {
         let decoder = JSONDecoder()
-        return try decoder.decode(Deck.self, from: data)
+        let decodedDeck = try decoder.decode(Deck.self, from: data)
+        return decodedDeck
     }
 
     // This method encodes a Deck instance (including its cards) into Data. Encoding is performed before the file exporter for a file is shown.
@@ -105,16 +106,16 @@ class ImportExportManager: ObservableObject {
             deckDataToExport = data
             // 3. Show the file export dialog.
             showingExporter = true
-        } catch let error as NSError {
+        } catch {
             // 4. If an error is thrown in step 1, show it.
-            importExportError = .exportError(deck, error)
+            importExportError = .exportPrepError(deck, error)
         }
     }
 
     // MARK: - File Operation Handlers
 
     // This method imports the selected decks.
-    func handleDeckImport(result: DeckImportResult, modelContext: ModelContext) {
+    func handleDeckImportFromFiles(result: DeckImportResult, modelContext: ModelContext) {
         // 1. Create a variable to keep track of how many decks were successfully imported. This number will appear in the success dialog which is shown after imports complete or fail, if at least 1 was successfully imported.
         var successfulDeckImportCount = 0
         // 2. Try to import each file selected for import, showing errors for any failed imports.
@@ -126,9 +127,9 @@ class ImportExportManager: ObservableObject {
                     successfulDeckImportCount += 1
                 }
             }
-        case .failure(let error as NSError):
+        case .failure(let error):
             // 3. If the file import result is a failure, show an error.
-            importExportError = .fileImportURLResultFailure(error)
+            importExportError = .importErrorNoURL(error)
             showingError = true
         }
         // 4. If at least one deck was successfully imported, show the import success alert. If not, no alert will be presented here--an alert will have already been presented for each deck that failed to be imported.
@@ -158,7 +159,7 @@ class ImportExportManager: ObservableObject {
                 // 6. Stop accessing the security-scoped resource now that it's no longer needed.
                 fileURL.stopAccessingSecurityScopedResource()
                 return true
-            } catch let error as NSError {
+            } catch {
                 // 7. If any try expression above fails, show an error.
                 importExportError = DeckImportExportError
                     .importErrorURL(fileURL, error)
@@ -178,27 +179,30 @@ class ImportExportManager: ObservableObject {
         // 1. Nil-out the deckDataToExport and fileToExport properties as they're no longer needed.
         deckDataToExport = nil
         fileToExport = nil
+        guard let deck = deck else {
+            return
+        }
         switch result {
         case .success:
             // 2. If the file export was successful, show a success message.
-            exportSuccessMessage = "The deck \"\((deck?.name)!)\" has been successfully exported!"
+            exportSuccessMessage = "The deck \"\((deck.name)!)\" has been successfully exported!"
             showingExportSuccess = true
         case .failure(let error):
             // 3. If the file export failed, show an error.
             showingError = true
-            importExportError = .fileImportURLResultFailure(error)
+            importExportError = .exportError(deck, error)
         }
     }
 
     // MARK: - Drag-and-Drop
 
-    // This method handles dropping of a deck.
-    func handleDroppedDeck(with providers: [NSItemProvider], modelContext: ModelContext) -> Bool {
+    // This method handles dropping of decks for import.
+    func handleDroppedDecks(with providers: [NSItemProvider], modelContext: ModelContext) -> Bool {
         // 1. For each provider, try to have it load deck data. If unsuccessful, show an error.
         let deckTypeIdentifier = UTType.flexiDeckDeck.identifier
         for provider in providers {
-            provider.loadDataRepresentation(forTypeIdentifier: deckTypeIdentifier) { [self] data, error in
-                handleDeckDropImportResult(data: data, error: error, modelContext: modelContext)
+            provider.loadFileRepresentation(forTypeIdentifier: deckTypeIdentifier) { [self] url, error in
+                handleDeckDropImportResult(from: url, error: error, modelContext: modelContext)
             }
         }
         // 2. Return whether the drop was successful. This is determined by whether the error alert is being displayed.
@@ -206,13 +210,17 @@ class ImportExportManager: ObservableObject {
     }
 
     // This method handles the result of dropping a deck for import.
-    func handleDeckDropImportResult(data: Data?, error: Error?, modelContext: ModelContext) {
+    func handleDeckDropImportResult(from fileURL: URL?, error: Error?, modelContext: ModelContext) {
         // 1. If there's data, try to decode the deck for import. If that fails, show an error.
-        if let data = data {
+        if let fileURL = fileURL {
             do {
-                let deck = try decodeDeckForImport(from: data)
+                let data = try Data(contentsOf: fileURL)
+                let importedDeck = try decodeDeckForImport(from: data)
+                if let deckNameFromFilename = fileURL.deletingPathExtension().lastPathComponent.removingPercentEncoding, useFilenameAsImportedDeckName {
+                    importedDeck.name = deckNameFromFilename
+                }
                 DispatchQueue.main.async {
-                    modelContext.insert(deck)
+                    modelContext.insert(importedDeck)
                 }
             } catch {
                 importExportError = .importErrorDrop(error)
@@ -230,7 +238,7 @@ class ImportExportManager: ObservableObject {
     }
 
     // This method exports the dragged deck.
-    func exportDeck(deck: Deck) -> NSItemProvider {
+    func exportDeck(_ deck: Deck) -> NSItemProvider {
         // 1. Define the filename for the exported deck. The filename is the deck's name.
         let filename = deck.name
         // 2. Create an NSItemProvider that provides deck data. This sets the file extension to ".flexideck".
