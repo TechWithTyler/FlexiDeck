@@ -211,7 +211,8 @@ class ImportExportManager: ObservableObject {
 
     // This method handles the result of dropping a deck for import.
     func handleDeckDropImportResult(from fileURL: URL?, error: Error?, modelContext: ModelContext) {
-        // 1. If there's data, try to decode the deck for import. If that fails, show an error.
+        // 1. If there's a URL, try to convert it into data and decode the deck for import. If that fails, show an error.
+        // While we can simply import as data, importing as a file allows the imported deck's name to be that of the file being imported. The item provider converts the encoded deck data into a temporary file located in the user's temporary directory and imports that file, so the dragged item doesn't have to be a file itself.
         if let fileURL = fileURL {
             do {
                 let data = try Data(contentsOf: fileURL)
@@ -223,17 +224,23 @@ class ImportExportManager: ObservableObject {
                     modelContext.insert(importedDeck)
                 }
             } catch {
-                importExportError = .importErrorDrop(error)
-                showingError = true
+                DispatchQueue.main.async { [self] in
+                    importExportError = .importErrorDrop(error)
+                    showingError = true
+                }
             }
         } else if let error = error {
             // 2. If there's no data, show an error.
-            importExportError = .importErrorDrop(error)
-            showingError = true
+            DispatchQueue.main.async { [self] in
+                importExportError = .importErrorDrop(error)
+                showingError = true
+            }
         } else {
             // 3. If there's no data or explicit error, show a generic "no deck data" error.
-            importExportError = .noDeckDataDrop
-            showingError = true
+            DispatchQueue.main.async { [self] in
+                importExportError = .noDeckDataDrop
+                showingError = true
+            }
         }
     }
 
@@ -261,3 +268,4 @@ class ImportExportManager: ObservableObject {
     }
 
 }
+
