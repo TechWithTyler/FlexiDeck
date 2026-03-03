@@ -75,16 +75,25 @@ class ImportExportManager: ObservableObject {
 
     // This method creates a Deck object (including its cards) from the given Data. Decoding is performed after importing a file.
     func decodeDeckForImport(from data: Data) throws -> Deck {
+        // 1. Create a JSON decoder.
         let decoder = JSONDecoder()
-        let decodedDeck = try decoder.decode(Deck.self, from: data)
+        // 2. Specify the type to create from the JSON data.
+        let typeToCreate = Deck.self
+        // 3. Try to decode the data. This calls Deck's init(from:) initializer.
+        let decodedDeck = try decoder.decode(typeToCreate, from: data)
+        // 4. If successful, return the decoded deck.
         return decodedDeck
     }
 
     // This method encodes a Deck instance (including its cards) into Data. Encoding is performed before the file exporter for a file is shown.
     func encodeDeckForExport(_ deck: Deck) throws -> Data {
+        // 1. Create a JSON encoder.
         let encoder = JSONEncoder()
+        // 2. Try to encode the deck to data. This calls Deck's encode(with:) method.
         let encodedDeck = try encoder.encode(deck)
+        // 3. Set the deckToExport property.
         deckToExport = deck
+        // 4. Return the encoded deck.
         return encodedDeck
     }
 
@@ -151,7 +160,7 @@ class ImportExportManager: ObservableObject {
                 // 3. Try to decode the data into a Deck object.
                 let importedDeck = try decodeDeckForImport(from: data)
                 // 4. If the option to use an imported deck's filename as the deck name is enabled, change the deck name to its filename.
-                if let deckNameFromFilename = fileURL.deletingPathExtension().lastPathComponent.removingPercentEncoding, useFilenameAsImportedDeckName {
+                if let deckNameFromFilename = fileURL.lastPathComponentWithoutExtensionOrPercentEncoding, useFilenameAsImportedDeckName {
                     importedDeck.name = deckNameFromFilename
                 }
                 // 5. Insert the imported deck into the model context.
@@ -217,7 +226,7 @@ class ImportExportManager: ObservableObject {
             do {
                 let data = try Data(contentsOf: fileURL)
                 let importedDeck = try decodeDeckForImport(from: data)
-                if let deckNameFromFilename = fileURL.deletingPathExtension().lastPathComponent.removingPercentEncoding, useFilenameAsImportedDeckName {
+                if let deckNameFromFilename = fileURL.lastPathComponentWithoutExtensionOrPercentEncoding, useFilenameAsImportedDeckName {
                     importedDeck.name = deckNameFromFilename
                 }
                 DispatchQueue.main.async {

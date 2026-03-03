@@ -21,6 +21,7 @@
 		8D38ED5C2CAC8F3E00CCC422 /* SpeechSettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D38ED5B2CAC8F3E00CCC422 /* SpeechSettingsPageView.swift */; };
 		8D38ED5E2CAC902E00CCC422 /* DecksCardsSettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D38ED5D2CAC902E00CCC422 /* DecksCardsSettingsPageView.swift */; };
 		8D38ED602CAC906D00CCC422 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D38ED5F2CAC906D00CCC422 /* SettingsPage.swift */; };
+		8D3BCC8F2F5766A6008DA93E /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3BCC8E2F5766A6008DA93E /* URLExtension.swift */; };
 		8D5DE32D2C582DB400FD0502 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3282C582DB400FD0502 /* Card.swift */; };
 		8D5DE32E2C582DB400FD0502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE3292C582DB400FD0502 /* ContentView.swift */; };
 		8D5DE32F2C582DB400FD0502 /* FlexiDeckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5DE32B2C582DB400FD0502 /* FlexiDeckApp.swift */; };
@@ -81,6 +82,7 @@
 		8D38ED5B2CAC8F3E00CCC422 /* SpeechSettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSettingsPageView.swift; sourceTree = "<group>"; };
 		8D38ED5D2CAC902E00CCC422 /* DecksCardsSettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksCardsSettingsPageView.swift; sourceTree = "<group>"; };
 		8D38ED5F2CAC906D00CCC422 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
+		8D3BCC8E2F5766A6008DA93E /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		8D5DE3252C582DB400FD0502 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8D5DE3272C582DB400FD0502 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8D5DE3282C582DB400FD0502 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -158,9 +160,11 @@
 		8D12ADD92E18730100A59606 /* Deck Import and Export */ = {
 			isa = PBXGroup;
 			children = (
+				8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */,
 				8D12ADD72E1871C500A59606 /* DeckImportExportError.swift */,
 				8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */,
 				8D9A2A042E1DC41100BF1797 /* FlexiDeckDeck.swift */,
+				8D3BCC8E2F5766A6008DA93E /* URLExtension.swift */,
 			);
 			path = "Deck Import and Export";
 			sourceTree = "<group>";
@@ -176,14 +180,13 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8D26277D2C77D80000D11F80 /* Managers */ = {
+		8D26277D2C77D80000D11F80 /* Other Managers */ = {
 			isa = PBXGroup;
 			children = (
 				8DCB0A612C6409AD00EB82DC /* DialogManager.swift */,
 				8D26277E2C77D81000D11F80 /* SpeechManager.swift */,
-				8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */,
 			);
-			path = Managers;
+			path = "Other Managers";
 			sourceTree = "<group>";
 		};
 		8D38ED612CAC98AC00CCC422 /* Controls */ = {
@@ -248,7 +251,7 @@
 			children = (
 				8DCB0A632C640B7B00EB82DC /* SwiftData */,
 				8D12ADD92E18730100A59606 /* Deck Import and Export */,
-				8D26277D2C77D80000D11F80 /* Managers */,
+				8D26277D2C77D80000D11F80 /* Other Managers */,
 				8D38ED622CAC98E300CCC422 /* Settings */,
 			);
 			path = Model;
@@ -401,6 +404,7 @@
 				8DDE5FEC2CB86B4900697F70 /* AppDelegate.swift in Sources */,
 				8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */,
 				8DA20A152C7547EA001ED42E /* DeckRowView.swift in Sources */,
+				8D3BCC8F2F5766A6008DA93E /* URLExtension.swift in Sources */,
 				8D38ED602CAC906D00CCC422 /* SettingsPage.swift in Sources */,
 				8DCB0A5C2C62BE8800EB82DC /* SettingsView.swift in Sources */,
 				8D38ED5E2CAC902E00CCC422 /* DecksCardsSettingsPageView.swift in Sources */,
