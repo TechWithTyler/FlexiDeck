@@ -25,10 +25,13 @@ func showHelp() {
 // MARK: - Properties - Strings
 
 // The default name for new decks.
-let defaultDeckName = "New Deck"
+let defaultDeckName: String = "New Deck"
 
 // The default name for new cards.
-let defaultCardName = "New Card"
+let defaultCardName: String = "New Card"
+
+// The name used when a deck/card's name is unavailable/missing.
+let nameUnavailableString: String = "Unavailable"
 
 // The name of the filled-bubble speaker SF Symbol used for speech.
-let speechSymbolName = "speaker.wave.2.bubble.left"
+let speechSymbolName: String = "speaker.wave.2.bubble.left"

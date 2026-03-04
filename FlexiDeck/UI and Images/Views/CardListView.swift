@@ -231,7 +231,7 @@ struct CardListView: View {
         }
         .animation(.default, value: searchResults)
         .searchable(text: $searchText, placement: .automatic, prompt: Text("Search \((deck.name)!)"))
-        .navigationTitle(deck.name ?? String())
+        .navigationTitle(deck.name ?? nameUnavailableString)
         .sheet(item: $dialogManager.cardToShowSettings) { card in
             CardSettingsView(card: card, selectedDeck: deck)
         }

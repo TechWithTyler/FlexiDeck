@@ -69,7 +69,7 @@ struct CardView: View {
                 .foregroundStyle(.secondary)
             StarRatingView(card: selectedCard)
         }
-        .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
+        .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? nameUnavailableString) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? nameUnavailableString)
         .toolbar {
             if (selectedCard.is2Sided)! {
                 ToolbarItem {

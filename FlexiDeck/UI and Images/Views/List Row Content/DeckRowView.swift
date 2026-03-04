@@ -28,7 +28,7 @@ struct DeckRowView: View {
 
     var body: some View {
         HStack {
-            Text(deck.name ?? String())
+            Text(deck.name ?? nameUnavailableString)
                 .badge(cardCountText)
         }
     }
