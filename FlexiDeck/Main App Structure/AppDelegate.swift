@@ -10,7 +10,7 @@
 
 // MARK: - Imports
 
-import Cocoa
+import SheftAppsStylishUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
