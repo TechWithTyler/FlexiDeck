@@ -14,7 +14,21 @@ import SwiftData
 @Model
 final class Deck: Codable {
 
-    // MARK: - CodingKeys Enum
+    // MARK: - Enums - Sort Mode
+
+    enum SortMode: Int {
+
+        case nameAscending = 0
+
+        case nameDescending = 1
+
+        case countAscending = 2
+
+        case countDescending = 3
+
+    }
+
+    // MARK: - Enums - Coding Keys
 
     enum CodingKeys: String, CodingKey {
 

@@ -19,9 +19,9 @@ extension UserDefaults {
 
         static let cardTextSize: String = "cardTextSize"
 
-        static let cardSortMode = "cardSortMode"
+        static let cardSortMode: String = "cardSortMode"
 
-        static let sortCardsAscending = "sortCardsAscending"
+        static let deckSortMode: String = "deckSortMode"
 
         static let selectedSettingsPage: String = "selectedSettingsPage"
 

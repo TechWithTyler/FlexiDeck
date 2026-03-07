@@ -28,10 +28,32 @@ struct ContentView: View {
     // Whether deck/card settings are shown upon creating.
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
+    // MARK: - Properties - Deck Sort Mode
+
+    // The current deck sort mode setting.
+    @AppStorage(UserDefaults.KeyNames.deckSortMode) var deckSortMode: Deck.SortMode = .nameDescending
+
     // MARK: - Properties - Decks and Cards
 
     // The decks loaded from the model context.
     @Query private var decks: [Deck]
+
+    // All decks, sorted based on the selected sort mode.
+    var sortedDecks: [Deck] {
+        // Choose how to sort the decks based on the selected deck sort mode.
+        return decks.sorted { deckA, deckB in
+            switch deckSortMode {
+            case .countAscending:
+                return (deckA.cards?.count)! < (deckB.cards?.count)!
+            case .countDescending:
+                return (deckA.cards?.count)! > (deckB.cards?.count)!
+            case .nameAscending:
+                return deckA.name! < deckB.name!
+            default:
+                return deckA.name! > deckB.name!
+            }
+        }
+    }
 
     // The selected deck.
     @State private var selectedDeck: Deck? = nil
@@ -180,6 +202,17 @@ struct ContentView: View {
                 OptionsMenu(title: .menu) {
                     ImportButton()
                     Divider()
+                    Picker(selection: $deckSortMode) {
+                        Text("Name (Ascending)").tag(Deck.SortMode.nameAscending)
+                        Text("Name (Descending)").tag(Deck.SortMode.nameDescending)
+                        Divider()
+                        Text("Card Count (Ascending)").tag(Deck.SortMode.countAscending)
+                        Text("Card Count (Descending)").tag(Deck.SortMode.countDescending)
+                    } label: {
+                        Label("Sort Decks By", systemImage: "arrow.up.arrow.down")
+                    }
+                    .pickerStyle(.menu)
+                    Divider()
                     Button(role: .destructive) {
                         dialogManager.showingDeleteAllDecks = true
                     } label: {
@@ -200,7 +233,7 @@ struct ContentView: View {
     @ViewBuilder
     var deckList: some View {
         List(selection: $selectedDeck) {
-            ForEach(decks) { deck in
+            ForEach(sortedDecks) { deck in
                 NavigationLink(value: deck) {
                     DeckRowView(deck: deck)
                 }
