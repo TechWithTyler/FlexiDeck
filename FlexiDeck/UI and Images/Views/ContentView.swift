@@ -69,6 +69,8 @@ struct ContentView: View {
     // Handles import/export of decks.
     @StateObject var importExportManager = ImportExportManager()
 
+    @StateObject var cardMoveManager = CardMoveManager()
+
     // Handles speech in the app.
     @StateObject var speechManager = SpeechManager()
 
@@ -114,6 +116,11 @@ struct ContentView: View {
                 importExportManager.importExportError = nil
             }
         }
+        .alert(isPresented: $cardMoveManager.showingErrorAlert, error: cardMoveManager.moveError) {
+            Button("OK") {
+                cardMoveManager.moveError = nil
+            }
+        }
         .alert(
             importExportManager.importSuccessMessage,
             isPresented: $importExportManager.showingImportSuccess) {
@@ -134,6 +141,8 @@ struct ContentView: View {
                 .environmentObject(speechManager)
                 .focusedSceneObject(importExportManager)
                 .environmentObject(importExportManager)
+                .focusedSceneObject(cardMoveManager)
+                .environmentObject(cardMoveManager)
     }
 
     // MARK: - Sidebar
@@ -240,6 +249,9 @@ struct ContentView: View {
                 .onDrag {
                     importExportManager.exportDeck(deck)
                 }
+                .onDrop(of: [UTType.text], isTargeted: $cardMoveManager.hoveringItemOverDeck) { providers in
+                    cardMoveManager.handleDrop(with: providers, toMoveToDestinationDeck: deck, findingSourceDeckIn: decks)
+                    }
                 .contextMenu {
                     ExportButton(deck: deck)
                     Divider()
