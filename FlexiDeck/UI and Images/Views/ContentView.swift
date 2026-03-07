@@ -245,13 +245,16 @@ struct ContentView: View {
             ForEach(sortedDecks) { deck in
                 NavigationLink(value: deck) {
                     DeckRowView(deck: deck)
+                        .onDrag {
+                            importExportManager.exportDeck(deck)
+                        }
+                        .onDrop(of: [UTType.text], isTargeted: $cardMoveManager.hoveringItemOverDeck) { providers in
+                            cardMoveManager.handleDrop(with: providers, toMoveToDestinationDeck: deck, findingSourceDeckIn: decks)
+                        }
+                        .onTapGesture {
+                            selectedDeck = deck
+                        }
                 }
-                .onDrag {
-                    importExportManager.exportDeck(deck)
-                }
-                .onDrop(of: [UTType.text], isTargeted: $cardMoveManager.hoveringItemOverDeck) { providers in
-                    cardMoveManager.handleDrop(with: providers, toMoveToDestinationDeck: deck, findingSourceDeckIn: decks)
-                    }
                 .contextMenu {
                     ExportButton(deck: deck)
                     Divider()

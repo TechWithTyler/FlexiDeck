@@ -304,6 +304,9 @@ struct CardListView: View {
                         .onDrag {
                             cardMoveManager.handleDrag(of: card)
                         }
+                        .onTapGesture {
+                            selectedCard = card
+                        }
 
                 }
                 .contextMenu {
