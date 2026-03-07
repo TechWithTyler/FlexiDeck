@@ -138,7 +138,7 @@ class CardMoveManager: ObservableObject {
     }
 
     // This method finds a card with the given ID in deck.
-    private func card(withID id: PersistentIdentifier, in deck: Deck) -> Card? {
+    func card(withID id: PersistentIdentifier, in deck: Deck) -> Card? {
         return deck.cards?.first { $0.id == id }
     }
 
