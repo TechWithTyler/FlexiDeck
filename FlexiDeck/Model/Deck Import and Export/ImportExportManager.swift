@@ -32,6 +32,7 @@ class ImportExportManager: ObservableObject {
     // Whether the file exporter should be/is being displayed.
     @Published var showingExporter = false
 
+    // Whether a draggable item (e.g. a deck file) is being hovered over the deck list.
     @Published var hoveringItemOverDeckList: Bool = false
 
     // Whether an error should be/is being displayed.
@@ -48,7 +49,7 @@ class ImportExportManager: ObservableObject {
     // The message to display in the import success alert.
     @Published var importSuccessMessage: String = String()
 
-    // The message to display in the export success message.
+    // The message to display in the export success alert.
     @Published var exportSuccessMessage: String = String()
 
     // MARK: - Properties - Decks
@@ -58,7 +59,7 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Properties - Data
 
-    // The deck to export, encoded into data for export.
+    // The encoded deck data to export.
     @Published var deckDataToExport: Data? = nil
 
     // MARK: - Properties - URLs
