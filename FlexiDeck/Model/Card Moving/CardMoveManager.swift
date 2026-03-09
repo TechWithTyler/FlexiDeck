@@ -110,13 +110,15 @@ class CardMoveManager: ObservableObject {
                 return }
             // 5. If the card to be moved is already in the deck to move it to, return.
             if cardToMove.deck == destinationDeck { return }
-            // 6. Remove the card from the source deck.
-            if let index = sourceDeck.cards?.firstIndex(of: cardToMove) {
-                sourceDeck.cards?.remove(at: index)
+            DispatchQueue.main.async {
+                // 6. Remove the card from the source deck.
+                if let index = sourceDeck.cards?.firstIndex(of: cardToMove) {
+                    sourceDeck.cards?.remove(at: index)
+                }
+                // 7. Move the card to the new deck.
+                destinationDeck.cards?.append(cardToMove)
+                cardToMove.deck = destinationDeck
             }
-            // 7. Move the card to the new deck.
-            destinationDeck.cards?.append(cardToMove)
-            cardToMove.deck = destinationDeck
         } else {
             // 8. If there's no data, show an error.
             DispatchQueue.main.async { [self] in
