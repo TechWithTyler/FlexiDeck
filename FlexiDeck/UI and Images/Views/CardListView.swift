@@ -22,6 +22,8 @@ struct CardListView: View {
 
     @EnvironmentObject var dialogManager: DialogManager
 
+    @EnvironmentObject var cardMoveManager: CardMoveManager
+
     // MARK: - Properties - Strings
 
     // The search text.
@@ -299,6 +301,13 @@ struct CardListView: View {
             ForEach(searchResults) { card in
                 NavigationLink(value: card) {
                     CardRowView(card: card, searchText: searchText)
+                        .onDrag {
+                            cardMoveManager.handleDrag(of: card)
+                        }
+                        .onTapGesture {
+                            selectedCard = card
+                        }
+
                 }
                 .contextMenu {
                     CompletedStatusPicker(card: card)

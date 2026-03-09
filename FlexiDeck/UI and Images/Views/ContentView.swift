@@ -42,15 +42,16 @@ struct ContentView: View {
     var sortedDecks: [Deck] {
         // Choose how to sort the decks based on the selected deck sort mode.
         return decks.sorted { deckA, deckB in
+            guard let deckAName = deckA.name, let deckBName = deckB.name, let deckACards = deckA.cards, let deckBCards = deckB.cards else { fatalError("Can't sort decks") }
             switch deckSortMode {
             case .countAscending:
-                return (deckA.cards?.count)! < (deckB.cards?.count)!
+                return deckACards.count < deckBCards.count
             case .countDescending:
-                return (deckA.cards?.count)! > (deckB.cards?.count)!
+                return deckACards.count > deckBCards.count
             case .nameAscending:
-                return deckA.name! < deckB.name!
+                return deckAName < deckBName
             default:
-                return deckA.name! > deckB.name!
+                return deckAName > deckBName
             }
         }
     }
@@ -68,6 +69,8 @@ struct ContentView: View {
 
     // Handles import/export of decks.
     @StateObject var importExportManager = ImportExportManager()
+
+    @StateObject var cardMoveManager = CardMoveManager()
 
     // Handles speech in the app.
     @StateObject var speechManager = SpeechManager()
@@ -114,6 +117,11 @@ struct ContentView: View {
                 importExportManager.importExportError = nil
             }
         }
+        .alert(isPresented: $cardMoveManager.showingErrorAlert, error: cardMoveManager.moveError) {
+            Button("OK") {
+                cardMoveManager.moveError = nil
+            }
+        }
         .alert(
             importExportManager.importSuccessMessage,
             isPresented: $importExportManager.showingImportSuccess) {
@@ -134,6 +142,8 @@ struct ContentView: View {
                 .environmentObject(speechManager)
                 .focusedSceneObject(importExportManager)
                 .environmentObject(importExportManager)
+                .focusedSceneObject(cardMoveManager)
+                .environmentObject(cardMoveManager)
     }
 
     // MARK: - Sidebar
@@ -236,9 +246,15 @@ struct ContentView: View {
             ForEach(sortedDecks) { deck in
                 NavigationLink(value: deck) {
                     DeckRowView(deck: deck)
-                }
-                .onDrag {
-                    importExportManager.exportDeck(deck)
+                        .onDrag {
+                            importExportManager.exportDeck(deck)
+                        }
+                        .onDrop(of: [UTType.text], isTargeted: $cardMoveManager.hoveringItemOverDeck) { providers in
+                            cardMoveManager.handleDrop(with: providers, toMoveToDestinationDeck: deck, findingSourceDeckIn: decks)
+                        }
+                        .onTapGesture {
+                            selectedDeck = deck
+                        }
                 }
                 .contextMenu {
                     ExportButton(deck: deck)
@@ -328,7 +344,7 @@ struct ContentView: View {
     private func deleteDecks(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
         withAnimation {
-            dialogManager.deckToDelete = decks[index]
+            dialogManager.deckToDelete = sortedDecks[index]
             dialogManager.showingDeleteDeck = true
         }
     }
