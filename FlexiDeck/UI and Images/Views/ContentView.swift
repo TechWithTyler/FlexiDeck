@@ -42,15 +42,16 @@ struct ContentView: View {
     var sortedDecks: [Deck] {
         // Choose how to sort the decks based on the selected deck sort mode.
         return decks.sorted { deckA, deckB in
+            guard let deckAName = deckA.name, let deckBName = deckB.name, let deckACards = deckA.cards, let deckBCards = deckB.cards else { fatalError("Can't sort decks") }
             switch deckSortMode {
             case .countAscending:
-                return (deckA.cards?.count)! < (deckB.cards?.count)!
+                return deckACards.count < deckBCards.count
             case .countDescending:
-                return (deckA.cards?.count)! > (deckB.cards?.count)!
+                return deckACards.count > deckBCards.count
             case .nameAscending:
-                return deckA.name! < deckB.name!
+                return deckAName < deckBName
             default:
-                return deckA.name! > deckB.name!
+                return deckAName > deckBName
             }
         }
     }
