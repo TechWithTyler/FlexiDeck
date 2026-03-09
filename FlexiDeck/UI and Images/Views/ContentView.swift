@@ -343,7 +343,7 @@ struct ContentView: View {
     private func deleteDecks(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
         withAnimation {
-            dialogManager.deckToDelete = decks[index]
+            dialogManager.deckToDelete = sortedDecks[index]
             dialogManager.showingDeleteDeck = true
         }
     }
