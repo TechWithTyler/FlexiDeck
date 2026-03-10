@@ -12,12 +12,16 @@ enum CardMoveError: LocalizedError {
 
     // MARK: - Error Cases
 
+    // Unknown error with the given error.
     case unknown(Error)
 
+    // No data to move.
     case noData
 
+    // Source deck not found.
     case sourceDeckNotFound
 
+    // Card to move not found in source deck.
     case cardNotFoundInSourceDeck
 
     // MARK: - Error Description
