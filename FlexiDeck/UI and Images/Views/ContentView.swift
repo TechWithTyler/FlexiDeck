@@ -181,8 +181,7 @@ struct ContentView: View {
                 deleteDeck(deck.wrappedValue!)
             }
             Button("Cancel", role: .cancel) {
-                dialogManager.deckToDelete = nil
-                dialogManager.showingDeleteDeck = false
+                dialogManager.dismissDeleteDeck()
             }
         } message: { deck in
             Text("All cards in deck \"\((deck.wrappedValue?.name)!)\" will be deleted!")
@@ -264,8 +263,7 @@ struct ContentView: View {
                     }
                     Divider()
                     Button(role: .destructive) {
-                        dialogManager.deckToDelete = deck
-                        dialogManager.showingDeleteDeck = true
+                        dialogManager.showDeleteDeck(deck: deck)
                     } label: {
                         Label("Delete…", systemImage: "trash")
                             .foregroundStyle(.red)
@@ -343,9 +341,9 @@ struct ContentView: View {
     // This method deletes the deck at the given index set.
     private func deleteDecks(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
+        let deck = sortedDecks[index]
         withAnimation {
-            dialogManager.deckToDelete = sortedDecks[index]
-            dialogManager.showingDeleteDeck = true
+            dialogManager.showDeleteDeck(deck: deck)
         }
     }
 
@@ -361,8 +359,7 @@ struct ContentView: View {
             modelContext.delete(deck)
         }
         // 4. Dismiss the delete alert.
-        dialogManager.deckToDelete = nil
-        dialogManager.showingDeleteDeck = false
+        dialogManager.dismissDeleteDeck()
     }
 
     // This method deletes all decks.

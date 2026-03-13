@@ -89,8 +89,7 @@ struct CardView: View {
                     }
                     Divider()
                     Button(role: .destructive) {
-                        dialogManager.cardToDelete = selectedCard
-                        dialogManager.showingDeleteCard = true
+                        dialogManager.showDeleteCard(card: selectedCard)
                     } label: {
                         Label("Delete…", systemImage: "trash")
                     }

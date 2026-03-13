@@ -53,4 +53,28 @@ class DialogManager: ObservableObject {
     // The deck whose settings are being changed.
     @Published var deckToShowSettings: Deck? = nil
 
+    // MARK: - Show Dialog
+
+    func showDeleteDeck(deck: Deck) {
+        deckToDelete = deck
+        showingDeleteDeck = true
+    }
+
+    func showDeleteCard(card: Card) {
+        cardToDelete = card
+        showingDeleteCard = true
+    }
+
+    // MARK: - Dismiss Dialog
+
+    func dismissDeleteDeck() {
+        deckToDelete = nil
+        showingDeleteDeck = false
+    }
+
+    func dismissDeleteCard() {
+        cardToDelete = nil
+        showingDeleteCard = false
+    }
+
 }

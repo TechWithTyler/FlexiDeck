@@ -241,12 +241,10 @@ struct CardListView: View {
             Button("Delete", role: .destructive) {
                 guard let cards = deck.cards else { return }
                 deleteCard(at: cards.firstIndex(of: card.wrappedValue!)!)
-                dialogManager.cardToDelete = nil
-                dialogManager.showingDeleteCard = false
+                dialogManager.dismissDeleteCard()
             }
             Button("Cancel", role: .cancel) {
-                dialogManager.cardToDelete = nil
-                dialogManager.showingDeleteCard = false
+                dialogManager.dismissDeleteCard()
             }
         }
         .alert("Delete all cards in deck \"\(deck.name!)\"", isPresented: $dialogManager.showingDeleteAllCards) {
@@ -318,8 +316,7 @@ struct CardListView: View {
                     }
                     Divider()
                     Button(role: .destructive) {
-                        dialogManager.cardToDelete = card
-                        dialogManager.showingDeleteCard = true
+                        dialogManager.showDeleteCard(card: card)
                     } label: {
                         Label("Delete…", systemImage: "trash")
                             .foregroundStyle(.red)
@@ -417,7 +414,7 @@ struct CardListView: View {
                     dialogManager.deckToShowSettings = deck
                 }
                 Button(role: .destructive) {
-                    deleteDeck()
+                    
                 } label: {
                     Label("Delete Deck…", systemImage: "trash")
                 }
@@ -544,9 +541,9 @@ struct CardListView: View {
     // This method deletes the card at the given index set.
     private func deleteCards(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
+        let card = searchResults[index]
         withAnimation {
-            dialogManager.cardToDelete = searchResults[index]
-            dialogManager.showingDeleteCard = true
+            dialogManager.showDeleteCard(card: card)
         }
     }
 
@@ -561,12 +558,6 @@ struct CardListView: View {
         selectedCard = nil
         deck.cards?.removeAll()
         dialogManager.showingDeleteAllCards = false
-    }
-
-    // This method deletes the deck.
-    func deleteDeck() {
-        dialogManager.deckToDelete = deck
-        dialogManager.showingDeleteDeck = true
     }
 
 }
