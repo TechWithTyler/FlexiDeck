@@ -158,7 +158,7 @@ struct CardListView: View {
 
     // All cards matching the selected filters and search text.
     var searchResults: [Card] {
-        // 1. Define the content being searched.
+        // 1. Specify the content to search.
         let content = filteredCards
         // 2. If searchText is empty, return all cards.
         if searchText.isEmpty {
@@ -414,7 +414,7 @@ struct CardListView: View {
                     dialogManager.deckToShowSettings = deck
                 }
                 Button(role: .destructive) {
-                    
+
                 } label: {
                     Label("Delete Deck…", systemImage: "trash")
                 }
