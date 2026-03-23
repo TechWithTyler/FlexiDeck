@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/7/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -17,7 +17,7 @@ class DialogManager: ObservableObject {
 
 #if os(macOS)
     // The page currently selected in the Settings window on macOS.
-    @AppStorage("selectedSettingsPage") var selectedSettingsPage: SettingsPage = .display
+    @AppStorage(UserDefaults.KeyNames.selectedSettingsPage) var selectedSettingsPage: SettingsPage = .display
 #endif
 
     // MARK: - Properties - Booleans
@@ -52,5 +52,29 @@ class DialogManager: ObservableObject {
 
     // The deck whose settings are being changed.
     @Published var deckToShowSettings: Deck? = nil
+
+    // MARK: - Show Dialog
+
+    func showDeleteDeck(deck: Deck) {
+        deckToDelete = deck
+        showingDeleteDeck = true
+    }
+
+    func showDeleteCard(card: Card) {
+        cardToDelete = card
+        showingDeleteCard = true
+    }
+
+    // MARK: - Dismiss Dialog
+
+    func dismissDeleteDeck() {
+        deckToDelete = nil
+        showingDeleteDeck = false
+    }
+
+    func dismissDeleteCard() {
+        cardToDelete = nil
+        showingDeleteCard = false
+    }
 
 }

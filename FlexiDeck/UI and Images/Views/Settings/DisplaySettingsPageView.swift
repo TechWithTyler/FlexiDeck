@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 10/1/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -15,7 +15,7 @@ struct DisplaySettingsPageView: View {
 
     // MARK: - Properties - Doubles
 
-    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
+    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewIdealMinFontSize
 
     // MARK: - Body
 

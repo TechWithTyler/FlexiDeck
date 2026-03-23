@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/29/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -29,7 +29,7 @@ struct CardView: View {
 
     // MARK: - Properties - Doubles
 
-    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewMinFontSize
+    @AppStorage(UserDefaults.KeyNames.cardTextSize) var cardTextSize: Double = SATextViewIdealMinFontSize
 
     // MARK: - Properties - Booleans
 
@@ -69,7 +69,7 @@ struct CardView: View {
                 .foregroundStyle(.secondary)
             StarRatingView(card: selectedCard)
         }
-        .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? String()) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? String())
+        .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? nameUnavailableString) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? nameUnavailableString)
         .toolbar {
             if (selectedCard.is2Sided)! {
                 ToolbarItem {
@@ -89,8 +89,7 @@ struct CardView: View {
                     }
                     Divider()
                     Button(role: .destructive) {
-                        dialogManager.cardToDelete = selectedCard
-                        dialogManager.showingDeleteCard = true
+                        dialogManager.showDeleteCard(card: selectedCard)
                     } label: {
                         Label("Delete…", systemImage: "trash")
                     }

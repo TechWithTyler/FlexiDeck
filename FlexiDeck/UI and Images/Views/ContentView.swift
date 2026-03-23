@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/26/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -11,6 +11,7 @@
 import SwiftUI
 import SwiftData
 import SheftAppsStylishUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
 
@@ -21,14 +22,39 @@ struct ContentView: View {
 
     // MARK: - Properties - Booleans
 
+    // Whether new decks default to creating new cards with 2 sides.
     @AppStorage(UserDefaults.KeyNames.newDecksDefaultTo2SidedCards) var newDecksDefaultTo2SidedCards: Bool = true
 
+    // Whether deck/card settings are shown upon creating.
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
+
+    // MARK: - Properties - Deck Sort Mode
+
+    // The current deck sort mode setting.
+    @AppStorage(UserDefaults.KeyNames.deckSortMode) var deckSortMode: Deck.SortMode = .nameDescending
 
     // MARK: - Properties - Decks and Cards
 
     // The decks loaded from the model context.
     @Query private var decks: [Deck]
+
+    // All decks, sorted based on the selected sort mode.
+    var sortedDecks: [Deck] {
+        // Choose how to sort the decks based on the selected deck sort mode.
+        return decks.sorted { deckA, deckB in
+            guard let deckAName = deckA.name, let deckBName = deckB.name, let deckACards = deckA.cards, let deckBCards = deckB.cards else { fatalError("Can't sort decks") }
+            switch deckSortMode {
+            case .countAscending:
+                return deckACards.count < deckBCards.count
+            case .countDescending:
+                return deckACards.count > deckBCards.count
+            case .nameAscending:
+                return deckAName < deckBName
+            default:
+                return deckAName > deckBName
+            }
+        }
+    }
 
     // The selected deck.
     @State private var selectedDeck: Deck? = nil
@@ -39,13 +65,15 @@ struct ContentView: View {
     // MARK: - Properties - Managers
 
     // Handles the display of dialogs in the app.
-    @ObservedObject var dialogManager = DialogManager()
+    @StateObject var dialogManager = DialogManager()
 
     // Handles import/export of decks.
-    @ObservedObject var importExportManager = ImportExportManager()
+    @StateObject var importExportManager = ImportExportManager()
+
+    @StateObject var cardMoveManager = CardMoveManager()
 
     // Handles speech in the app.
-    @ObservedObject var speechManager = SpeechManager()
+    @StateObject var speechManager = SpeechManager()
 
     // MARK: - Body
 
@@ -70,9 +98,9 @@ struct ContentView: View {
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
             allowedContentTypes: [.flexiDeckDeck],
-            allowsMultipleSelection: true,
+            allowsMultipleSelection: true
         ) { result in
-            importExportManager.handleDeckImport(result: result, modelContext: modelContext)
+            importExportManager.handleDeckImportFromFiles(result: result, modelContext: modelContext)
         }
         .fileDialogMessage("Select deck(s) to import")
         .fileExporter(
@@ -82,19 +110,22 @@ struct ContentView: View {
             contentType: .flexiDeckDeck,
             defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
         ) { result in
-            importExportManager.handleDeckExport(deck: importExportManager.deckToExport, result: result)
+            importExportManager.handleDeckExportToFile(deck: importExportManager.deckToExport, result: result)
         }
         .alert(isPresented: $importExportManager.showingError, error: importExportManager.importExportError) {
             Button("OK") {
-                importExportManager.showingError = false
                 importExportManager.importExportError = nil
+            }
+        }
+        .alert(isPresented: $cardMoveManager.showingErrorAlert, error: cardMoveManager.moveError) {
+            Button("OK") {
+                cardMoveManager.moveError = nil
             }
         }
         .alert(
             importExportManager.importSuccessMessage,
             isPresented: $importExportManager.showingImportSuccess) {
                 Button("OK") {
-                    importExportManager.showingImportSuccess = false
                     importExportManager.importSuccessMessage = String()
                 }
             }
@@ -102,7 +133,6 @@ struct ContentView: View {
                 importExportManager.exportSuccessMessage,
                 isPresented: $importExportManager.showingExportSuccess) {
                     Button("OK") {
-                        importExportManager.showingExportSuccess = false
                         importExportManager.exportSuccessMessage = String()
                     }
                 }
@@ -112,6 +142,8 @@ struct ContentView: View {
                 .environmentObject(speechManager)
                 .focusedSceneObject(importExportManager)
                 .environmentObject(importExportManager)
+                .focusedSceneObject(cardMoveManager)
+                .environmentObject(cardMoveManager)
     }
 
     // MARK: - Sidebar
@@ -120,35 +152,21 @@ struct ContentView: View {
     var sidebar: some View {
         ZStack {
             if decks.count > 0 {
-                List(selection: $selectedDeck) {
-                    ForEach(decks) { deck in
-                        NavigationLink(value: deck) {
-                            DeckRowView(deck: deck)
-                        }
-                        .contextMenu {
-                            ExportButton(deck: deck)
-                            Divider()
-                            Button("Deck Settings…", systemImage: "gear") {
-                                dialogManager.deckToShowSettings = deck
-                            }
-                            Divider()
-                            Button(role: .destructive) {
-                                dialogManager.deckToDelete = deck
-                                dialogManager.showingDeleteDeck = true
-                            } label: {
-                                Label("Delete…", systemImage: "trash")
-                                    .foregroundStyle(.red)
-                            }
-                        }
-                    }
-                    .onDelete(perform: deleteDecks)
-                }
+                deckList
             } else {
-                Text("No decks")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
+                // Use a VStack and spacers to increase the drop target area.
+                VStack {
+                    Spacer()
+                    Text("No decks")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
             }
+        }
+        .onDrop(of: [.flexiDeckDeck], isTargeted: $importExportManager.hoveringItemOverDeckList) { providers in
+            importExportManager.handleDroppedDecks(with: providers, modelContext: modelContext)
         }
         .onChange(of: selectedDeck) { oldValue, newValue in
             selectedCard = nil
@@ -161,24 +179,16 @@ struct ContentView: View {
         .alert("Delete this deck?", isPresented: $dialogManager.showingDeleteDeck, presenting: $dialogManager.deckToDelete) { deck in
             Button("Delete", role: .destructive) {
                 deleteDeck(deck.wrappedValue!)
-                dialogManager.deckToDelete = nil
-                dialogManager.showingDeleteDeck = false
             }
             Button("Cancel", role: .cancel) {
-                dialogManager.deckToDelete = nil
-                dialogManager.showingDeleteDeck = false
+                dialogManager.dismissDeleteDeck()
             }
         } message: { deck in
-            Text("All cards in this deck will be deleted.")
+            Text("All cards in deck \"\((deck.wrappedValue?.name)!)\" will be deleted!")
         }
         .alert("Delete all decks?", isPresented: $dialogManager.showingDeleteAllDecks) {
             Button("Delete", role: .destructive) {
-                selectedCard = nil
-                selectedDeck = nil
-                for deck in decks {
-                    modelContext.delete(deck)
-                }
-                dialogManager.showingDeleteAllDecks = false
+                deleteAllDecks()
             }
             Button("Cancel", role: .cancel) {
                 dialogManager.showingDeleteAllDecks = false
@@ -201,6 +211,17 @@ struct ContentView: View {
                 OptionsMenu(title: .menu) {
                     ImportButton()
                     Divider()
+                    Picker(selection: $deckSortMode) {
+                        Text("Name (Ascending)").tag(Deck.SortMode.nameAscending)
+                        Text("Name (Descending)").tag(Deck.SortMode.nameDescending)
+                        Divider()
+                        Text("Card Count (Ascending)").tag(Deck.SortMode.countAscending)
+                        Text("Card Count (Descending)").tag(Deck.SortMode.countDescending)
+                    } label: {
+                        Label("Sort Decks By", systemImage: "arrow.up.arrow.down")
+                    }
+                    .pickerStyle(.menu)
+                    Divider()
                     Button(role: .destructive) {
                         dialogManager.showingDeleteAllDecks = true
                     } label: {
@@ -215,6 +236,41 @@ struct ContentView: View {
 #endif
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    var deckList: some View {
+        List(selection: $selectedDeck) {
+            ForEach(sortedDecks) { deck in
+                NavigationLink(value: deck) {
+                    DeckRowView(deck: deck)
+                        .onDrag {
+                            importExportManager.exportDeck(deck)
+                        }
+                        .onDrop(of: [UTType.text], isTargeted: $cardMoveManager.hoveringItemOverDeck) { providers in
+                            cardMoveManager.handleDrop(with: providers, toMoveToDestinationDeck: deck, findingSourceDeckIn: decks)
+                        }
+                        .onTapGesture {
+                            selectedDeck = deck
+                        }
+                }
+                .contextMenu {
+                    ExportButton(deck: deck)
+                    Divider()
+                    Button("Deck Settings…", systemImage: "gear") {
+                        dialogManager.deckToShowSettings = deck
+                    }
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.showDeleteDeck(deck: deck)
+                    } label: {
+                        Label("Delete…", systemImage: "trash")
+                            .foregroundStyle(.red)
+                    }
+                }
+            }
+            .onDelete(perform: deleteDecks)
         }
     }
 
@@ -285,15 +341,15 @@ struct ContentView: View {
     // This method deletes the deck at the given index set.
     private func deleteDecks(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
+        let deck = sortedDecks[index]
         withAnimation {
-            dialogManager.deckToDelete = decks[index]
-            dialogManager.showingDeleteDeck = true
+            dialogManager.showDeleteDeck(deck: deck)
         }
     }
 
     // This method deletes the given deck.
     func deleteDeck(_ deck: Deck) {
-        // 1. Nil-out all selections.
+        // 1. Nil-out the selected card and deck.
         selectedCard = nil
         selectedDeck = nil
         // 2. Delete all cards from the deck.
@@ -302,6 +358,21 @@ struct ContentView: View {
         DispatchQueue.main.async {
             modelContext.delete(deck)
         }
+        // 4. Dismiss the delete alert.
+        dialogManager.dismissDeleteDeck()
+    }
+
+    // This method deletes all decks.
+    func deleteAllDecks() {
+        // 1. Nil-out the selected card and deck.
+        selectedCard = nil
+        selectedDeck = nil
+        // 2. Delete each deck.
+        for deck in decks {
+            modelContext.delete(deck)
+        }
+        // 3. Dismiss the delete alert.
+        dialogManager.showingDeleteAllDecks = false
     }
 
 }
@@ -312,3 +383,4 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Card.self, inMemory: true)
 }
+

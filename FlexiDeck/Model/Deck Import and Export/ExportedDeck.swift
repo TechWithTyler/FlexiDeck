@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/4/25.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -41,6 +41,7 @@ struct ExportedDeck: FileDocument {
             throw DeckImportExportError.fileWrapperError
         }
         // 2. Return the FileWrapper with the data.
-        return FileWrapper(regularFileWithContents: data)
+        let fileWrapper = FileWrapper(regularFileWithContents: data)
+        return fileWrapper
     }
 }

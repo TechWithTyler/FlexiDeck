@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/2/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -14,7 +14,21 @@ import SwiftData
 @Model
 final class Deck: Codable {
 
-    // MARK: - CodingKeys Enum
+    // MARK: - Enums - Sort Mode
+
+    enum SortMode: Int {
+
+        case nameAscending = 0
+
+        case nameDescending = 1
+
+        case countAscending = 2
+
+        case countDescending = 3
+
+    }
+
+    // MARK: - Enums - Coding Keys
 
     enum CodingKeys: String, CodingKey {
 
@@ -42,29 +56,29 @@ final class Deck: Codable {
         self.name = name
     }
 
-    // MARK: - Initialization - Decode Deck for Import
+    // MARK: - Initialization - Decode Card for Import
 
     required convenience init(from decoder: Decoder) throws {
         // 1. Create a container for the decoded data.
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // 2. Try to decode the deck properties from the container.
-        let name = try container.decodeIfPresent(String.self, forKey: .name)
-        let newCardsAre2Sided = try container.decodeIfPresent(Bool.self, forKey: .newCardsAre2Sided)
-        let cards = try container.decodeIfPresent([Card].self, forKey: .cards)
+        let name = try container.decode(String.self, forKey: .name)
+        let newCardsAre2Sided = try container.decode(Bool.self, forKey: .newCardsAre2Sided)
+        let cards = try container.decode([Card].self, forKey: .cards)
         // 3. Create a new Deck object with the decoded properties by calling the "new deck" initializer above and setting the cards property.
-        self.init(name: name ?? String(), newCardsAre2Sided: newCardsAre2Sided ?? false)
+        self.init(name: name, newCardsAre2Sided: newCardsAre2Sided)
         self.cards = cards
     }
 
-    // MARK: - Encode Card for Export
+    // MARK: - Encode Deck for Export
 
     func encode(to encoder: Encoder) throws {
         // 1. Create a container for the encoded data.
         var container = encoder.container(keyedBy: CodingKeys.self)
         // 2. Encode the deck properties into the container.
-        try container.encodeIfPresent(name, forKey: .name)
-        try container.encodeIfPresent(newCardsAre2Sided, forKey: .newCardsAre2Sided)
-        try container.encodeIfPresent(cards, forKey: .cards)
+        try container.encode(name, forKey: .name)
+        try container.encode(newCardsAre2Sided, forKey: .newCardsAre2Sided)
+        try container.encode(cards, forKey: .cards)
     }
 
 }

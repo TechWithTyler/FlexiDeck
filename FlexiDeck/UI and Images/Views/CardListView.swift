@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/2/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -21,6 +21,8 @@ struct CardListView: View {
     // MARK: - Properties - Dialog Manager
 
     @EnvironmentObject var dialogManager: DialogManager
+
+    @EnvironmentObject var cardMoveManager: CardMoveManager
 
     // MARK: - Properties - Strings
 
@@ -156,7 +158,7 @@ struct CardListView: View {
 
     // All cards matching the selected filters and search text.
     var searchResults: [Card] {
-        // 1. Define the content being searched.
+        // 1. Specify the content to search.
         let content = filteredCards
         // 2. If searchText is empty, return all cards.
         if searchText.isEmpty {
@@ -208,76 +210,12 @@ struct CardListView: View {
     var body: some View {
         ZStack {
             if searchResults.count > 0 {
-                List(selection: $selectedCard) {
-                    ForEach(searchResults) { card in
-                        NavigationLink(value: card) {
-                            CardRowView(card: card, searchText: searchText)
-                        }
-                        .contextMenu {
-                            CompletedStatusPicker(card: card)
-                            StarRatingPicker(card: card)
-                            Divider()
-                            Button("Card Settings…", systemImage: "gear") {
-                                dialogManager.cardToShowSettings = card
-                            }
-                            Divider()
-                            Button(role: .destructive) {
-                                dialogManager.cardToDelete = card
-                                dialogManager.showingDeleteCard = true
-                            } label: {
-                                Label("Delete…", systemImage: "trash")
-                                    .foregroundStyle(.red)
-                            }
-                        }
-                        .onChange(of: card.deck) { oldValue, newValue in
-                            selectedCard = nil
-                        }
-                        .onChange(of: card.starRating) { oldValue, newValue in
-                            if let card = selectedCard, !ratingFilteredCards.contains(card) {
-                                selectedCard = nil
-                            }
-                        }
-                        .onChange(of: card.tags) { oldValue, newValue in
-                            if !newValue.contains(cardFilterTags) {
-                                cardFilterTags = "off"
-                            }
-                        }
-                    }
-                    .onDelete(perform: deleteCards)
-                }
+                cardList
 #if !os(macOS)
                 .listStyle(.insetGrouped)
 #endif
             } else {
-                VStack {
-                    if !searchText.isEmpty {
-                        Text("No cards containing \"\(searchText)\"")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        Text("Please check your search terms.")
-                            .font(.callout)
-                            .foregroundStyle(.tertiary)
-                    } else if cardFilterEnabled {
-                        Text("No cards matching the selected filters")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        Text("Adjust your filters or add a new card.")
-                            .font(.callout)
-                            .foregroundStyle(.tertiary)
-                        addCardButton
-                            .buttonStyle(.borderedProminent)
-                    } else {
-                        Text("No cards in this deck")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        addCardButton
-                            .buttonStyle(.borderedProminent)
-                    }
-                }
-                .padding()
+                noCardsView
             }
         }
         .contextMenu {
@@ -295,7 +233,7 @@ struct CardListView: View {
         }
         .animation(.default, value: searchResults)
         .searchable(text: $searchText, placement: .automatic, prompt: Text("Search \((deck.name)!)"))
-        .navigationTitle(deck.name ?? String())
+        .navigationTitle(deck.name ?? nameUnavailableString)
         .sheet(item: $dialogManager.cardToShowSettings) { card in
             CardSettingsView(card: card, selectedDeck: deck)
         }
@@ -303,12 +241,10 @@ struct CardListView: View {
             Button("Delete", role: .destructive) {
                 guard let cards = deck.cards else { return }
                 deleteCard(at: cards.firstIndex(of: card.wrappedValue!)!)
-                dialogManager.cardToDelete = nil
-                dialogManager.showingDeleteCard = false
+                dialogManager.dismissDeleteCard()
             }
             Button("Cancel", role: .cancel) {
-                dialogManager.cardToDelete = nil
-                dialogManager.showingDeleteCard = false
+                dialogManager.dismissDeleteCard()
             }
         }
         .alert("Delete all cards in deck \"\(deck.name!)\"", isPresented: $dialogManager.showingDeleteAllCards) {
@@ -321,6 +257,86 @@ struct CardListView: View {
         }
         .toolbar {
             toolbarContent
+        }
+    }
+
+    @ViewBuilder
+    var noCardsView: some View {
+        VStack {
+            if !searchText.isEmpty {
+                Text("No cards containing \"\(searchText)\"")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                Text("Please check your search terms.")
+                    .font(.callout)
+                    .foregroundStyle(.tertiary)
+            } else if cardFilterEnabled {
+                Text("No cards matching the selected filters")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                Text("Adjust your filters or add a new card.")
+                    .font(.callout)
+                    .foregroundStyle(.tertiary)
+                addCardButton
+                    .buttonStyle(.borderedProminent)
+            } else {
+                Text("No cards in this deck")
+                    .font(.largeTitle)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                addCardButton
+                    .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding()
+    }
+
+    @ViewBuilder
+    var cardList: some View {
+        List(selection: $selectedCard) {
+            ForEach(searchResults) { card in
+                NavigationLink(value: card) {
+                    CardRowView(card: card, searchText: searchText)
+                        .onDrag {
+                            cardMoveManager.handleDrag(of: card)
+                        }
+                        .onTapGesture {
+                            selectedCard = card
+                        }
+
+                }
+                .contextMenu {
+                    CompletedStatusPicker(card: card)
+                    StarRatingPicker(card: card)
+                    Divider()
+                    Button("Card Settings…", systemImage: "gear") {
+                        dialogManager.cardToShowSettings = card
+                    }
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.showDeleteCard(card: card)
+                    } label: {
+                        Label("Delete…", systemImage: "trash")
+                            .foregroundStyle(.red)
+                    }
+                }
+                .onChange(of: card.deck) { oldValue, newValue in
+                    selectedCard = nil
+                }
+                .onChange(of: card.starRating) { oldValue, newValue in
+                    if let card = selectedCard, !ratingFilteredCards.contains(card) {
+                        selectedCard = nil
+                    }
+                }
+                .onChange(of: card.tags) { oldValue, newValue in
+                    if !newValue.contains(cardFilterTags) {
+                        cardFilterTags = "off"
+                    }
+                }
+            }
+            .onDelete(perform: deleteCards)
         }
     }
 
@@ -398,7 +414,7 @@ struct CardListView: View {
                     dialogManager.deckToShowSettings = deck
                 }
                 Button(role: .destructive) {
-                    deleteDeck()
+
                 } label: {
                     Label("Delete Deck…", systemImage: "trash")
                 }
@@ -525,9 +541,9 @@ struct CardListView: View {
     // This method deletes the card at the given index set.
     private func deleteCards(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
+        let card = searchResults[index]
         withAnimation {
-            dialogManager.cardToDelete = searchResults[index]
-            dialogManager.showingDeleteCard = true
+            dialogManager.showDeleteCard(card: card)
         }
     }
 
@@ -542,12 +558,6 @@ struct CardListView: View {
         selectedCard = nil
         deck.cards?.removeAll()
         dialogManager.showingDeleteAllCards = false
-    }
-
-    // This method deletes the deck.
-    func deleteDeck() {
-        dialogManager.deckToDelete = deck
-        dialogManager.showingDeleteDeck = true
     }
 
 }

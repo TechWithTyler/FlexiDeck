@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/26/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -42,7 +42,7 @@ struct FlexiDeckApp: App {
         let appSupportURL: URL = URLs.last!
         // Creates a URL with name "default.store"
         // Here, a file or directory is inserted into the specified location in the specified domain.
-        // Like with arrays, to append something means "to add."
+        // Like with arrays, to append something means "to add at the end."
         let fileURL: URL = appSupportURL.appending(path: storeFilename, directoryHint: .notDirectory)
         // Appends ".store" to the URL. This is the full URL.
         let file: URL = fileURL.appendingPathExtension(storeFileExtension)
@@ -54,7 +54,7 @@ struct FlexiDeckApp: App {
             return modelContainer
         } catch {
             // 5. If a model container can't be created, throw a fatal error.
-            fatalError("Could not create ModelContainer: \(error)")
+            fatalError("Couldn't create ModelContainer: \(error)")
         }
     }()
 

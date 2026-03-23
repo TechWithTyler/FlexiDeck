@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 8/6/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -15,9 +15,9 @@ struct SettingsView: View {
 
     // MARK: - Properties - Objects
 
-    @ObservedObject var dialogManager = DialogManager()
+    @StateObject var dialogManager = DialogManager()
 
-    @ObservedObject var speechManager = SpeechManager()
+    @StateObject var speechManager = SpeechManager()
 
     // MARK: - Properties - Dismiss Action
 
@@ -37,7 +37,7 @@ struct SettingsView: View {
                 .frame(width: 400, height: 360)
                 .formStyle(.grouped)
                 .tabItem {
-                    Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
+                    Label(SettingsPage.display.title, systemImage: SettingsPage.Icons.display.rawValue)
                 }
                 .tag(SettingsPage.display)
                 SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
@@ -46,7 +46,7 @@ struct SettingsView: View {
                 .frame(width: 400, height: 220)
                 .formStyle(.grouped)
                 .tabItem {
-                    Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
+                    Label(SettingsPage.speech.title, systemImage: SettingsPage.Icons.speech.rawValue)
                 }
                 .tag(SettingsPage.speech)
                 SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
@@ -55,7 +55,7 @@ struct SettingsView: View {
                 .frame(width: 400, height: 375)
                 .formStyle(.grouped)
                 .tabItem {
-                    Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)
+                    Label(SettingsPage.decksCards.title, systemImage: SettingsPage.Icons.decksCards.rawValue)
                 }
                 .tag(SettingsPage.decksCards)
             }
@@ -68,21 +68,21 @@ struct SettingsView: View {
                 Section {
                     NavigationLink {
                         DisplaySettingsPageView()
-                            .navigationTitle(SettingsPage.display.rawValue.capitalized)
+                            .navigationTitle(SettingsPage.display.title)
                     } label: {
-                        Label(SettingsPage.display.rawValue.capitalized, systemImage: SettingsPage.Icons.display.rawValue)
+                        Label(SettingsPage.display.title, systemImage: SettingsPage.Icons.display.rawValue)
                     }
                     NavigationLink {
                         SpeechSettingsPageView()
-                            .navigationTitle(SettingsPage.speech.rawValue.capitalized)
+                            .navigationTitle(SettingsPage.speech.title)
                     } label: {
-                        Label(SettingsPage.speech.rawValue.capitalized, systemImage: SettingsPage.Icons.speech.rawValue)
+                        Label(SettingsPage.speech.title, systemImage: SettingsPage.Icons.speech.rawValue)
                     }
                     NavigationLink {
                         DecksCardsSettingsPageView()
-                            .navigationTitle(SettingsPage.decksCards.rawValue.capitalized)
+                            .navigationTitle(SettingsPage.decksCards.title)
                     } label: {
-                        Label(SettingsPage.decksCards.rawValue.capitalized, systemImage: SettingsPage.Icons.decksCards.rawValue)
+                        Label(SettingsPage.decksCards.title, systemImage: SettingsPage.Icons.decksCards.rawValue)
                     }
                 }
 #if !os(macOS)

@@ -3,7 +3,7 @@
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 10/1/24.
-//  Copyright © 2024-2025 SheftApps. All rights reserved.
+//  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
 // MARK: - Imports
@@ -34,5 +34,11 @@ enum SettingsPage : String {
     case speech
 
     case decksCards = "Decks/Cards"
+
+    // MARK: - Settings Page Title
+
+    var title: String {
+        return rawValue.capitalized
+    }
 
 }
