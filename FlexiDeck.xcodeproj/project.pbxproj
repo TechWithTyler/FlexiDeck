@@ -577,7 +577,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 450;
+				CURRENT_PROJECT_VERSION = 500;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				ENABLE_APP_SANDBOX = YES;
@@ -633,7 +633,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "FlexiDeck/Supporting Files/FlexiDeck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 450;
+				CURRENT_PROJECT_VERSION = 500;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexiDeck/UI and Images/Preview Content/Preview Assets.xcassets\"";
 				ENABLE_APP_SANDBOX = YES;
