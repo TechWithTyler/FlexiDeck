@@ -40,9 +40,10 @@ struct ContentView: View {
 
     // All decks, sorted based on the selected sort mode.
     var sortedDecks: [Deck] {
-        // Choose how to sort the decks based on the selected deck sort mode.
-        return decks.sorted { deckA, deckB in
+        let decks = decks.sorted { deckA, deckB in
+            // 1. Make sure both decks have name and cards properties.
             guard let deckAName = deckA.name, let deckBName = deckB.name, let deckACards = deckA.cards, let deckBCards = deckB.cards else { fatalError("Can't sort decks") }
+            // 2. Choose how to sort the decks based on the selected sort mode.
             switch deckSortMode {
             case .countAscending:
                 return deckACards.count < deckBCards.count
@@ -54,6 +55,8 @@ struct ContentView: View {
                 return deckAName > deckBName
             }
         }
+        // 3. Return the sorted decks.
+        return decks
     }
 
     // The selected deck.

@@ -34,7 +34,7 @@ struct CardListView: View {
 
     // All tags across all cards. A tag is any word that begins with a hashtag (#).
     var allTags: [String] {
-        // 1. Try to get all cards in the selected deck.
+        // 1. Make sure we can get all cards in the selected deck.
         guard let cards = deck.cards else {
             fatalError("Couldn't get tags")
         }
@@ -75,12 +75,12 @@ struct CardListView: View {
 
     // All cards, sorted based on the selected sort mode.
     var sortedCards: [Card] {
-        // 1. Try to get all cards in the selected deck.
+        // 1. Make sure we can get all cards in the selected deck.
         guard let cards = deck.cards else {
             fatalError("Couldn't sort cards")
         }
         // 2. Choose how to sort the cards based on the selected card sort mode.
-        return cards.sorted { cardA, cardB in
+        let sortedCards = cards.sorted { cardA, cardB in
             switch cardSortMode {
             case .titleAscending:
                 return cardA.title! < cardB.title!
@@ -100,6 +100,8 @@ struct CardListView: View {
                 return cardA.modifiedDate > cardB.modifiedDate
             }
         }
+        // 3. Return the sorted cards.
+        return cards
     }
 
     // All cards, filtered by number of sides.
@@ -119,7 +121,7 @@ struct CardListView: View {
         switch cardFilterTags {
             // 1. If the tags filter is turned off, return all cards returned by sidesFilteredCards.
         case "off": return sidesFilteredCards
-            // 2. If the tags filter is set to "No Filter", return only cards without tags.
+            // 2. If the tags filter is set to "Without Tags", return only cards without tags.
         case "none": return sidesFilteredCards.filter { $0.tags.isEmpty }
             // 3. If the tags filter is set to a tag, return only cards that contain that tag.
         default: return sidesFilteredCards.filter { $0.tags.contains(cardFilterTags) }
