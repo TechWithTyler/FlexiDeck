@@ -118,7 +118,7 @@ class ImportExportManager: ObservableObject {
             showingExporter = true
         } catch {
             // 4. If an error is thrown in step 1, show it.
-            importExportError = .exportPrepError(deck, error)
+            importExportError = .exportPrepError(deck.name!, error)
         }
     }
 
@@ -200,7 +200,7 @@ class ImportExportManager: ObservableObject {
         case .failure(let error):
             // 3. If the file export failed, show an error.
             showingError = true
-            importExportError = .exportError(deck, error)
+            importExportError = .exportError(deck.name!, error)
         }
     }
 
@@ -270,7 +270,7 @@ class ImportExportManager: ObservableObject {
             // 3. Set the filename for the exported deck.
             itemProvider.suggestedName = filename
         } catch {
-            importExportError = .exportError(deck, error)
+            importExportError = .exportError(deck.name!, error)
             showingError = true
         }
         // 4. Return the provider.

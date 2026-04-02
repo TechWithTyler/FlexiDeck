@@ -101,7 +101,7 @@ struct CardListView: View {
             }
         }
         // 3. Return the sorted cards.
-        return cards
+        return sortedCards
     }
 
     // All cards, filtered by number of sides.
@@ -174,8 +174,9 @@ struct CardListView: View {
                 let frontRange = card.front.range(of: searchText, options: .caseInsensitive)
                 // Back
                 let backRange = card.back.range(of: searchText, options: .caseInsensitive)
+                let tagsContainsSearchTerm = card.tags.contains(searchText)
                 let textMatchesSearchTerm = titleRange != nil || frontRange != nil || backRange != nil
-                return textMatchesSearchTerm
+                return textMatchesSearchTerm || tagsContainsSearchTerm
             }
         }
     }
