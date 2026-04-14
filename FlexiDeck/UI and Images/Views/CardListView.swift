@@ -174,9 +174,8 @@ struct CardListView: View {
                 let frontRange = card.front.range(of: searchText, options: .caseInsensitive)
                 // Back
                 let backRange = card.back.range(of: searchText, options: .caseInsensitive)
-                let tagsContainsSearchTerm = card.tags.contains(searchText)
                 let textMatchesSearchTerm = titleRange != nil || frontRange != nil || backRange != nil
-                return textMatchesSearchTerm || tagsContainsSearchTerm
+                return textMatchesSearchTerm
             }
         }
     }
@@ -527,14 +526,14 @@ struct CardListView: View {
     private func newCard(is2Sided: Bool) {
         withAnimation {
             // 1. Create a new Card object with the default title and the deck's "number of sides" setting.
-            let newItem = Card(title: defaultCardName, is2Sided: is2Sided)
+            let newDeck = Card(title: defaultCardName, is2Sided: is2Sided)
             // 2. Append the new card to the deck's list of cards.
-            deck.cards?.append(newItem)
+            deck.cards?.append(newDeck)
             // 3. Select the new card.
-            selectedCard = newItem
+            selectedCard = newDeck
             // 4. If set to show settings when creating new decks and cards, show the new card's settings.
             if showSettingsWhenCreating == 2 {
-                dialogManager.cardToShowSettings = newItem
+                dialogManager.cardToShowSettings = newDeck
             }
             // 5. Disable all filters except the sides filter.
             resetCardFilter(shouldResetSidesFilter: false)

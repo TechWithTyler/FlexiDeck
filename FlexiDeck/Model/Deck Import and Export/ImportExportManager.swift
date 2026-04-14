@@ -24,6 +24,7 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Properties - Booleans
 
+    // Whether an imported deck's name should be set to the name of the imported file.
     @AppStorage(UserDefaults.KeyNames.useFilenameAsImportedDeckName) var useFilenameAsImportedDeckName: Bool = true
 
     // Whether the file importer should be/is being displayed.
@@ -74,7 +75,7 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Encoding/Decoding
 
-    // This method creates a Deck object (including its cards) from the given Data. Decoding is performed after importing a file.
+    // This method creates a Deck object (including its cards) from the given Data (Data > Deck). Decoding is performed after importing a file.
     func decodeDeckForImport(from data: Data) throws -> Deck {
         // 1. Create a JSON decoder.
         let decoder = JSONDecoder()
@@ -86,7 +87,7 @@ class ImportExportManager: ObservableObject {
         return decodedDeck
     }
 
-    // This method encodes a Deck instance (including its cards) into Data. Encoding is performed before the file exporter for a file is shown.
+    // This method encodes a Deck instance (including its cards) into Data (Deck > Data). Encoding is performed before the file exporter for a file is shown.
     func encodeDeckForExport(_ deck: Deck) throws -> Data {
         // 1. Create a JSON encoder.
         let encoder = JSONEncoder()

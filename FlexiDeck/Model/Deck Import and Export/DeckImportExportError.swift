@@ -15,7 +15,7 @@ enum DeckImportExportError: LocalizedError {
     // MARK: - Error Cases
 
     // Error with wrapping up a deck's data into an exportable file
-    case fileWrapperError
+    case fileWrapperError(String)
 
     // Export error.
     case exportError(String, Error)
@@ -42,8 +42,8 @@ enum DeckImportExportError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .fileWrapperError:
-            return "Deck couldn't be wrapped up into an exportable file."
+        case .fileWrapperError(let deckName):
+            return "The deck \"\(deckName)\" couldn't be wrapped up into an exportable file."
         case .exportPrepError(let deckName, let error):
             return "The deck \"\(deckName)\" couldn't be prepared for export: \(error.localizedDescription)"
         case .exportError(let deckName, let error):

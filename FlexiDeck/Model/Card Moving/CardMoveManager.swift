@@ -6,6 +6,8 @@
 //  Copyright © 2024-2026 SheftApps. All rights reserved.
 //
 
+// MARK: - Imports
+
 import SwiftUI
 import SwiftData
 import UniformTypeIdentifiers
@@ -20,27 +22,11 @@ class CardMoveManager: ObservableObject {
     // Whether an error should be/is being displayed.
     @Published var showingErrorAlert: Bool = false
 
+    // MARK: - Properties - Errors
+
     @Published var moveError: CardMoveError? = nil
 
-    // This method encodes a card's ID to JSON data when it's dragged to a new deck.
-    func cardIDAsData(_ id: PersistentIdentifier) -> Data? {
-        // 1. Create a JSON encoder.
-        let encoder = JSONEncoder()
-        // 2. Try to encode the ID.
-        let data = try? encoder.encode(id)
-        // 3. Return the encoded data.
-        return data
-    }
-
-    // This method decodes a card's ID from JSON data when it's dropped on a new deck.
-    func cardIDFromData(_ data: Data) -> PersistentIdentifier? {
-        // 1. Create a JSON decoder.
-        let decoder = JSONDecoder()
-        let typeToDecode = PersistentIdentifier.self
-        // 2. Try to decode the ID from the data.
-        let id = try? decoder.decode(typeToDecode, from: data)
-        return id
-    }
+    // MARK: - Drag and Drop
 
     // This method handles dragging of a card.
     func handleDrag(of card: Card) -> NSItemProvider {
@@ -49,7 +35,7 @@ class CardMoveManager: ObservableObject {
         let cardID = card.id
         // 2. Try to create data from the card's ID. The card ID is used to determine which card is to be moved.
         provider.registerDataRepresentation(forTypeIdentifier: UTType.text.identifier, visibility: .all) { [self] completion in
-            if let data = cardIDAsData(cardID) {
+            if let data = encodeCardID(cardID) {
                 completion(data, nil)
             } else {
                 // 3. If there's no data, show an error.
@@ -79,6 +65,8 @@ class CardMoveManager: ObservableObject {
         return !showingErrorAlert
     }
 
+    // MARK: - Move Card
+
     func moveCardWithData(_ data: Data?, toDestinationDeck destinationDeck: Deck, findingSourceDeckIn decks: [Deck], error: Error?) {
         // 1. If an error occurs, show it.
         if let error = error {
@@ -88,7 +76,7 @@ class CardMoveManager: ObservableObject {
             }
         } else if let data = data {
             // 2. If there's data, make sure we can get the ID from that data.
-            guard let id = cardIDFromData(data) else {
+            guard let id = decodeCardID(data) else {
                 DispatchQueue.main.async { [self] in
                     moveError = .noData
                     showingErrorAlert = true
@@ -128,6 +116,8 @@ class CardMoveManager: ObservableObject {
         }
     }
 
+    // MARK: - Deck/Card Retrieval
+
     // This method finds a deck containing a card with the given ID.
     func deck(containingCardWithID id: PersistentIdentifier, in decks: [Deck]) -> Deck? {
         return decks.first { deckContainsCard(withID: id, in: $0) }
@@ -142,6 +132,28 @@ class CardMoveManager: ObservableObject {
     // This method finds a card with the given ID in deck.
     func card(withID id: PersistentIdentifier, in deck: Deck) -> Card? {
         return deck.cards?.first { $0.id == id }
+    }
+
+    // MARK: - Card ID Encoding/Decoding
+
+    // This method encodes a card's ID to JSON data (PersistentIdentifier > Data) when it's dragged to a new deck.
+    func encodeCardID(_ id: PersistentIdentifier) -> Data? {
+        // 1. Create a JSON encoder.
+        let encoder = JSONEncoder()
+        // 2. Try to encode the ID.
+        let data = try? encoder.encode(id)
+        // 3. Return the encoded data.
+        return data
+    }
+
+    // This method decodes a card's ID from JSON data (Data > PersistentIdentifier) when it's dropped on a new deck.
+    func decodeCardID(_ data: Data) -> PersistentIdentifier? {
+        // 1. Create a JSON decoder.
+        let decoder = JSONDecoder()
+        let typeToDecode = PersistentIdentifier.self
+        // 2. Try to decode the ID from the data.
+        let id = try? decoder.decode(typeToDecode, from: data)
+        return id
     }
 
 }

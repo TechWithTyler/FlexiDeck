@@ -108,8 +108,7 @@ struct ContentView: View {
         .fileDialogMessage("Select deck(s) to import")
         .fileExporter(
             isPresented: $importExportManager.showingExporter,
-            document: ExportedDeck(data: importExportManager.deckDataToExport
-            ),
+            document: ExportedDeck(data: importExportManager.deckDataToExport, deckName: importExportManager.deckToExport?.name ?? defaultDeckName),
             contentType: .flexiDeckDeck,
             defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
         ) { result in
@@ -329,14 +328,14 @@ struct ContentView: View {
     private func addDeck() {
         withAnimation {
             // 1. Create a new Deck object with the default name and default number of sides.
-            let newItem = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
+            let newDeck = Deck(name: defaultDeckName, newCardsAre2Sided: newDecksDefaultTo2SidedCards)
             // 2. Insert the new deck into the model context.
-            modelContext.insert(newItem)
+            modelContext.insert(newDeck)
             // 3. Select the new deck.
-            selectedDeck = newItem
+            selectedDeck = newDeck
             // 4. If set to show deck settings upon creation, show the new deck's settings.
             if showSettingsWhenCreating >= 1 {
-                dialogManager.deckToShowSettings = newItem
+                dialogManager.deckToShowSettings = newDeck
             }
         }
     }
@@ -345,9 +344,7 @@ struct ContentView: View {
     private func deleteDecks(at offsets: IndexSet) {
         guard let index = offsets.first else { return }
         let deck = sortedDecks[index]
-        withAnimation {
-            dialogManager.showDeleteDeck(deck: deck)
-        }
+        dialogManager.showDeleteDeck(deck: deck)
     }
 
     // This method deletes the given deck.
@@ -358,7 +355,7 @@ struct ContentView: View {
         // 2. Delete all cards from the deck.
         deck.cards?.removeAll()
         // 3. Delete the deck.
-        DispatchQueue.main.async {
+        withAnimation {
             modelContext.delete(deck)
         }
         // 4. Dismiss the delete alert.
