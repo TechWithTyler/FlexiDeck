@@ -135,7 +135,7 @@ struct CardListView: View {
         case 1: return tagsFilteredCards.filter { !$0.isCompleted }
             // 2. If cardFilterComplete is 2, return only completed cards.
         case 2: return tagsFilteredCards.filter { $0.isCompleted }
-            // 3. IF cardFilterComplete isn't 1 or 2, return all cards returned by tagsFilteredCards.
+            // 3. If cardFilterComplete isn't 1 or 2, return all cards returned by tagsFilteredCards.
         default: return tagsFilteredCards
         }
     }

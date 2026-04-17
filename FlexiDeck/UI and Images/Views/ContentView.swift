@@ -199,45 +199,7 @@ struct ContentView: View {
             Text("If you have any decks you may want to keep, export them before deletion.")
         }
         .toolbar {
-#if os(macOS)
-            ToolbarItem {
-                newDeckButton
-            }
-#else
-            ToolbarItem(placement: .bottomBar) {
-                newDeckButton
-                    .labelStyle(.titleAndIcon)
-            }
-#endif
-            ToolbarItem {
-                OptionsMenu(title: .menu) {
-                    ImportButton()
-                    Divider()
-                    Picker(selection: $deckSortMode) {
-                        Text("Name (Ascending)").tag(Deck.SortMode.nameAscending)
-                        Text("Name (Descending)").tag(Deck.SortMode.nameDescending)
-                        Divider()
-                        Text("Card Count (Ascending)").tag(Deck.SortMode.countAscending)
-                        Text("Card Count (Descending)").tag(Deck.SortMode.countDescending)
-                    } label: {
-                        Label("Sort Decks By", systemImage: "arrow.up.arrow.down")
-                    }
-                    .pickerStyle(.menu)
-                    Divider()
-                    Button(role: .destructive) {
-                        dialogManager.showingDeleteAllDecks = true
-                    } label: {
-                        Label("Delete All Decks…", systemImage: "trash.fill")
-                            .foregroundStyle(.red)
-                    }
-#if !os(macOS)
-                    Divider()
-                    Button("Settings…", systemImage: "gear") {
-                        dialogManager.showingSettings = true
-                    }
-#endif
-                }
-            }
+            toolbarContent
         }
     }
 
@@ -321,6 +283,51 @@ struct ContentView: View {
         }
         .navigationSplitViewColumnWidth(min: 500, ideal: 600)
     }
+
+    // MARK: - Toolbar
+
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+#if os(macOS)
+            ToolbarItem {
+                newDeckButton
+            }
+#else
+            ToolbarItem(placement: .bottomBar) {
+                newDeckButton
+                    .labelStyle(.titleAndIcon)
+            }
+#endif
+            ToolbarItem {
+                OptionsMenu(title: .menu) {
+                    ImportButton()
+                    Divider()
+                    Picker(selection: $deckSortMode) {
+                        Text("Name (Ascending)").tag(Deck.SortMode.nameAscending)
+                        Text("Name (Descending)").tag(Deck.SortMode.nameDescending)
+                        Divider()
+                        Text("Card Count (Ascending)").tag(Deck.SortMode.countAscending)
+                        Text("Card Count (Descending)").tag(Deck.SortMode.countDescending)
+                    } label: {
+                        Label("Sort Decks By", systemImage: "arrow.up.arrow.down")
+                    }
+                    .pickerStyle(.menu)
+                    Divider()
+                    Button(role: .destructive) {
+                        dialogManager.showingDeleteAllDecks = true
+                    } label: {
+                        Label("Delete All Decks…", systemImage: "trash.fill")
+                            .foregroundStyle(.red)
+                    }
+#if !os(macOS)
+                    Divider()
+                    Button("Settings…", systemImage: "gear") {
+                        dialogManager.showingSettings = true
+                    }
+#endif
+                }
+            }
+        }
 
     // MARK: - Data Management
 

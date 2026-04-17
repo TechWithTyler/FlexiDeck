@@ -43,58 +43,13 @@ struct CardView: View {
 
     var body: some View {
         TranslucentFooterVStack {
-            ZStack {
-                // The flip animation is achieved by stacking 2 TextEditors on top of each other, one for the front side and one for the back side. The visible side's TextEditor is at the top of the ZStack and the hidden one is disabled.
-                TextEditor(text: $front)
-                    .rotation3DEffect(.degrees(isFlipped ? 90 : 0), axis: (x: 0, y: 1, z: 0))
-                    .animation(isFlipped ? .linear : .linear.delay(0.35), value: isFlipped)
-                    .font(.system(size: CGFloat(cardTextSize)))
-                    .scrollContentBackground(.hidden)
-                    .scrollClipDisabled(true)
-                    .disabled(isFlipped)
-                    .focused($frontFocused)
-                    .zIndex(isFlipped ? 0 : 1)
-                TextEditor(text: $back)
-                    .rotation3DEffect(.degrees(isFlipped ? 0 : -90), axis: (x: 0, y: 1, z: 0))
-                    .animation(isFlipped ? .linear.delay(0.35) : .linear, value: isFlipped)
-                    .font(.system(size: CGFloat(cardTextSize)))
-                    .scrollContentBackground(.hidden)
-                    .scrollClipDisabled(true)
-                    .disabled(!isFlipped)
-                    .focused($backFocused)
-                    .zIndex(isFlipped ? 1 : 0)
-            }
+            cardTextEditors
         } translucentFooterContent: {
-            Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
-                .foregroundStyle(.secondary)
-            StarRatingView(card: selectedCard)
+            footer
         }
         .navigationTitle((selectedCard.is2Sided)! ? "\(selectedCard.title ?? nameUnavailableString) - \(isFlipped ? "Back" : "Front")" : selectedCard.title ?? nameUnavailableString)
         .toolbar {
-            if (selectedCard.is2Sided)! {
-                ToolbarItem {
-                    Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
-                        isFlipped.toggle()
-                    }
-                    .keyboardShortcut(.return, modifiers: .command)
-                }
-            }
-            ToolbarItem {
-                OptionsMenu(title: .menu) {
-                    if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
-                        SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
-                    }
-                    Button("Card Settings…", systemImage: "gear") {
-                        dialogManager.cardToShowSettings = selectedCard
-                    }
-                    Divider()
-                    Button(role: .destructive) {
-                        dialogManager.showDeleteCard(card: selectedCard)
-                    } label: {
-                        Label("Delete…", systemImage: "trash")
-                    }
-                }
-            }
+            toolbarContent
         }
         .onAppear {
             loadCard(card: selectedCard)
@@ -112,26 +67,109 @@ struct CardView: View {
             selectedCardChanged(oldCard: oldCard, newCard: newCard)
         }
         .onChange(of: selectedCard.is2Sided!, { oldValue, newValue in
-            backFocused = false
-            isFlipped = false
-            if !newValue {
-                back.removeAll()
-            }
+            numberOfSidesChanged(newValue: newValue)
         })
         .onChange(of: isFlipped) { oldValue, newValue in
-            frontFocused = false
-            backFocused = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                if isFlipped {
-                    backFocused = true
-                } else {
-                    frontFocused = true
+            cardFlipped(newValue: newValue)
+        }
+    }
+
+    // MARK: - Card Text Editors
+
+    @ViewBuilder
+    var cardTextEditors: some View {
+        ZStack {
+            // The flip animation is achieved by stacking 2 TextEditors on top of each other, one for the front side and one for the back side. The visible side's TextEditor is at the top of the ZStack by using the zIndex modifier and the hidden one is disabled.
+            TextEditor(text: $front)
+                .rotation3DEffect(.degrees(isFlipped ? 90 : 0), axis: (x: 0, y: 1, z: 0))
+                .animation(isFlipped ? .linear : .linear.delay(0.35), value: isFlipped)
+                .font(.system(size: CGFloat(cardTextSize)))
+                .scrollContentBackground(.hidden)
+                .scrollClipDisabled(true)
+                .disabled(isFlipped)
+                .focused($frontFocused)
+                .zIndex(isFlipped ? 0 : 1)
+            TextEditor(text: $back)
+                .rotation3DEffect(.degrees(isFlipped ? 0 : -90), axis: (x: 0, y: 1, z: 0))
+                .animation(isFlipped ? .linear.delay(0.35) : .linear, value: isFlipped)
+                .font(.system(size: CGFloat(cardTextSize)))
+                .scrollContentBackground(.hidden)
+                .scrollClipDisabled(true)
+                .disabled(!isFlipped)
+                .focused($backFocused)
+                .zIndex(isFlipped ? 1 : 0)
+        }
+    }
+
+    // MARK: - Footer
+
+    @ViewBuilder
+    var footer: some View {
+        Text(DateFormatter.localizedString(from: selectedCard.modifiedDate, dateStyle: .short, timeStyle: .short))
+            .foregroundStyle(.secondary)
+        StarRatingView(card: selectedCard)
+    }
+
+    // MARK: - Toolbar
+
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        if (selectedCard.is2Sided)! {
+            ToolbarItem {
+                Button(isFlipped ? "Flip to Front" : "Flip to Back", systemImage: "arrow.trianglehead.left.and.right.righttriangle.left.righttriangle.right") {
+                    isFlipped.toggle()
+                }
+                .keyboardShortcut(.return, modifiers: .command)
+            }
+        }
+        ToolbarItem {
+            OptionsMenu(title: .menu) {
+                if isFlipped ? !selectedCard.back.isEmpty : !selectedCard.front.isEmpty {
+                    SpeakButton(for: isFlipped ? selectedCard.back : selectedCard.front)
+                }
+                Button("Card Settings…", systemImage: "gear") {
+                    dialogManager.cardToShowSettings = selectedCard
+                }
+                Divider()
+                Button(role: .destructive) {
+                    dialogManager.showDeleteCard(card: selectedCard)
+                } label: {
+                    Label("Delete…", systemImage: "trash")
                 }
             }
-            speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
-            if speechManager.speakOnSelectionOrFlip {
-                speechManager.speak(text: isFlipped ? selectedCard.back : selectedCard.front)
+        }
+    }
+
+    // MARK: - Card Property Change Handlers
+
+    // This method moves focus to the visible side of the card when flipped and speaks it.
+    func cardFlipped(newValue: Bool) {
+        // 1. Clear focus.
+        frontFocused = false
+        backFocused = false
+        // 2. After the animation delay, set focus to the visible side.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            if newValue {
+                backFocused = true
+            } else {
+                frontFocused = true
             }
+        }
+        // 3. If the option to speak card text on selection or flip is enabled, speak the visible side.
+        speechManager.speechSynthesizer.stopSpeaking(at: .immediate)
+        if speechManager.speakOnSelectionOrFlip {
+            speechManager.speak(text: newValue ? selectedCard.back : selectedCard.front)
+        }
+    }
+
+    // This method flips the card back to the front and clears the back side when the number of sides changes from 2 to 1.
+    func numberOfSidesChanged(newValue: Bool) {
+        if !newValue {
+            // 1. Flip the card back to the front.
+            backFocused = false
+            isFlipped = false
+            // 2. Clear the back side.
+            back.removeAll()
         }
     }
 
