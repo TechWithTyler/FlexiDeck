@@ -22,7 +22,7 @@ struct DisplaySettingsPageView: View {
     var body: some View {
         Form {
             Section {
-                TextSizeSlider(labelText: "Card Text Size", textSize: $cardTextSize, previewText: SATextSettingsPreviewString)
+                TextSizeSlider("Card Text Size", textSize: $cardTextSize, previewText: SATextSettingsPreviewString)
             }
             Section("Card List Detail") {
                 CardListDetailOptions()
