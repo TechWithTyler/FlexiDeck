@@ -78,12 +78,22 @@ class SpeechManager: NSObject, ObservableObject, AVSpeechSynthesizerDelegate {
 
     // This method sets textBeingSpoken to utterance's speechString when speech starts.
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didStart utterance: AVSpeechUtterance) {
-        textBeingSpoken = utterance.speechString
+        DispatchQueue.main.async { [self] in
+            textBeingSpoken = utterance.speechString
+        }
     }
 
     // This method resets textBeingSpoken to an empty String once speech completes or stops.
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        textBeingSpoken = String()
+        DispatchQueue.main.async { [self] in
+            textBeingSpoken = String()
+        }
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        DispatchQueue.main.async { [self] in
+            textBeingSpoken = String()
+        }
     }
 
 }
