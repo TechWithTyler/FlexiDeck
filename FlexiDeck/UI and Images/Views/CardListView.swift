@@ -371,7 +371,6 @@ struct CardListView: View {
                     CardListDetailOptions()
                 }
                 .pickerStyle(.menu)
-                .toggleStyle(.automatic)
                 Divider()
                 Picker(selection: $cardSortMode) {
                     Text("Title (Ascending)").tag(Card.SortMode.titleAscending)

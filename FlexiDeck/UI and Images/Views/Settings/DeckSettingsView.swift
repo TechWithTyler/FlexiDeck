@@ -57,7 +57,6 @@ struct DeckSettingsView: View {
                 }
             }
             .formStyle(.grouped)
-            .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
             .navigationTitle("Deck Settings")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

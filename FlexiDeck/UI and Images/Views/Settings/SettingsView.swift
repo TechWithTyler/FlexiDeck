@@ -59,7 +59,6 @@ struct SettingsView: View {
                 }
                 .tag(SettingsPage.decksCards)
             }
-        .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
         .environmentObject(speechManager)
 #else
         // iOS/visionOS settings page
@@ -105,7 +104,6 @@ struct SettingsView: View {
             }
         }
         .pickerStyle(.navigationLink)
-        .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
         .environmentObject(speechManager)
 #endif
     }
