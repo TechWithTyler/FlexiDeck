@@ -11,6 +11,7 @@
 import SwiftUI
 import SwiftData
 import SheftAppsStylishUI
+import FoundationModels
 
 struct CardSettingsView: View {
 
@@ -25,6 +26,8 @@ struct CardSettingsView: View {
     // MARK: - Properties - Strings
 
     @State var newName: String = String()
+
+    @State private var suggestedTitle: String?
 
     // MARK: - Properties - Booleans
 
@@ -44,16 +47,17 @@ struct CardSettingsView: View {
                 FormTextField("Title", text: $newName)
                     .focused($editingName, equals: true)
                 let firstLineOfFront = card.front.components(separatedBy: .newlines).first!
-                if (newName == defaultCardName || newName.isEmpty) && !firstLineOfFront.isEmpty {
-                    // If the title is empty or the default, the suggested title is the first line of the card's front side.
-                        HStack {
-                            Text("Suggested Title")
-                            Spacer()
-                            Text(firstLineOfFront)
-                        }
-                        Button("Use Suggested Title") {
-                            newName = firstLineOfFront
-                        }
+                if let suggestedTitle,
+                   (newName == defaultCardName || newName.isEmpty),
+                   !suggestedTitle.isEmpty {
+                    HStack {
+                        Text("Suggested Title")
+                        Spacer()
+                        Text(suggestedTitle)
+                    }
+                    Button("Use Suggested Title") {
+                        newName = suggestedTitle
+                    }
                 } else if newName == firstLineOfFront && !firstLineOfFront.isEmpty {
                     InfoText("The first line of this card's front side will be used as its title.")
                 }
@@ -95,10 +99,13 @@ struct CardSettingsView: View {
             }
         }
 #if !os(macOS)
-    .pickerStyle(.navigationLink)
+        .pickerStyle(.navigationLink)
 #endif
         .onAppear {
             applyCurrentSettings()
+            Task {
+                suggestedTitle = await generateSuggestedTitle()
+            }
         }
     }
 
@@ -108,6 +115,70 @@ struct CardSettingsView: View {
         newName = card.title ?? String()
         is2Sided = card.is2Sided ?? true
         editingName = true
+    }
+
+    // MARK: - Generate Suggested Title
+
+    // This method generates a suggested title for the card.
+    func generateSuggestedTitle() async -> String? {
+        // 1. If on OS 26 or later, try to use FoundationModels to generate a suggested title.
+        if #available(anyAppleOS 26, *) {
+            do {
+                let title = try await generateSuggestedTitleWithFoundationModels()
+                return title
+            } catch {
+                // 2. If an error occurs or Apple Intelligence isn't enabled/supported, fallback to using the front side's first line as the title.
+                let titleFallback = getSuggestedTitleFromCardFront()
+                return titleFallback
+            }
+        } else {
+            // 3. Fallback on older OS versions.
+            let titleFallback = getSuggestedTitleFromCardFront()
+            return titleFallback
+        }
+    }
+
+    // This method tries to use the FoundationModels framework to generate a suggested title.
+    @available(anyAppleOS 26, *)
+    func generateSuggestedTitleWithFoundationModels() async throws -> String? {
+        // 1. Create a language model session, telling it that it's a flashcard title generator.
+        let instructions = "You are a flashcard title generator."
+        let session = LanguageModelSession(instructions: instructions)
+        // 2. Define the prompt and its requirements.
+        let prompt = "Generate a concise title for this flashcard."
+        let requirements = [
+            "2–5 words",
+            "No Markdown",
+            "No quotes",
+            "No punctuation unless required by the title",
+            "Return only the title as plain text."
+        ]
+        // 3. Format the requirements by adding a bullet to each one. Join the requirements together as a single String.
+        let formattedRequirements = requirements
+            .map { "• \($0)" }
+            .joined(separator: "\n")
+        let fullPrompt = """
+        \(prompt)
+        Requirements:
+        \(formattedRequirements)
+        Front:
+        \(card.front)
+        Back:
+        \(card.back)
+        """
+        // 3. Respond to the prompt.
+        let response = try await session.respond(to: fullPrompt)
+        // 4. Return the suggested title.
+        return response.content.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    // This method returns the first line of the card's front side as its title.
+    func getSuggestedTitleFromCardFront() -> String? {
+        // 1. Get all lines of the card's front side.
+        let linesOfFront = card.front.components(separatedBy: .newlines)
+        // 2. Return the first line.
+        let firstLine = linesOfFront.first
+        return firstLine
     }
 
     // MARK: - Save New Settings
