@@ -141,7 +141,7 @@ struct CardSettingsView: View {
     // This method tries to use the FoundationModels framework to generate a suggested title.
     @available(anyAppleOS 26, *)
     func generateSuggestedTitleWithFoundationModels() async throws -> String? {
-        // 1. Create a language model session, telling it that it's a flashcard title generator.
+        // 1. Create a language model session, telling it that it's a flashcard title generator. Instructions tell a language model how to respond. In this case, the language model is told to do one thing: generate titles for a card.
         let instructions = "You are a flashcard title generator."
         let session = LanguageModelSession(instructions: instructions)
         // 2. Define the prompt and its requirements.
