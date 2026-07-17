@@ -29,6 +29,10 @@ struct CardSettingsView: View {
 
     @State private var suggestedTitle: String?
 
+    // MARK: - Properties - Integers
+
+    @AppStorage(UserDefaults.KeyNames.cardTitleSuggestions) var cardTitleSuggestions: Int = 0
+
     // MARK: - Properties - Booleans
 
     @State var is2Sided: Bool = true
@@ -77,8 +81,8 @@ struct CardSettingsView: View {
                         }
                     }
                 }
-                if card.deck != selectedDeck {
-                    InfoText("This card will be moved from \"\((card.deck?.name)!)\" to \"\((selectedDeck.name)!)\" when saving settings.")
+                if let originalDeck = card.deck, let originalDeckName = originalDeck.name, let destinationDeckName = selectedDeck.name, originalDeck != selectedDeck {
+                    InfoText("This card will be moved from \"\(originalDeckName)\" to \"\(destinationDeckName)\" when saving settings.")
                 }
             }
             .formStyle(.grouped)
@@ -121,8 +125,8 @@ struct CardSettingsView: View {
 
     // This method generates a suggested title for the card.
     func generateSuggestedTitle() async -> String? {
-        // 1. If on OS 26 or later, try to use FoundationModels to generate a suggested title.
-        if #available(anyAppleOS 26, *) {
+        // 1. If on OS 26 or later, use the front side's first line or FoundationModels generation for the title suggestion depending on the setting.
+        if #available(anyAppleOS 26, *), cardTitleSuggestions == 1 || (cardTitleSuggestions == 2 && card.front.count >= 20) {
             do {
                 let title = try await generateSuggestedTitleWithFoundationModels()
                 return title
@@ -132,7 +136,7 @@ struct CardSettingsView: View {
                 return titleFallback
             }
         } else {
-            // 3. Fallback on older OS versions.
+            // 3. Fallback on older OS versions or if the setting is set to always use the front side's first line.
             let titleFallback = getSuggestedTitleFromCardFront()
             return titleFallback
         }
@@ -148,6 +152,7 @@ struct CardSettingsView: View {
         let prompt = "Generate a concise title for this flashcard."
         let requirements = [
             "2–5 words",
+            "Less than 20 characters",
             "No Markdown",
             "No quotes",
             "No punctuation unless required by the title",
@@ -161,23 +166,26 @@ struct CardSettingsView: View {
         \(prompt)
         Requirements:
         \(formattedRequirements)
-        Front:
+        Front of card:
         \(card.front)
-        Back:
+        Back of card:
         \(card.back)
+        Deck name:
+        \((selectedDeck.name) ?? "Unknown Deck")
         """
         // 3. Respond to the prompt.
         let response = try await session.respond(to: fullPrompt)
+        let generatedTitle = response.content.trimmingCharacters(in: .whitespacesAndNewlines)
         // 4. Return the suggested title.
-        return response.content.trimmingCharacters(in: .whitespacesAndNewlines)
+        return generatedTitle
     }
 
     // This method returns the first line of the card's front side as its title.
-    func getSuggestedTitleFromCardFront() -> String? {
+    func getSuggestedTitleFromCardFront() -> String {
         // 1. Get all lines of the card's front side.
         let linesOfFront = card.front.components(separatedBy: .newlines)
         // 2. Return the first line.
-        let firstLine = linesOfFront.first
+        let firstLine = linesOfFront.first!
         return firstLine
     }
 

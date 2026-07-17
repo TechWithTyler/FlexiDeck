@@ -34,7 +34,7 @@ struct SettingsView: View {
                 SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     DisplaySettingsPageView()
                 }
-                .frame(width: 400, height: 360)
+                .frame(width: 500, height: 360)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.display.title, systemImage: SettingsPage.Icons.display.rawValue)
@@ -43,7 +43,7 @@ struct SettingsView: View {
                 SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     SpeechSettingsPageView()
                 }
-                .frame(width: 400, height: 220)
+                .frame(width: 500, height: 220)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.speech.title, systemImage: SettingsPage.Icons.speech.rawValue)
@@ -52,7 +52,7 @@ struct SettingsView: View {
                 SAMVisualEffectViewSwiftUIRepresentable(activeState: .active) {
                     DecksCardsSettingsPageView()
                 }
-                .frame(width: 400, height: 375)
+                .frame(width: 500, height: 375)
                 .formStyle(.grouped)
                 .tabItem {
                     Label(SettingsPage.decksCards.title, systemImage: SettingsPage.Icons.decksCards.rawValue)

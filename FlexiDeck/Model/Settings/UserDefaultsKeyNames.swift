@@ -29,6 +29,8 @@ extension UserDefaults {
 
         static let showSettingsWhenCreating: String = "showSettingsWhenCreating"
 
+        static let cardTitleSuggestions: String = "cardTitleSuggestions"
+
         static let showNumberOfSides: String = "showNumberOfSides"
 
         static let cardDateTimeDisplay: String = "cardDateTimeDisplay"
