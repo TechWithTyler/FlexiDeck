@@ -115,6 +115,7 @@ struct CardSettingsView: View {
 
     // MARK: - Reflect Current Settings
 
+    // This method updates the UI for the card's current settings.
     func applyCurrentSettings() {
         newName = card.title ?? String()
         is2Sided = card.is2Sided ?? true
@@ -125,8 +126,8 @@ struct CardSettingsView: View {
 
     // This method generates a suggested title for the card.
     func generateSuggestedTitle() async -> String? {
-        // 1. If on OS 26 or later, use the front side's first line or FoundationModels generation for the title suggestion depending on the setting.
-        if #available(anyAppleOS 26, *), cardTitleSuggestions == 1 || (cardTitleSuggestions == 2 && card.front.count >= 20) {
+        // 1. If on OS 26 or later, use the front side's first line or FoundationModels generation for the title suggestion depending on the setting and device support.
+        if #available(anyAppleOS 26, *), cardTitleSuggestions == 1 || (cardTitleSuggestions == 2 && card.front.count > 20) {
             do {
                 let title = try await generateSuggestedTitleWithFoundationModels()
                 return title
@@ -136,7 +137,7 @@ struct CardSettingsView: View {
                 return titleFallback
             }
         } else {
-            // 3. Fallback on older OS versions or if the setting is set to always use the front side's first line.
+            // 3. Fallback on older OS versions or if the setting is set to always use the front side's first line (the setting isn't displayed if the device doesn't support Apple Intelligence).
             let titleFallback = getSuggestedTitleFromCardFront()
             return titleFallback
         }
@@ -145,14 +146,16 @@ struct CardSettingsView: View {
     // This method tries to use the FoundationModels framework to generate a suggested title.
     @available(anyAppleOS 26, *)
     func generateSuggestedTitleWithFoundationModels() async throws -> String? {
-        // 1. Create a language model session, telling it that it's a flashcard title generator. Instructions tell a language model how to respond. In this case, the language model is told to do one thing: generate titles for a card.
+        // 1. Create a language model session, telling it that it's a flashcard title generator. Instructions tell a language model how to respond. In this case, the language model is told to do one thing: generate titles for a card. It refuses any requests that don't fit its instructions.
         let instructions = "You are a flashcard title generator."
         let session = LanguageModelSession(instructions: instructions)
-        // 2. Define the prompt and its requirements.
-        let prompt = "Generate a concise title for this flashcard."
+        // 2. Define the prompt and its requirements. In this case, the requirements specify that the language model must keep titles to 2-5 words, no more than 20 characters, and no Markdown, quotes, or any other language model output artifacts.
+        let prompt = "Generate a short title for this flashcard."
         let requirements = [
+            // Title length
             "2–5 words",
-            "Less than 20 characters",
+            "20 characters max",
+            // Don't include punctuation unless required
             "No Markdown",
             "No quotes",
             "No punctuation unless required by the title",
@@ -162,6 +165,7 @@ struct CardSettingsView: View {
         let formattedRequirements = requirements
             .map { "• \($0)" }
             .joined(separator: "\n")
+        // 4. Build the full prompt: base prompt, list of requirements, both sides of the card, and the deck name for context. This String is never displayed to the user--it's only used to tell the language model what to do. In a chatbot app, this would be whatever text the user types into the chat box.
         let fullPrompt = """
         \(prompt)
         Requirements:
@@ -169,11 +173,11 @@ struct CardSettingsView: View {
         Front of card:
         \(card.front)
         Back of card:
-        \(card.back)
+        \(is2Sided ? card.back : "This card doesn't have a back side.")
         Deck name:
         \((selectedDeck.name) ?? "Unknown Deck")
         """
-        // 3. Respond to the prompt.
+        // 5. Respond to the prompt.
         let response = try await session.respond(to: fullPrompt)
         let generatedTitle = response.content.trimmingCharacters(in: .whitespacesAndNewlines)
         // 4. Return the suggested title.

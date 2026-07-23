@@ -15,6 +15,7 @@ struct DecksCardsSettingsPageView: View {
 
     // MARK: - Properties - Strings
 
+    // The title of the option to set card title suggestions to prefer the front side's first line.
     let preferOptionTitle: String = "Prefer Front Side's First Line"
 
     // MARK: - Properties - Booleans
@@ -23,6 +24,7 @@ struct DecksCardsSettingsPageView: View {
 
     @AppStorage(UserDefaults.KeyNames.useFilenameAsImportedDeckName) var useFilenameAsImportedDeckName: Bool = true
 
+    // Whether FoundationModels is supported on the device.
     @State var foundationModelsSupported: Bool = false
 
     // MARK: - Properties - Integers
@@ -46,6 +48,7 @@ struct DecksCardsSettingsPageView: View {
             Section {
                 Picker("Show Settings When Creating", selection: $showSettingsWhenCreating) {
                     Text("Off").tag(0)
+                    Divider()
                     Text("Decks Only").tag(1)
                     Text("Decks and Cards").tag(2)
                 }
@@ -55,10 +58,11 @@ struct DecksCardsSettingsPageView: View {
                     Picker("Card Title Suggestions", selection: $cardTitleSuggestions) {
                         Text("Always Front Side's First Line").tag(0)
                         Text("Always On-Device AI Suggestions").tag(1)
+                        Divider()
                         Text(preferOptionTitle).tag(2)
                     }
                 } footer: {
-                    Text("\"\(preferOptionTitle)\" means card title suggestions will be the front side's first line if it's less than 20 characters. If 20 characters or more, the on-device AI model will be used to generate a short title.")
+                    Text("\"\(preferOptionTitle)\" means card title suggestions will be the front side's first line if it's 20 characters or less. If more than 20 characters, the on-device AI model will be used to generate a short title.")
                 }
             }
             Section {
@@ -74,15 +78,19 @@ struct DecksCardsSettingsPageView: View {
 
         // This method checks whether FoundationModels is supported on the device.
         func checkForFoundationModels() {
+            // 1. If on OS 26 or later, check whether the device supports FoundationModels. If the device doesn't support FoundationModels, set cardTitleSuggestions to the default setting (0 = always use front side's first line)
             if #available(anyAppleOS 26, *) {
                 switch SystemLanguageModel.default.availability {
                 case .available:
                     foundationModelsSupported = true
                 case .unavailable:
                     foundationModelsSupported = false
+                    cardTitleSuggestions = 0
                 }
             } else {
+                // 2. If not, FoundationModels isn't supported.
                 foundationModelsSupported = false
+                cardTitleSuggestions = 0
             }
         }
 
