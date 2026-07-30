@@ -33,6 +33,8 @@ struct CardView: View {
 
     // MARK: - Properties - Booleans
 
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
     @State var isFlipped: Bool = false
 
     @FocusState var frontFocused: Bool
@@ -82,7 +84,7 @@ struct CardView: View {
             // The flip animation is achieved by stacking 2 TextEditors on top of each other, one for the front side and one for the back side. The visible side's TextEditor is at the top of the ZStack by using the zIndex modifier and the hidden one is disabled.
             TextEditor(text: $front)
                 .rotation3DEffect(.degrees(isFlipped ? 90 : 0), axis: (x: 0, y: 1, z: 0))
-                .animation(isFlipped ? .linear : .linear.delay(0.35), value: isFlipped)
+                .animation(reduceMotion ? nil : (isFlipped ? .linear : .linear.delay(0.35)), value: isFlipped)
                 .font(.system(size: CGFloat(cardTextSize)))
                 .scrollContentBackground(.hidden)
                 .scrollClipDisabled(true)
@@ -91,7 +93,7 @@ struct CardView: View {
                 .zIndex(isFlipped ? 0 : 1)
             TextEditor(text: $back)
                 .rotation3DEffect(.degrees(isFlipped ? 0 : -90), axis: (x: 0, y: 1, z: 0))
-                .animation(isFlipped ? .linear.delay(0.35) : .linear, value: isFlipped)
+                .animation(reduceMotion ? nil : (isFlipped ? .linear.delay(reduceMotion ? 0 : 0.35) : .linear), value: isFlipped)
                 .font(.system(size: CGFloat(cardTextSize)))
                 .scrollContentBackground(.hidden)
                 .scrollClipDisabled(true)
