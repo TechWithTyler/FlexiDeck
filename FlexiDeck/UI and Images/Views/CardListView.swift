@@ -182,6 +182,8 @@ struct CardListView: View {
 
     // MARK: - Properties - Booleans
 
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
+
     // Whether to show settings when creating decks or cards.
     @AppStorage(UserDefaults.KeyNames.showSettingsWhenCreating) var showSettingsWhenCreating: Int = 1
 
@@ -233,7 +235,7 @@ struct CardListView: View {
                 selectedCard = nil
             }
         }
-        .animation(.default, value: searchResults)
+        .animation(reduceMotion ? nil : .default, value: searchResults)
         .searchable(text: $searchText, placement: .automatic, prompt: Text("Search \((deck.name)!)"))
         .navigationTitle(deck.name ?? nameUnavailableString)
         .sheet(item: $dialogManager.cardToShowSettings) { card in
