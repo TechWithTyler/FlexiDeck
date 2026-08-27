@@ -26,15 +26,20 @@ class CardMoveManager: ObservableObject {
 
     @Published var moveError: CardMoveError? = nil
 
+    // MARK: - Properties - Type Identifiers
+
+    // The type identifier for text.
+    let textTypeIdentifier = UTType.text.identifier
+
     // MARK: - Drag and Drop
 
     // This method handles dragging of a card.
     func handleDrag(of card: Card) -> NSItemProvider {
-        // 1. Create an NSItemProvier.
+        // 1. Create an NSItemProvider.
         let provider = NSItemProvider()
-        let cardID = card.id
         // 2. Try to create data from the card's ID. The card ID is used to determine which card is to be moved.
-        provider.registerDataRepresentation(forTypeIdentifier: UTType.text.identifier, visibility: .all) { [self] completion in
+        let cardID = card.id
+        provider.registerDataRepresentation(forTypeIdentifier: textTypeIdentifier, visibility: .all) { [self] completion in
             if let data = encodeCardID(cardID) {
                 completion(data, nil)
             } else {
@@ -53,12 +58,12 @@ class CardMoveManager: ObservableObject {
     func handleDrop(with providers: [NSItemProvider], toMoveToDestinationDeck destinationDeck: Deck, findingSourceDeckIn decks: [Deck]) -> Bool {
         // 1. Make sure the first item provider contains text (the JSON data from the card's ID), but not a deck.
         guard let provider = providers.first(where: {
-            let hasCard = $0.hasItemConformingToTypeIdentifier(UTType.text.identifier)
+            let hasCard = $0.hasItemConformingToTypeIdentifier(textTypeIdentifier)
             let hasDeck = $0.hasItemConformingToTypeIdentifier(UTType.flexiDeckDeck.identifier)
             return hasCard && !hasDeck
         }) else { return false }
         // 2. Try to move the card to the destination deck.
-        provider.loadDataRepresentation(forTypeIdentifier: UTType.text.identifier) { [self] data, error in
+        provider.loadDataRepresentation(forTypeIdentifier: textTypeIdentifier) { [self] data, error in
             moveCardWithData(data, toDestinationDeck: destinationDeck, findingSourceDeckIn: decks, error: error)
         }
         // 3. Return whether the drop was successful.
@@ -67,6 +72,7 @@ class CardMoveManager: ObservableObject {
 
     // MARK: - Move Card
 
+    // This method moves a card with the given Data to destinationDeck or shows an error if a data representation can't be loaded.
     func moveCardWithData(_ data: Data?, toDestinationDeck destinationDeck: Deck, findingSourceDeckIn decks: [Deck], error: Error?) {
         // 1. If an error occurs, show it.
         if let error = error {
