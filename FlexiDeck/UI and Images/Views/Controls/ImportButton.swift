@@ -13,7 +13,7 @@ struct ImportButton: View {
 
     // MARK: - Properties - Import/Export Manager
 
-    @EnvironmentObject var importExportManager: ImportExportManager
+    @EnvironmentObject var importExportManager: DeckImportExportManager
 
     // MARK: - Body
 

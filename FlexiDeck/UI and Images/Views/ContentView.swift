@@ -71,7 +71,7 @@ struct ContentView: View {
     @StateObject var dialogManager = DialogManager()
 
     // Handles import/export of decks.
-    @StateObject var importExportManager = ImportExportManager()
+    @StateObject var importExportManager = DeckImportExportManager()
 
     @StateObject var cardMoveManager = CardMoveManager()
 

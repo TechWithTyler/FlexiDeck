@@ -1,5 +1,5 @@
 //
-//  ImportExportManager.swift
+//  DeckImportExportManager.swift
 //  FlexiDeck
 //
 //  Created by Tyler Sheft on 7/7/25.
@@ -12,7 +12,7 @@ import SwiftUI
 import SwiftData
 import UniformTypeIdentifiers
 
-class ImportExportManager: ObservableObject {
+class DeckImportExportManager: ObservableObject {
 
     // MARK: - Result Type Aliases
 
@@ -75,7 +75,7 @@ class ImportExportManager: ObservableObject {
 
     // MARK: - Encoding/Decoding
 
-    // This method creates a Deck object (including its cards) from the given Data (Data > Deck). Decoding is performed after importing a file.
+    // This method creates a Deck object (including its cards) from the given Data (Data > Deck). Decoding is performed after importing a file (why decode a bunch of files before choosing the ones you want to import?!).
     func decodeDeckForImport(from data: Data) throws -> Deck {
         // 1. Create a JSON decoder.
         let decoder = JSONDecoder()
@@ -87,7 +87,7 @@ class ImportExportManager: ObservableObject {
         return decodedDeck
     }
 
-    // This method encodes a Deck instance (including its cards) into Data (Deck > Data). Encoding is performed before the file exporter for a file is shown.
+    // This method encodes a Deck instance (including its cards) to Data (Deck > Data). Encoding is performed before the file exporter for a file is shown rather then after confirming export.
     func encodeDeckForExport(_ deck: Deck) throws -> Data {
         // 1. Create a JSON encoder.
         let encoder = JSONEncoder()

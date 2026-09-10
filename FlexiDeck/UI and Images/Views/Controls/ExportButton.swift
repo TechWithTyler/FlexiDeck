@@ -14,7 +14,7 @@ struct ExportButton: View {
 
     // MARK: - Properties - Objects
 
-    @EnvironmentObject var importExportManager: ImportExportManager
+    @EnvironmentObject var importExportManager: DeckImportExportManager
 
     var deck: Deck
 

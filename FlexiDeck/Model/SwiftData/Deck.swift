@@ -42,10 +42,13 @@ final class Deck: Codable {
 
     // MARK: - Properties
 
+    // The name of the deck.
     var name: String?
 
+    // Whether new cards created in this deck default to having 2 sides.
     var newCardsAre2Sided: Bool?
 
+    // The cards in the deck.
     @Relationship(deleteRule: .cascade, inverse: \Card.deck)
     var cards: [Card]? = []
 

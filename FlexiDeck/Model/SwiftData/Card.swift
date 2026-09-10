@@ -65,22 +65,31 @@ final class Card: Codable {
     // A weak reference to the deck containing this card. This property is excluded from encoding and decoding to prevent recursion and circular references.
     weak var deck: Deck?
 
+    // The title of the card.
     var title: String?
 
+    // The creation date of the card.
     var creationDate = Date()
 
+    // The date/time the card was last modified.
     var modifiedDate = Date()
 
+    // The front side of the card.
     var front: String = String()
 
+    // The back side of the card.
     var back: String = String()
 
+    // Whether the card has 2 sides.
     var is2Sided: Bool?
 
+    // The tags for the card. A tag is any word on the front side beginning with a hashtag (#).
     var tags: [String] = []
 
+    // The star rating for the card.
     var starRating: Int = 0
 
+    // Whether the card is marked completed.
     var isCompleted: Bool = false
 
     // MARK: - Initialization - New Card
@@ -95,14 +104,14 @@ final class Card: Codable {
     required init(from decoder: Decoder) throws {
         // 1. Create a container for the decoded data.
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        // 2. Try to decode the card properties from the container.
+        // 2. Try to decode the card properties from the container. The deck property is excluded to prevent recursion and circular references, and is therefore excluded from the CodingKeys enum.
         title = try container.decode(String.self, forKey: .title)
-        creationDate = try container.decode(Date.self, forKey: .creationDate)
-        modifiedDate = try container.decode(Date.self, forKey: .modifiedDate)
+        is2Sided = try container.decode(Bool.self, forKey: .is2Sided)
         front = try container.decode(String.self, forKey: .front)
         back = try container.decode(String.self, forKey: .back)
-        is2Sided = try container.decode(Bool.self, forKey: .is2Sided)
         tags = try container.decode([String].self, forKey: .tags)
+        creationDate = try container.decode(Date.self, forKey: .creationDate)
+        modifiedDate = try container.decode(Date.self, forKey: .modifiedDate)
         starRating = try container.decode(Int.self, forKey: .starRating)
         isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
         // This is where we would initialize a new Card object with the decoded data, except we don't need to--encoding/decoding Card is only necessary for encoded/decoded Decks to have an encodable/decodable (Codable) cards property.
@@ -113,14 +122,14 @@ final class Card: Codable {
     func encode(to encoder: Encoder) throws {
         // 1. Create a container for the encoded data.
         var container = encoder.container(keyedBy: CodingKeys.self)
-        // 2. Encode the card properties into the container.
+        // 2. Encode the card properties into the container. The deck property is excluded to prevent recursion and circular references, and is therefore excluded from the CodingKeys enum.
         try container.encode(title, forKey: .title)
-        try container.encode(creationDate, forKey: .creationDate)
-        try container.encode(modifiedDate, forKey: .modifiedDate)
+        try container.encode(is2Sided, forKey: .is2Sided)
         try container.encode(front, forKey: .front)
         try container.encode(back, forKey: .back)
-        try container.encode(is2Sided, forKey: .is2Sided)
         try container.encode(tags, forKey: .tags)
+        try container.encode(creationDate, forKey: .creationDate)
+        try container.encode(modifiedDate, forKey: .modifiedDate)
         try container.encode(starRating, forKey: .starRating)
         try container.encode(isCompleted, forKey: .isCompleted)
     }

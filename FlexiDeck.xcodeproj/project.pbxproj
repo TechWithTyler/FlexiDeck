@@ -10,7 +10,7 @@
 		8D12ADD82E1871C500A59606 /* DeckImportExportError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADD72E1871C500A59606 /* DeckImportExportError.swift */; };
 		8D12ADDB2E18732D00A59606 /* ExportedDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */; };
 		8D12ADDD2E1C6A8000A59606 /* ExportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */; };
-		8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */; };
+		8D12ADDF2E1C6BA300A59606 /* DeckImportExportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D12ADDE2E1C6BA300A59606 /* DeckImportExportManager.swift */; };
 		8D181A3C2C6FF45C00E46376 /* SchemaVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */; };
 		8D1F3D982F0C403600FA12FE /* SheftAppsInternals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D1F3D972F0C403600FA12FE /* SheftAppsInternals.framework */; };
 		8D1F3D992F0C403600FA12FE /* SheftAppsInternals.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8D1F3D972F0C403600FA12FE /* SheftAppsInternals.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -74,7 +74,7 @@
 		8D12ADD72E1871C500A59606 /* DeckImportExportError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckImportExportError.swift; sourceTree = "<group>"; };
 		8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportedDeck.swift; sourceTree = "<group>"; };
 		8D12ADDC2E1C6A7F00A59606 /* ExportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportButton.swift; sourceTree = "<group>"; };
-		8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportManager.swift; sourceTree = "<group>"; };
+		8D12ADDE2E1C6BA300A59606 /* DeckImportExportManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckImportExportManager.swift; sourceTree = "<group>"; };
 		8D181A3B2C6FF45C00E46376 /* SchemaVersioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaVersioning.swift; sourceTree = "<group>"; };
 		8D1F3D972F0C403600FA12FE /* SheftAppsInternals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SheftAppsInternals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D26277E2C77D81000D11F80 /* SpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechManager.swift; sourceTree = "<group>"; };
@@ -164,7 +164,7 @@
 		8D12ADD92E18730100A59606 /* Deck Import and Export */ = {
 			isa = PBXGroup;
 			children = (
-				8D12ADDE2E1C6BA300A59606 /* ImportExportManager.swift */,
+				8D12ADDE2E1C6BA300A59606 /* DeckImportExportManager.swift */,
 				8D12ADD72E1871C500A59606 /* DeckImportExportError.swift */,
 				8D12ADDA2E18732D00A59606 /* ExportedDeck.swift */,
 				8D9A2A042E1DC41100BF1797 /* FlexiDeckDeck.swift */,
@@ -417,7 +417,7 @@
 				8DC6D6162EC68D95007F8794 /* CompletedStatusPicker.swift in Sources */,
 				8DCB0A622C6409AD00EB82DC /* DialogManager.swift in Sources */,
 				8DDE5FEC2CB86B4900697F70 /* AppDelegate.swift in Sources */,
-				8D12ADDF2E1C6BA300A59606 /* ImportExportManager.swift in Sources */,
+				8D12ADDF2E1C6BA300A59606 /* DeckImportExportManager.swift in Sources */,
 				8DA20A152C7547EA001ED42E /* DeckRowView.swift in Sources */,
 				8D3BCC8F2F5766A6008DA93E /* URLExtension.swift in Sources */,
 				8D38ED602CAC906D00CCC422 /* SettingsPage.swift in Sources */,
@@ -613,7 +613,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15;
-				MARKETING_VERSION = 2026.9;
+				MARKETING_VERSION = 2026.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.FlexiDeck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -668,7 +668,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15;
-				MARKETING_VERSION = 2026.9;
+				MARKETING_VERSION = 2026.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tylersheft.FlexiDeck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
