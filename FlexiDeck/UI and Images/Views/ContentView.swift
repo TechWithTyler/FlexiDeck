@@ -42,7 +42,7 @@ struct ContentView: View {
     var sortedDecks: [Deck] {
         let decks = decks.sorted { deckA, deckB in
             // 1. Make sure both decks have name and cards properties.
-            guard let deckAName = deckA.name, let deckBName = deckB.name, let deckACards = deckA.cards, let deckBCards = deckB.cards else { fatalError("Can't sort decks") }
+            guard let deckAName = deckA.name, let deckBName = deckB.name, let deckACards = deckA.cards, let deckBCards = deckB.cards else { return false }
             // 2. Choose how to sort the decks based on the selected sort mode.
             switch deckSortMode {
             case .countAscending:
@@ -73,6 +73,7 @@ struct ContentView: View {
     // Handles import/export of decks.
     @StateObject var importExportManager = DeckImportExportManager()
 
+    // Handles drag-and-drop of cards to move them between decks.
     @StateObject var cardMoveManager = CardMoveManager()
 
     // Handles speech in the app.
