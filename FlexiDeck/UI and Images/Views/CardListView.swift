@@ -567,8 +567,25 @@ struct CardListView: View {
 
 // MARK: - Preview
 
-#Preview {
-    CardListView(deck: Deck(name: "Preview", newCardsAre2Sided: true), selectedCard: .constant(nil))
+#Preview("Empty Deck") {
+    var deck = Deck(name: "Preview", newCardsAre2Sided: true)
+    CardListView(deck: deck, selectedCard: .constant(nil))
         .environmentObject(DialogManager())
         .environmentObject(DeckImportExportManager())
+        .environmentObject(CardMoveManager())
+}
+
+#Preview("Deck of Cards") {
+    var deck = Deck(name: "Preview", newCardsAre2Sided: true)
+    var completedCard = Card(title: "Card 1", is2Sided: false)
+    var notCompletedCard = Card(title: "Card 2", is2Sided: false)
+    CardListView(deck: deck, selectedCard: .constant(nil))
+        .environmentObject(DialogManager())
+        .environmentObject(DeckImportExportManager())
+        .environmentObject(CardMoveManager())
+        .onAppear {
+            completedCard.isCompleted = true
+            deck.cards?.append(notCompletedCard)
+            deck.cards?.append(completedCard)
+        }
 }
