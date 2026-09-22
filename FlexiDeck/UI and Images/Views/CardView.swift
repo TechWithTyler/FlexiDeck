@@ -44,7 +44,7 @@ struct CardView: View {
     // MARK: - Body
 
     var body: some View {
-        TranslucentFooterVStack {
+        TranslucentFooterVStack(liquidGlassInteractive: true) {
             cardTextEditors
         } translucentFooterContent: {
             footer
