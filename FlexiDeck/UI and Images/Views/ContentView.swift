@@ -101,7 +101,9 @@ struct ContentView: View {
         // Import/Export
         .fileImporter(
             isPresented: $importExportManager.showingImporter,
+            // Only allow .flexideck files.
             allowedContentTypes: [.flexiDeckDeck],
+            // And allow selecting multiples.
             allowsMultipleSelection: true
         ) { result in
             importExportManager.handleDeckImportFromFiles(result: result, modelContext: modelContext)
@@ -110,6 +112,7 @@ struct ContentView: View {
         .fileExporter(
             isPresented: $importExportManager.showingExporter,
             document: ExportedDeck(data: importExportManager.deckDataToExport, deckName: importExportManager.deckToExport?.name ?? defaultDeckName),
+            // Export as a .flexideck file.
             contentType: .flexiDeckDeck,
             defaultFilename: importExportManager.deckToExport?.name ?? defaultDeckName
         ) { result in
@@ -389,6 +392,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Card.self, inMemory: true)
+        .modelContainer(for: [Deck.self, Card.self], inMemory: true)
 }
 
