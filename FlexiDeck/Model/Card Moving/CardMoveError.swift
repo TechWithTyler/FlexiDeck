@@ -22,7 +22,7 @@ enum CardMoveError: LocalizedError {
     case sourceDeckNotFound
 
     // Card to move not found in source deck.
-    case cardNotFoundInSourceDeck
+    case cardNotFoundInSourceDeck(name: String)
 
     // MARK: - Error Description
 
@@ -32,8 +32,8 @@ enum CardMoveError: LocalizedError {
             return "Card to move has no data or the dropped item wasn't a card."
         case .sourceDeckNotFound:
             return "Source deck not found."
-        case .cardNotFoundInSourceDeck:
-            return "Card to move wasn't found in the source deck."
+        case .cardNotFoundInSourceDeck(let name):
+            return "Card to move wasn't found in the source deck \"\(name)\"."
         case .unknown(let error):
             return "Card move failed: \(error.localizedDescription)"
         }

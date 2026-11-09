@@ -16,14 +16,15 @@ class CardMoveManager: ObservableObject {
 
     // MARK: - Properties - Booleans
 
-    // Whether a draggable item (e.g. a card) is being hovered over the deck list.
+    // Whether a draggable item (e.g. a card) is being hovered over a deck.
     @Published var hoveringItemOverDeck: Bool = false
 
-    // Whether an error should be/is being displayed.
+    // Whether an error alert should be/is being displayed.
     @Published var showingErrorAlert: Bool = false
 
     // MARK: - Properties - Errors
 
+    // The error to show if card moving fails.
     @Published var moveError: CardMoveError? = nil
 
     // MARK: - Properties - Type Identifiers
@@ -81,7 +82,7 @@ class CardMoveManager: ObservableObject {
                 showingErrorAlert = true
             }
         } else if let data = data {
-            // 2. If there's data, make sure we can get the ID from that data.
+            // 2. If there's data, make sure we can get the card's ID from that data.
             guard let id = decodeCardID(data) else {
                 DispatchQueue.main.async { [self] in
                     moveError = .noData
@@ -89,21 +90,21 @@ class CardMoveManager: ObservableObject {
                 }
                 return }
             // 3. Make sure we can get the source deck, which contains the card to move. If the source deck can't be found, show an error.
-            guard let sourceDeck = deck(containingCardWithID: id, in: decks) else {
+            guard let sourceDeck = deckContainingCardWithID(id, in: decks) else {
                 DispatchQueue.main.async { [self] in
                     moveError = .sourceDeckNotFound
                     showingErrorAlert = true
                 }
                 return }
-            // 4. Make sure we can get the card to be moved from the source deck. If not, show an error.
+            // 4. If the source and destination decks are the same (i.e. the card was dropped on the deck it's currently in), return.
+            if sourceDeck == destinationDeck { return }
+            // 5. Make sure we can get the card to be moved from the source deck. If not, show an error.
             guard let cardToMove = card(withID: id, in: sourceDeck) else {
                 DispatchQueue.main.async { [self] in
-                    moveError = .cardNotFoundInSourceDeck
+                    moveError = .cardNotFoundInSourceDeck(name: sourceDeck.name!)
                     showingErrorAlert = true
                 }
                 return }
-            // 5. If the card to be moved is already in the deck to move it to, return.
-            if cardToMove.deck == destinationDeck { return }
             DispatchQueue.main.async {
                 // 6. Remove the card from the source deck.
                 if let index = sourceDeck.cards?.firstIndex(of: cardToMove) {
@@ -125,12 +126,12 @@ class CardMoveManager: ObservableObject {
     // MARK: - Deck/Card Retrieval
 
     // This method finds a deck containing a card with the given ID.
-    func deck(containingCardWithID id: PersistentIdentifier, in decks: [Deck]) -> Deck? {
-        return decks.first { deckContainsCard(withID: id, in: $0) }
+    func deckContainingCardWithID(_ id: PersistentIdentifier, in decks: [Deck]) -> Deck? {
+        return decks.first { cardWithID(id, isPresentInDeck: $0) }
     }
 
     // This method returns whether deck contains a card with the given ID.
-    func deckContainsCard(withID id: PersistentIdentifier, in deck: Deck) -> Bool {
+    func cardWithID(_ id: PersistentIdentifier, isPresentInDeck deck: Deck) -> Bool {
         guard let cards = deck.cards else { return false }
         return cards.contains { $0.id == id }
     }

@@ -26,6 +26,7 @@ struct DisplaySettingsPageView: View {
             }
             Section("Card List Detail") {
                 CardListDetailOptions()
+                    .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
             }
         }
     }

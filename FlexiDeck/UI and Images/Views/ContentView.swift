@@ -190,7 +190,7 @@ struct ContentView: View {
                 dialogManager.dismissDeleteDeck()
             }
         } message: { deck in
-            Text("All cards in deck \"\((deck.wrappedValue?.name)!)\" will be deleted!")
+            Text("All cards in deck \"\((deck.wrappedValue?.name)!)\" will be deleted! \(moveCardsFirstMessageString)")
         }
         .alert("Delete all decks?", isPresented: $dialogManager.showingDeleteAllDecks) {
             Button("Delete", role: .destructive) {
@@ -213,9 +213,11 @@ struct ContentView: View {
             ForEach(sortedDecks) { deck in
                 NavigationLink(value: deck) {
                     DeckRowView(deck: deck)
+                    // Deck drag handler
                         .onDrag {
                             importExportManager.exportDeck(deck)
                         }
+                    // Card drop handler
                         .onDrop(of: [UTType.text], isTargeted: $cardMoveManager.hoveringItemOverDeck) { providers in
                             cardMoveManager.handleDrop(with: providers, toMoveToDestinationDeck: deck, findingSourceDeckIn: decks)
                         }

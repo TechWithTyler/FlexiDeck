@@ -19,23 +19,28 @@ struct DeckSettingsView: View {
 
     // MARK: - Properties - Strings
 
+    // The new name of the deck.
     @State var newName: String = String()
 
     // MARK: - Properties - Booleans
 
+    // Whether new cards in this deck should be 2-sided.
     @State var newCardsAre2Sided: Bool = true
 
+    // Whether to apply a change to newCardsAre2Sided to existing cards in this deck.
     @State var applyCardTypeToExistingCards: Bool = false
 
+    // Whether the deck's name is being edited.
     @FocusState var editingName: Bool
 
     // MARK: - Properties - Dismiss Action
 
     @Environment(\.dismiss) var dismiss
 
+    // Whether to show a warning that all cards in this deck will lose their back side.
     var cardsWillLoseBackSide: Bool {
         guard let cards = deck.cards else { return false }
-        return !cards.filter { $0.is2Sided! }.isEmpty && !newCardsAre2Sided
+        return !cards.filter { $0.is2Sided! }.isEmpty && !newCardsAre2Sided && applyCardTypeToExistingCards
     }
 
     // MARK: - Body
@@ -50,9 +55,10 @@ struct DeckSettingsView: View {
                     Text("2-Sided").tag(true)
                 }
                 InfoText("This setting only applies when the sides filter is turned off.")
-                Toggle("Apply Card Type To Existing Cards", isOn: $applyCardTypeToExistingCards)
+                Toggle("Apply Card Type to Existing Cards", isOn: $applyCardTypeToExistingCards)
+                    .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
                 InfoText("Turn this on to apply this deck's default card type to all existing cards in it when saving settings.")
-                if applyCardTypeToExistingCards && cardsWillLoseBackSide {
+                if cardsWillLoseBackSide {
                     WarningText("This will cause all existing cards in this deck to lose their back side!", prefix: .warning)
                 }
             }

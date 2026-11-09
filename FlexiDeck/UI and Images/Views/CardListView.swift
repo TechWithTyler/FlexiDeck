@@ -192,7 +192,7 @@ struct CardListView: View {
         return cardFilterTags != "off" || cardFilterSides != 0 || cardFilterRating != 0 || cardFilterComplete != 0
     }
 
-    // Whether new cards should have 2 sides.
+    // Whether new cards should be 2-sided.
     var shouldCreate2SidedCards: Bool {
         // 1. If the sides filter is enabled, decide based on it.
         switch cardFilterSides {
@@ -251,13 +251,15 @@ struct CardListView: View {
                 dialogManager.dismissDeleteCard()
             }
         }
-        .alert("Delete all cards in deck \"\(deck.name!)\"", isPresented: $dialogManager.showingDeleteAllCards) {
+        .alert("Delete all cards in deck \"\(deck.name!)\"?", isPresented: $dialogManager.showingDeleteAllCards) {
             Button("Delete", role: .destructive) {
                 deleteAllCards()
             }
             Button("Cancel", role: .cancel) {
                 dialogManager.showingDeleteAllCards = false
             }
+        } message: {
+            Text(moveCardsFirstMessageString)
         }
         .toolbar {
             toolbarContent
@@ -490,6 +492,7 @@ struct CardListView: View {
 
     // MARK: - Show Random Card
 
+    // This method selects a random card from searchResults.
     func showRandomCard() {
         // 1. Get a random card.
         let randomCard = searchResults.randomElement()!
@@ -504,6 +507,7 @@ struct CardListView: View {
 
     // MARK: - Mark All Cards As Completed/Not Completed
 
+    // This method marks all cards in searchResults as completed or not completed based on completed.
     func markAllCardsAs(completed: Bool) {
         for card in searchResults {
             card.isCompleted = completed
@@ -512,10 +516,13 @@ struct CardListView: View {
 
     // MARK: - Reset Card Filter
 
+    // This method resets the card filter.
     func resetCardFilter(shouldResetSidesFilter: Bool = true) {
+        // 1. Reset the sides filter except when creating a new card with that number of sides.
         if shouldResetSidesFilter {
             cardFilterSides = 0
         }
+        // 2. Reset all other card filters.
         cardFilterTags = "off"
         cardFilterComplete = 0
         cardFilterRating = 0
@@ -526,9 +533,9 @@ struct CardListView: View {
     // This method creates a new Card object and adds it to the deck's cards array.
     private func newCard(is2Sided: Bool) {
         withAnimation {
-            // 1. Create a new Card object with the default title and the deck's "number of sides" setting.
+            // 1. Create a new Card object with the default title and specified number of sides.
             let newDeck = Card(title: defaultCardName, is2Sided: is2Sided)
-            // 2. Append the new card to the deck's list of cards.
+            // 2. Append the new card to the deck's cards array.
             deck.cards?.append(newDeck)
             // 3. Select the new card.
             selectedCard = newDeck
@@ -536,7 +543,7 @@ struct CardListView: View {
             if showSettingsWhenCreating == 2 {
                 dialogManager.cardToShowSettings = newDeck
             }
-            // 5. Disable all filters except the sides filter.
+            // 5. Disable all filters except the sides filter (the sides filter is used to determine the number of sides for the card).
             resetCardFilter(shouldResetSidesFilter: false)
         }
     }
@@ -568,7 +575,7 @@ struct CardListView: View {
 // MARK: - Preview
 
 #Preview("Empty Deck") {
-    var deck = Deck(name: "Preview", newCardsAre2Sided: true)
+    let deck = Deck(name: "Preview", newCardsAre2Sided: true)
     CardListView(deck: deck, selectedCard: .constant(nil))
         .environmentObject(DialogManager())
         .environmentObject(DeckImportExportManager())
@@ -576,9 +583,9 @@ struct CardListView: View {
 }
 
 #Preview("Deck of Cards") {
-    var deck = Deck(name: "Preview", newCardsAre2Sided: true)
-    var completedCard = Card(title: "Card 1", is2Sided: false)
-    var notCompletedCard = Card(title: "Card 2", is2Sided: false)
+    let deck = Deck(name: "Preview", newCardsAre2Sided: true)
+    let completedCard = Card(title: "Card 1", is2Sided: false)
+    let notCompletedCard = Card(title: "Card 2", is2Sided: false)
     CardListView(deck: deck, selectedCard: .constant(nil))
         .environmentObject(DialogManager())
         .environmentObject(DeckImportExportManager())

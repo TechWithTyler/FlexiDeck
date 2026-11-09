@@ -33,5 +33,8 @@ let defaultCardName: String = "New Card"
 // The name used when a deck/card's name is unavailable/missing.
 let nameUnavailableString: String = "Unavailable"
 
+// The text displayed in the info text of the "delete this deck" and "delete all cards in this deck" alerts.
+let moveCardsFirstMessageString: String = "If you have any cards in this deck you want to keep, move them to another deck first."
+
 // The name of the filled-bubble speaker SF Symbol used for speech.
 let speechSymbolName: String = "speaker.wave.2.bubble.left"

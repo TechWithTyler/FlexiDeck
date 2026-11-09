@@ -35,6 +35,7 @@ struct SpeechSettingsPageView: View {
             }
             Section {
                 Toggle("Speak on Card Selection/Flip", isOn: $speechManager.speakOnSelectionOrFlip)
+                    .toggleStyle(.stateLabelCheckbox(stateLabelPair: .yesNo))
             } footer: {
                 Text("Turn this on to have the front side of a card spoken when it's selected, or the displayed side of a card spoken when it's flipped.")
             }
